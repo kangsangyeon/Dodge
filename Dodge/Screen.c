@@ -1,5 +1,6 @@
 ﻿#include "Screen.h"
 
+#include <math.h>
 #include <stdbool.h>
 #include <stdio.h>
 
@@ -205,4 +206,27 @@ void _Screen_WriteLineToConsole(Screen* _screen, int _startY, wchar_t* _buffer)
 	WriteConsoleW(_screen->screenHandles[_screen->screenIndex],
 	              _buffer, wcslen(_buffer),
 	              &_dw, NULL);
+}
+
+void Screen_PrintSprite(Screen* _screen, int _startX, int _startY, Sprite* _sprite)
+{
+	for (int _y = 0; _y < _sprite->height; ++_y)
+	{
+		const int _yScreenPosition = _startY + _y;
+		const wchar_t* _spriteLine = _sprite->dataArr[_y];
+		const int _spriteLineWidth = wcslen(_spriteLine);
+
+		Screen_PrintLine(_screen, _startX, _yScreenPosition, _spriteLine, _spriteLineWidth);
+	}
+}
+
+void Screen_PrintWorldObject(Screen* _screen, WorldObject* _worldObject)
+{
+	const double _startXWorldPosition = _worldObject->position.x - _worldObject->sprite->width * _worldObject->pivot.x;
+	const double _startYWorldPosition = _worldObject->position.y - _worldObject->sprite->height * _worldObject->pivot.y;
+
+	const int _startXScreenPosition = floor(_startXWorldPosition);
+	const int _startYScreenPosition = floor(_startYWorldPosition);
+
+	Screen_PrintSprite(_screen, _startXScreenPosition, _startYScreenPosition, _worldObject->sprite);
 }

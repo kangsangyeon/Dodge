@@ -17,6 +17,9 @@ DodgeGameInstance* createDodgeGameInstance(int _screenWidth, int _screenHeight, 
 
 	_instance->board = Board_Create(_boardWidth, _boardHeight);
 
+	// for test
+	_instance->testSprite = Sprite_LoadFromTextFile(L"Sprites/test_chihaya.txt");
+
 	return _instance;
 }
 
@@ -30,6 +33,10 @@ void releaseDodgeGameInstance(DodgeGameInstance* _dodgeGame)
 
 	if (_dodgeGame->gameInstance != NULL)
 		releaseGameInstance(_dodgeGame->gameInstance);
+
+	// for test
+	if (_dodgeGame->testSprite != NULL)
+		Sprite_Release(_dodgeGame->testSprite);
 
 	free(_dodgeGame);
 }
@@ -60,20 +67,7 @@ void gameTick(DodgeGameInstance* _dodgeGame, float _deltaTime)
 
 	int _screenY = _screen->height - 1;
 
-	// 텍스트 입력 안내 메세지를 표시합니다.
-	wchar_t* _testText = (wchar_t*)calloc(_dodgeGame->screenWidth + 1, sizeof(wchar_t));
-	const int _testTextCount = _msize(_testText) / sizeof(wchar_t);
-
-	for (int i = 0; i < _screen->height; ++i)
-	{
-		swprintf_s(_testText, _testTextCount, L"%d: 가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하", i);
-
-		const int _textLength = wcslen(_testText);
-		Screen_PrintLine(_screen, 0, _screenY, _testText, _textLength);
-		--_screenY;
-	}
-
-
-	// Screen_PrintLine(_screen, 0, _screenY, _text, wcslen(_text));
-	// --_screenY;
+	// for test
+	if (_dodgeGame->testSprite != NULL)
+		Screen_PrintSprite(_screen, 0, 0, _dodgeGame->testSprite);
 }

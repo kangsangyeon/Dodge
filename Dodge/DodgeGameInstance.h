@@ -12,6 +12,9 @@ typedef struct TDodgeGameInstance
 
 	int screenWidth;
 	int screenHeight;
+
+	// for test
+	Sprite* testSprite;
 } DodgeGameInstance;
 
 DodgeGameInstance* createDodgeGameInstance(int _screenWidth, int _screenHeight, wchar_t* _fontFaceName, COORD _fontSize, int _boardWidth, int _boardHeight, int _desiredFps);

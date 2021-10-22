@@ -2,6 +2,8 @@
 
 #include <Windows.h>
 
+#include "WorldObject.h"
+
 typedef struct TScreen
 {
 	int width;
@@ -41,3 +43,7 @@ void Screen_ClearScreen(Screen* _screen);
 void Screen_ClearBuffer(Screen* _screen);
 
 void _Screen_WriteLineToConsole(Screen* _screen, int _startY, wchar_t* _buffer);
+
+void Screen_PrintSprite(Screen* _screen, int _startX, int _startY, Sprite* _sprite);
+
+void Screen_PrintWorldObject(Screen* _screen, WorldObject* _worldObject);

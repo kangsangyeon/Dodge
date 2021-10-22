@@ -53,9 +53,6 @@ int main()
 	setlocale(LC_ALL, "KOREAN");
 	srand(time(NULL));
 
-	_sprite = Sprite_LoadFromTextFile(L"test.txt");
-	Sprite_Release(_sprite);
-
 	DodgeGameInstance* _dodgeGame = createDodgeGameInstance(
 		SCREEN_WIDTH,
 		SCREEN_HEIGHT,
@@ -70,6 +67,8 @@ int main()
 		tick(_dodgeGame);
 	}
 	while (exitFlag == false);
+
+	Sprite_Release(_sprite);
 
 	releaseDodgeGameInstance(_dodgeGame);
 	return 0;
