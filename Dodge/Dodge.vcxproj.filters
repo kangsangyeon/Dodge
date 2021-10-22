@@ -18,7 +18,7 @@
     <ClCompile Include="Board.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FindWordGameInstance.c">
+    <ClCompile Include="DodgeGameInstance.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GameInstance.c">
@@ -44,7 +44,7 @@
     <ClInclude Include="Board.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FindWordGameInstance.h">
+    <ClInclude Include="DodgeGameInstance.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GameInstance.h">

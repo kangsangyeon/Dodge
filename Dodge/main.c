@@ -2,7 +2,7 @@
 #include <signal.h>
 #include <stdio.h>
 
-#include "FindWordGameInstance.h"
+#include "DodgeGameInstance.h"
 #include "Sprite.h"
 
 /// <summary>
@@ -56,7 +56,7 @@ int main()
 	_sprite = loadSpriteFromText(L"test.txt");
 	releaseSprite(_sprite);
 
-	FindWordGameInstance* _findWordGame = createFindWordGameInstance(
+	DodgeGameInstance* _dodgeGame = createDodgeGameInstance(
 		SCREEN_WIDTH,
 		SCREEN_HEIGHT,
 		FONT_FACE_NAME,
@@ -67,10 +67,10 @@ int main()
 
 	do
 	{
-		tick(_findWordGame);
+		tick(_dodgeGame);
 	}
 	while (exitFlag == false);
 
-	releaseFindWordGameInstance(_findWordGame);
+	releaseDodgeGameInstance(_dodgeGame);
 	return 0;
 }

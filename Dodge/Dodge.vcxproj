@@ -140,7 +140,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Board.c" />
-    <ClCompile Include="FindWordGameInstance.c" />
+    <ClCompile Include="DodgeGameInstance.c" />
     <ClCompile Include="GameInstance.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="PointerStack.c" />
@@ -150,7 +150,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.h" />
-    <ClInclude Include="FindWordGameInstance.h" />
+    <ClInclude Include="DodgeGameInstance.h" />
     <ClInclude Include="GameInstance.h" />
     <ClInclude Include="PointerStack.h" />
     <ClInclude Include="Screen.h" />
