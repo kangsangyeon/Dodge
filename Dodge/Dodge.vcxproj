@@ -146,7 +146,6 @@
     <ClCompile Include="PointerStack.c" />
     <ClCompile Include="Screen.c" />
     <ClCompile Include="Sprite.c" />
-    <ClCompile Include="Stack.c" />
     <ClCompile Include="Vector2D.c" />
   </ItemGroup>
   <ItemGroup>
@@ -157,7 +156,6 @@
     <ClInclude Include="PointerStack.h" />
     <ClInclude Include="Screen.h" />
     <ClInclude Include="Sprite.h" />
-    <ClInclude Include="Stack.h" />
     <ClInclude Include="Vector2D.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
