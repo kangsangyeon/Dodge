@@ -142,7 +142,9 @@
     <ClCompile Include="Board.c" />
     <ClCompile Include="DodgeGameInstance.c" />
     <ClCompile Include="GameInstance.c" />
+    <ClCompile Include="Helper.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="Player.c" />
     <ClCompile Include="PointerStack.c" />
     <ClCompile Include="Screen.c" />
     <ClCompile Include="Sprite.c" />
@@ -154,6 +156,8 @@
     <ClInclude Include="Const.h" />
     <ClInclude Include="DodgeGameInstance.h" />
     <ClInclude Include="GameInstance.h" />
+    <ClInclude Include="Helper.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="PointerStack.h" />
     <ClInclude Include="Screen.h" />
     <ClInclude Include="Sprite.h" />
