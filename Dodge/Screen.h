@@ -16,28 +16,28 @@ typedef struct TScreen
 } Screen;
 
 
-Screen* createScreen(int _width, int _height, wchar_t* _fontFaceName, COORD _fontSize);
+Screen* Screen_Create(int _width, int _height, wchar_t* _fontFaceName, COORD _fontSize);
 
-void releaseScreen(Screen* _screen);
+void Screen_Release(Screen* _screen);
 
-HANDLE createScreenHandles(wchar_t* _fontFaceName, COORD _fontSize);
+HANDLE _Screen_CreateScreenHandle(wchar_t* _fontFaceName, COORD _fontSize);
 
-void releaseScreenHandles(HANDLE _handle);
+void _Screen_ReleaseScreenHandle(HANDLE _handle);
 
-void resizeScreen(HANDLE _handle, int _width, int _height);
+void Screen_Resize(HANDLE _handle, int _width, int _height);
 
-wchar_t** createTextBuffer(int _width, int _height);
+wchar_t** _Screen_CreateTextBuffer(int _width, int _height);
 
-void releaseTextBuffer(int _size, wchar_t** _buffer);
+void _Screen_ReleaseTextBuffer(int _size, wchar_t** _buffer);
 
-void render(Screen* _screen);
+void Screen_Render(Screen* _screen);
 
-void print(Screen* _screen, int _startX, int _startY, wchar_t** _buffer, int _bufferWidth, int _bufferHeight);
+void Screen_Print(Screen* _screen, int _startX, int _startY, wchar_t** _buffer, int _bufferWidth, int _bufferHeight);
 
-void printLine(Screen* _screen, int _startX, int _startY, wchar_t* _buffer, int _bufferWidth);
+void Screen_PrintLine(Screen* _screen, int _startX, int _startY, wchar_t* _buffer, int _bufferWidth);
 
-void clearScreen(Screen* _screen);
+void Screen_ClearScreen(Screen* _screen);
 
-void clearBuffer(Screen* _screen);
+void Screen_ClearBuffer(Screen* _screen);
 
-void writeLineToConsole(Screen* _screen, int _startY, wchar_t* _buffer);
+void _Screen_WriteLineToConsole(Screen* _screen, int _startY, wchar_t* _buffer);

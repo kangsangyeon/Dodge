@@ -3,18 +3,18 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-Screen* createScreen(int _width, int _height, wchar_t* _fontFaceName, COORD _fontSize)
+Screen* Screen_Create(int _width, int _height, wchar_t* _fontFaceName, COORD _fontSize)
 {
 	Screen* outScreen = (Screen*)calloc(1, sizeof(Screen));
 	outScreen->width = _width;
 	outScreen->height = _height;
 	outScreen->screenIndex = 0;
 
-	outScreen->screenHandles[0] = createScreenHandles(_fontFaceName, _fontSize);
-	outScreen->screenHandles[1] = createScreenHandles(_fontFaceName, _fontSize);
+	outScreen->screenHandles[0] = _Screen_CreateScreenHandle(_fontFaceName, _fontSize);
+	outScreen->screenHandles[1] = _Screen_CreateScreenHandle(_fontFaceName, _fontSize);
 
-	outScreen->textBuffer = createTextBuffer(_width, _height);
-	clearBuffer(outScreen);
+	outScreen->textBuffer = _Screen_CreateTextBuffer(_width, _height);
+	Screen_ClearBuffer(outScreen);
 
 	outScreen->clearLine = (wchar_t*)calloc(_width + 1, sizeof(wchar_t));
 	for (int i = 0; i < _width; ++i)
@@ -22,27 +22,27 @@ Screen* createScreen(int _width, int _height, wchar_t* _fontFaceName, COORD _fon
 
 	// 화면의 최대 크기는 최초 렌더링 이후에 갱신되기 때문에,
 	// 반드시 1회 렌더링 이후에 크기를 설정해주어야 합니다.
-	clearScreen(outScreen);
-	render(outScreen);
-	clearScreen(outScreen);
-	render(outScreen);
+	Screen_ClearScreen(outScreen);
+	Screen_Render(outScreen);
+	Screen_ClearScreen(outScreen);
+	Screen_Render(outScreen);
 
-	resizeScreen(outScreen->screenHandles[0], _width, _height);
-	resizeScreen(outScreen->screenHandles[1], _width, _height);
+	Screen_Resize(outScreen->screenHandles[0], _width, _height);
+	Screen_Resize(outScreen->screenHandles[1], _width, _height);
 
 	return outScreen;
 }
 
-void releaseScreen(Screen* _screen)
+void Screen_Release(Screen* _screen)
 {
 	if (_screen == NULL)
 		return;
 
-	releaseScreenHandles(_screen->screenHandles[0]);
+	_Screen_ReleaseScreenHandle(_screen->screenHandles[0]);
 
-	releaseScreenHandles(_screen->screenHandles[1]);
+	_Screen_ReleaseScreenHandle(_screen->screenHandles[1]);
 
-	releaseTextBuffer(_screen->height, _screen->textBuffer);
+	_Screen_ReleaseTextBuffer(_screen->height, _screen->textBuffer);
 
 	if (_screen->clearLine != NULL)
 		free(_screen->clearLine);
@@ -50,7 +50,7 @@ void releaseScreen(Screen* _screen)
 	free(_screen);
 }
 
-HANDLE createScreenHandles(wchar_t* _fontFaceName, COORD _fontSize)
+HANDLE _Screen_CreateScreenHandle(wchar_t* _fontFaceName, COORD _fontSize)
 {
 	const HANDLE handle = CreateConsoleScreenBuffer(GENERIC_READ | GENERIC_WRITE, 0, NULL, CONSOLE_TEXTMODE_BUFFER, NULL);
 
@@ -69,7 +69,7 @@ HANDLE createScreenHandles(wchar_t* _fontFaceName, COORD _fontSize)
 	return handle;
 }
 
-void releaseScreenHandles(HANDLE _handle)
+void _Screen_ReleaseScreenHandle(HANDLE _handle)
 {
 	if (_handle == NULL)
 		return;
@@ -77,7 +77,7 @@ void releaseScreenHandles(HANDLE _handle)
 	CloseHandle(_handle);
 }
 
-void resizeScreen(HANDLE _handle, int _width, int _height)
+void Screen_Resize(HANDLE _handle, int _width, int _height)
 {
 	const COORD newSize = {_width, _height};
 	const SMALL_RECT rect = {0, 0, _width - 1, _height - 1};
@@ -98,7 +98,7 @@ void resizeScreen(HANDLE _handle, int _width, int _height)
 	COORD _largestSize = GetLargestConsoleWindowSize(_handle);
 }
 
-wchar_t** createTextBuffer(int _width, int _height)
+wchar_t** _Screen_CreateTextBuffer(int _width, int _height)
 {
 	wchar_t** _outArray = (wchar_t**)calloc(_height, sizeof(wchar_t*));
 	for (int _y = 0; _y < _height; ++_y)
@@ -111,7 +111,7 @@ wchar_t** createTextBuffer(int _width, int _height)
 	return _outArray;
 }
 
-void releaseTextBuffer(int _size, wchar_t** _buffer)
+void _Screen_ReleaseTextBuffer(int _size, wchar_t** _buffer)
 {
 	if (_buffer == NULL)
 		return;
@@ -127,13 +127,13 @@ void releaseTextBuffer(int _size, wchar_t** _buffer)
 	free(_buffer);
 }
 
-void render(Screen* _screen)
+void Screen_Render(Screen* _screen)
 {
-	// clearScreen(_screen);
+	// Screen_ClearScreen(_screen);
 
 	for (int y = 0; y < _screen->height; ++y)
 	{
-		writeLineToConsole(_screen, y, _screen->textBuffer[y]);
+		_Screen_WriteLineToConsole(_screen, y, _screen->textBuffer[y]);
 	}
 
 	// 활성화된(=보여주고 있는) Screen buffer를 front buffer와 back buffer끼리 맞바꿉니다.
@@ -141,7 +141,7 @@ void render(Screen* _screen)
 	_screen->screenIndex = !_screen->screenIndex;
 }
 
-void print(Screen* _screen, int _startX, int _startY, wchar_t** _buffer, int _bufferWidth, int _bufferHeight)
+void Screen_Print(Screen* _screen, int _startX, int _startY, wchar_t** _buffer, int _bufferWidth, int _bufferHeight)
 {
 	if (_screen == NULL || _buffer == NULL)
 		return;
@@ -162,20 +162,20 @@ void print(Screen* _screen, int _startX, int _startY, wchar_t** _buffer, int _bu
 	}
 }
 
-void printLine(Screen* _screen, int _startX, int _startY, wchar_t* _buffer, int _bufferWidth)
+void Screen_PrintLine(Screen* _screen, int _startX, int _startY, wchar_t* _buffer, int _bufferWidth)
 {
-	print(_screen, _startX, _startY, &_buffer, _bufferWidth, 1);
+	Screen_Print(_screen, _startX, _startY, &_buffer, _bufferWidth, 1);
 }
 
-void clearScreen(Screen* _screen)
+void Screen_ClearScreen(Screen* _screen)
 {
 	for (int _y = 0; _y < _screen->height; ++_y)
 	{
-		writeLineToConsole(_screen, _y, _screen->clearLine);
+		_Screen_WriteLineToConsole(_screen, _y, _screen->clearLine);
 	}
 }
 
-void clearBuffer(Screen* _screen)
+void Screen_ClearBuffer(Screen* _screen)
 {
 	for (int _y = 0; _y < _screen->height; ++_y)
 	{
@@ -186,7 +186,7 @@ void clearBuffer(Screen* _screen)
 	}
 }
 
-void writeLineToConsole(Screen* _screen, int _startY, wchar_t* _buffer)
+void _Screen_WriteLineToConsole(Screen* _screen, int _startY, wchar_t* _buffer)
 {
 	DWORD _dw;
 

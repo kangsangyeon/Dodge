@@ -69,11 +69,11 @@ void gameTick(DodgeGameInstance* _dodgeGame, float _deltaTime)
 		swprintf_s(_testText, _testTextCount, L"%d: 가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하", i);
 
 		const int _textLength = wcslen(_testText);
-		printLine(_screen, 0, _screenY, _testText, _textLength);
+		Screen_PrintLine(_screen, 0, _screenY, _testText, _textLength);
 		--_screenY;
 	}
 
 
-	// printLine(_screen, 0, _screenY, _text, wcslen(_text));
+	// Screen_PrintLine(_screen, 0, _screenY, _text, wcslen(_text));
 	// --_screenY;
 }

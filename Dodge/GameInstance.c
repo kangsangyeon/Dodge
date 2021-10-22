@@ -12,7 +12,7 @@ GameInstance* createGameInstance(int _screenWidth, int _screenHeight, wchar_t* _
 	_gameInstance->startGameMillis = clock();
 	_gameInstance->currentPreTickMillis = _gameInstance->startGameMillis;
 
-	_gameInstance->screen = createScreen(_screenWidth, _screenHeight, _fontFaceName, _fontSize);
+	_gameInstance->screen = Screen_Create(_screenWidth, _screenHeight, _fontFaceName, _fontSize);
 
 	return _gameInstance;
 }
@@ -23,7 +23,7 @@ void releaseGameInstance(GameInstance* _gameInstance)
 		return;
 
 	if (_gameInstance->screen != NULL)
-		releaseScreen(_gameInstance->screen);
+		Screen_Release(_gameInstance->screen);
 
 	free(_gameInstance);
 }
@@ -39,7 +39,7 @@ void preTick(GameInstance* _gameInstance, float* _outDeltaTime)
 
 void postTick(GameInstance* _gameInstance)
 {
-	render(_gameInstance->screen);
+	Screen_Render(_gameInstance->screen);
 
 	Sleep(_gameInstance->desiredSleepTimeMillis);
 	_gameInstance->lastPreTickMillis = _gameInstance->currentPreTickMillis;
