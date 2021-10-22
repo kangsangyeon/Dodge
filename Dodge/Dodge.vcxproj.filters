@@ -39,6 +39,9 @@
     <ClCompile Include="Stack.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Vector2D.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.h">
@@ -60,6 +63,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Sprite.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector2D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Const.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
