@@ -61,21 +61,19 @@ void gameTick(DodgeGameInstance* _dodgeGame, float _deltaTime)
 	int _screenY = _screen->height - 1;
 
 	// 텍스트 입력 안내 메세지를 표시합니다.
-	swprintf_s(_text, _countof(_text), L"ABCDEFGHIJKLMNOPQRSTU");
-	printLine(_screen, 0, _screenY, _text, wcslen(_text));
-	--_screenY;
+	wchar_t* _testText = (wchar_t*)calloc(_dodgeGame->screenWidth + 1, sizeof(wchar_t));
+	const int _testTextCount = _msize(_testText) / sizeof(wchar_t);
 
-	swprintf_s(_text, _countof(_text), L"찾을 문자열을 입력해주세요");
-	printLine(_screen, 0, _screenY, _text, wcslen(_text));
-	--_screenY;
+	for (int i = 0; i < _screen->height; ++i)
+	{
+		swprintf_s(_testText, _testTextCount, L"%d: 가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하", i);
 
-	wchar_t _testText[] = L"찾을 문자열을 입력해주세요";
-	int _textLength;
-	_textLength = wcslen(_testText);
-	printLine(_screen, 0, _screenY, _testText, _textLength);
-	--_screenY;
+		const int _textLength = wcslen(_testText);
+		printLine(_screen, 0, _screenY, _testText, _textLength);
+		--_screenY;
+	}
 
-	swprintf_s(_text, _countof(_text), L"찾을 문자열을 입력해주세요");
-	printLine(_screen, 0, _screenY, _text, wcslen(_text));
-	--_screenY;
+
+	// printLine(_screen, 0, _screenY, _text, wcslen(_text));
+	// --_screenY;
 }
