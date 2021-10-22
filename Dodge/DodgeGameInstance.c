@@ -15,7 +15,7 @@ DodgeGameInstance* createDodgeGameInstance(int _screenWidth, int _screenHeight, 
 
 	_instance->gameInstance = createGameInstance(_screenWidth, _screenHeight, _fontFaceName, _fontSize, _desiredFps);
 
-	_instance->board = createBoard(_boardWidth, _boardHeight);
+	_instance->board = Board_Create(_boardWidth, _boardHeight);
 
 	return _instance;
 }
@@ -26,7 +26,7 @@ void releaseDodgeGameInstance(DodgeGameInstance* _dodgeGame)
 		return;
 
 	if (_dodgeGame->board != NULL)
-		releaseBoard(&_dodgeGame->board);
+		Board_Release(&_dodgeGame->board);
 
 	if (_dodgeGame->gameInstance != NULL)
 		releaseGameInstance(_dodgeGame->gameInstance);

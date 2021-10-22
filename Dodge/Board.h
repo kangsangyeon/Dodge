@@ -14,20 +14,20 @@ typedef struct TBoard
 	Cell** cellArr;
 } Board;
 
-Board* createBoard(int _width, int _height);
+Board* Board_Create(int _width, int _height);
 
-void releaseBoard(Board** _board);
+void Board_Release(Board** _board);
 
-void clearBoard(Board* _board);
+void Board_Clear(Board* _board);
 
-Cell getCell(Board* _board, int _x, int _y);
+Cell Board_GetCell(Board* _board, int _x, int _y);
 
-Cell* getLine(Board* _board, int _y);
+Cell* Board_GetLine(Board* _board, int _y);
 
-void writeCell(Board* _board, int _x, int _y, Cell _cell);
+void Board_WriteCell(Board* _board, int _x, int _y, Cell _cell);
 
-void writeLine(Board* _board, int _y, Cell* _line);
+void Board_WriteLine(Board* _board, int _y, Cell* _line);
 
-void clearCell(Board* _board, int _x, int _y);
+void Board_ClearCell(Board* _board, int _x, int _y);
 
-void clearLine(Board* _board, int _y);
+void Board_ClearLine(Board* _board, int _y);

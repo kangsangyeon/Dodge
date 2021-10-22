@@ -2,7 +2,7 @@
 
 #include <stdlib.h>
 
-Board* createBoard(int _width, int _height)
+Board* Board_Create(int _width, int _height)
 {
 	if (_width <= 0 || _height <= 0)
 		return;
@@ -20,7 +20,7 @@ Board* createBoard(int _width, int _height)
 	return _newBoard;
 }
 
-void releaseBoard(Board** _board)
+void Board_Release(Board** _board)
 {
 	Board* _actualBoard = *_board;
 
@@ -41,7 +41,7 @@ void releaseBoard(Board** _board)
 	free(_actualBoard);
 }
 
-void clearBoard(Board* _board)
+void Board_Clear(Board* _board)
 {
 	if (_board == NULL ||
 		_board->cellArr == NULL)
@@ -56,28 +56,28 @@ void clearBoard(Board* _board)
 	}
 }
 
-Cell getCell(Board* _board, int _x, int _y)
+Cell Board_GetCell(Board* _board, int _x, int _y)
 {
 	const int _yIndex = (_board->height - 1) - _y;
 
 	return _board->cellArr[_yIndex][_x];
 }
 
-Cell* getLine(Board* _board, int _y)
+Cell* Board_GetLine(Board* _board, int _y)
 {
 	const int _yIndex = (_board->height - 1) - _y;
 
 	return _board->cellArr[_yIndex];
 }
 
-void writeCell(Board* _board, int _x, int _y, Cell _cell)
+void Board_WriteCell(Board* _board, int _x, int _y, Cell _cell)
 {
 	const int _yIndex = (_board->height - 1) - _y;
 
 	_board->cellArr[_yIndex][_x] = _cell;
 }
 
-void writeLine(Board* _board, int _y, Cell* _line)
+void Board_WriteLine(Board* _board, int _y, Cell* _line)
 {
 	const int _yIndex = (_board->height - 1) - _y;
 	const int _byteSize = (int)_board->width * sizeof(wchar_t);
@@ -85,7 +85,7 @@ void writeLine(Board* _board, int _y, Cell* _line)
 	memcpy_s(_board->cellArr[_yIndex], _byteSize, _line, _byteSize);
 }
 
-void clearCell(Board* _board, int _x, int _y)
+void Board_ClearCell(Board* _board, int _x, int _y)
 {
 	const int _yIndex = (_board->height - 1) - _y;
 	const int _byteSize = sizeof(Cell);
@@ -93,7 +93,7 @@ void clearCell(Board* _board, int _x, int _y)
 	memset(&_board->cellArr[_yIndex][_x], 0, _byteSize);
 }
 
-void clearLine(Board* _board, int _y)
+void Board_ClearLine(Board* _board, int _y)
 {
 	const int _yIndex = (_board->height - 1) - _y;
 	const int _byteSize = _board->width * sizeof(Cell);
