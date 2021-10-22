@@ -147,6 +147,7 @@
     <ClCompile Include="Screen.c" />
     <ClCompile Include="Sprite.c" />
     <ClCompile Include="Vector2D.c" />
+    <ClCompile Include="WorldObject.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.h" />
@@ -157,6 +158,7 @@
     <ClInclude Include="Screen.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Vector2D.h" />
+    <ClInclude Include="WorldObject.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
