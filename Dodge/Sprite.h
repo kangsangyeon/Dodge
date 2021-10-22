@@ -8,6 +8,6 @@ typedef struct TSprite
 	wchar_t** dataArr;
 } Sprite;
 
-Sprite* loadSpriteFromText(wchar_t* _filePath);
+Sprite* Sprite_LoadFromTextFile(wchar_t* _filePath);
 
-void releaseSprite(Sprite* _sprite);
+void Sprite_Release(Sprite* _sprite);

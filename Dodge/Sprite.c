@@ -7,7 +7,7 @@
 
 const int MAXIMUM_TEXT_LINE = 1000;
 
-Sprite* loadSpriteFromText(wchar_t* _filePath)
+Sprite* Sprite_LoadFromTextFile(wchar_t* _filePath)
 {
 	Sprite* _outSprite = (Sprite*)calloc(1, sizeof(Sprite));
 
@@ -81,7 +81,7 @@ Sprite* loadSpriteFromText(wchar_t* _filePath)
 	return _outSprite;
 }
 
-void releaseSprite(Sprite* _sprite)
+void Sprite_Release(Sprite* _sprite)
 {
 	if (_sprite == NULL)
 		return;
