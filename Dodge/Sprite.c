@@ -1,4 +1,4 @@
-#include "Sprite.h"
+ï»¿#include "Sprite.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -19,31 +19,31 @@ Sprite* loadSpriteFromText(wchar_t* _filePath)
 
 	if (_fileStream == NULL)
 	{
-		// ÆÄÀÏÀ» ¿©´Â µ¥ ½ÇÆÐÇÑ °æ¿ì, ÇÔ¼öÀÇ ½ÇÇàÀ» ¹Ù·Î Á¾·áÇÕ´Ï´Ù.
+		// íŒŒì¼ì„ ì—¬ëŠ” ë° ì‹¤íŒ¨í•œ ê²½ìš°, í•¨ìˆ˜ì˜ ì‹¤í–‰ì„ ë°”ë¡œ ì¢…ë£Œí•©ë‹ˆë‹¤.
 		return NULL;
 	}
 
-	// ÆÄÀÏÀ» ÀÐ°í °¢ ¶óÀÎÀ» stack¿¡ ´ã½À´Ï´Ù.
+	// íŒŒì¼ì„ ì½ê³  ê° ë¼ì¸ì„ stackì— ë‹´ìŠµë‹ˆë‹¤.
 	for (int _i = 0; ; ++_i)
 	{
 		wchar_t* _string = (wchar_t*)malloc((MAXIMUM_TEXT_LINE) * sizeof(wchar_t));
 		fgetws(_string, MAXIMUM_TEXT_LINE, _fileStream);
 
-		// ÆÄÀÏÀÇ ³¡¿¡ µµ´ÞÇßÀ» ¶§ ÀÐÀº ÁÙÀº ¹«½ÃÇÕ´Ï´Ù.
+		// íŒŒì¼ì˜ ëì— ë„ë‹¬í–ˆì„ ë•Œ ì½ì€ ì¤„ì€ ë¬´ì‹œí•©ë‹ˆë‹¤.
 		if (feof(_fileStream) != 0)
 			break;
 
 		int _strLength = wcslen(_string);
 
-		// ÅØ½ºÆ® ÆÄÀÏÀÇ ³¡ÀÌ ¾Æ´Ï¶ó¸é ÀÐ¾îµéÀÎ ¹®ÀÚ¿­ÀÇ ³¡¿¡ ÁÙ¹Ù²Þ ¹®ÀÚ¸¦ ÀÐ¾îµé¿´À» °ÍÀÔ´Ï´Ù.
-		// ·»´õ¸µÇÒ ¶§ ¹®Á¦°¡ »ý±âÁö ¾Êµµ·Ï ÁÙ¹Ù²Þ ¹®ÀÚ¸¦ Á¦°ÅÇÕ´Ï´Ù.
+		// í…ìŠ¤íŠ¸ íŒŒì¼ì˜ ëì´ ì•„ë‹ˆë¼ë©´ ì½ì–´ë“¤ì¸ ë¬¸ìžì—´ì˜ ëì— ì¤„ë°”ê¿ˆ ë¬¸ìžë¥¼ ì½ì–´ë“¤ì˜€ì„ ê²ƒìž…ë‹ˆë‹¤.
+		// ë Œë”ë§í•  ë•Œ ë¬¸ì œê°€ ìƒê¸°ì§€ ì•Šë„ë¡ ì¤„ë°”ê¿ˆ ë¬¸ìžë¥¼ ì œê±°í•©ë‹ˆë‹¤.
 		if (_string[_strLength - 1] == L'\n')
 		{
 			_string[_strLength - 1] = '\0';
 			_strLength -= 1;
 		}
 
-		// spriteWidth¸¦ ±¸ÇÏ±â À§ÇØ ÆÄÀÏ ³» ¸ðµç ¶óÀÎ Áß °¡Àå ±ä ¶óÀÎÀÇ ÅØ½ºÆ® °³¼ö¸¦ ÃßÀûÇÕ´Ï´Ù.
+		// spriteWidthë¥¼ êµ¬í•˜ê¸° ìœ„í•´ íŒŒì¼ ë‚´ ëª¨ë“  ë¼ì¸ ì¤‘ ê°€ìž¥ ê¸´ ë¼ì¸ì˜ í…ìŠ¤íŠ¸ ê°œìˆ˜ë¥¼ ì¶”ì í•©ë‹ˆë‹¤.
 		if (_spriteWidth < _strLength)
 			_spriteWidth = _strLength;
 
@@ -53,7 +53,7 @@ Sprite* loadSpriteFromText(wchar_t* _filePath)
 	fclose(_fileStream);
 	_fileStream = NULL;
 
-	// stack¿¡ Â÷·Ê·Î ´ã±ä °¢ ¶óÀÎÀ» »©³»¾î Sprite¿¡ »ç¿ëµÉ ¹®ÀÚ¿­(ÀÌÁß ¹è¿­)À» »ý¼ºÇÕ´Ï´Ù.
+	// stackì— ì°¨ë¡€ë¡œ ë‹´ê¸´ ê° ë¼ì¸ì„ ë¹¼ë‚´ì–´ Spriteì— ì‚¬ìš©ë  ë¬¸ìžì—´(ì´ì¤‘ ë°°ì—´)ì„ ìƒì„±í•©ë‹ˆë‹¤.
 	const int _spriteHeight = PointerStack_GetSize(_stack);
 	const int _spriteLineByteSize = (_spriteWidth + 1) * sizeof(wchar_t);
 

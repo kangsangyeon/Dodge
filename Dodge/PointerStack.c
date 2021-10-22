@@ -1,4 +1,4 @@
-#include "PointerStack.h"
+﻿#include "PointerStack.h"
 
 #include <wchar.h>
 
