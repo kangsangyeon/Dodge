@@ -131,7 +131,7 @@ void render(Screen* _screen)
 {
 	// clearScreen(_screen);
 
-	for (int y = _screen->height - 1; y >= 0; --y)
+	for (int y = 0; y < _screen->height; ++y)
 	{
 		writeLineToConsole(_screen, y, _screen->textBuffer[y]);
 	}
@@ -169,7 +169,7 @@ void printLine(Screen* _screen, int _startX, int _startY, wchar_t* _buffer, int 
 
 void clearScreen(Screen* _screen)
 {
-	for (int _y = _screen->height; _y >= 0; --_y)
+	for (int _y = 0; _y < _screen->height; ++_y)
 	{
 		writeLineToConsole(_screen, _y, _screen->clearLine);
 	}
