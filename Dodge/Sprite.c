@@ -4,24 +4,27 @@
 #include <stdlib.h>
 
 #include "PointerStack.h"
+#include "Helper.h"
 
 const int MAXIMUM_TEXT_LINE = 1000;
 
 Sprite* Sprite_LoadFromTextFile(wchar_t* _filePath)
 {
-	Sprite* _outSprite = (Sprite*)calloc(1, sizeof(Sprite));
-
-	PointerStack* _stack = PointerStack_Create(100);
-	int _spriteWidth = 0;
+	const char* _filePathStr = WcharStringToCharString(_filePath);
 
 	FILE* _fileStream;
-	fopen_s(&_fileStream, "test.txt", "r,ccs=UTF-8");
+	fopen_s(&_fileStream, _filePathStr, "r,ccs=UTF-8");
+
+	free(_filePathStr);
 
 	if (_fileStream == NULL)
 	{
 		// 파일을 여는 데 실패한 경우, 함수의 실행을 바로 종료합니다.
 		return NULL;
 	}
+
+	PointerStack* _stack = PointerStack_Create(100);
+	int _spriteWidth = 0;
 
 	// 파일을 읽고 각 라인을 stack에 담습니다.
 	for (int _i = 0; ; ++_i)
@@ -73,6 +76,8 @@ Sprite* Sprite_LoadFromTextFile(wchar_t* _filePath)
 	}
 
 	PointerStack_Release(_stack);
+
+	Sprite* _outSprite = (Sprite*)calloc(1, sizeof(Sprite));
 
 	_outSprite->width = _spriteWidth;
 	_outSprite->height = _spriteHeight;
