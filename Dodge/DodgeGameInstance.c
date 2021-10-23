@@ -19,8 +19,12 @@ DodgeGameInstance* DodgeGameInstance_Create(int _screenWidth, int _screenHeight,
 
 	// for test
 	Vector2D _pivot = {0, 0};
-	Vector2D _position = {0, 0};
+	Vector2D _position = {100, 100};
 	_instance->player = Player_Create(L"Sprites/test_chihaya.txt", _pivot, _position, 50);
+
+	Vector2D _paimonPivot = {0, 0};
+	Vector2D _paimonPosition = {-20, -20};
+	_instance->paimon = WorldObject_CreateWithTextFile(L"Sprites/test_paimon.txt", _paimonPivot, _paimonPosition);
 
 	return _instance;
 }
@@ -39,6 +43,9 @@ void DodgeGameInstance_Release(DodgeGameInstance* _dodgeGame)
 	// for test
 	if (_dodgeGame->player != NULL)
 		Player_Release(_dodgeGame->player);
+
+	if (_dodgeGame->paimon != NULL)
+		WorldObject_Release(_dodgeGame->paimon);
 
 	free(_dodgeGame);
 }
@@ -76,4 +83,7 @@ void _DodgeGameInstance_GameTick(DodgeGameInstance* _dodgeGame, float _deltaTime
 	// for test
 	if (_dodgeGame->player != NULL)
 		Screen_PrintWorldObject(_screen, _dodgeGame->player->worldObject);
+
+	if (_dodgeGame->paimon != NULL)
+		Screen_PrintWorldObject(_screen, _dodgeGame->paimon);
 }
