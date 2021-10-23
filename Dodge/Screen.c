@@ -4,6 +4,8 @@
 #include <stdbool.h>
 #include <stdio.h>
 
+#include "Helper.h"
+
 Screen* Screen_Create(int _width, int _height, wchar_t* _fontFaceName, COORD _fontSize)
 {
 	Screen* outScreen = (Screen*)calloc(1, sizeof(Screen));
@@ -152,7 +154,11 @@ void Screen_Print(Screen* _screen, int _startX, int _startY, wchar_t** _buffer, 
 
 	const int _startYIndex = _screen->height - _startY - 1;
 	const int _endYIndex = _startYIndex - _bufferHeight;
-	const int _widthByteSize = _bufferWidth * sizeof(wchar_t);
+
+	const int _exceedScreenCharacterCount = (_startX + _bufferWidth) - _screen->width;
+	const int _characterCountInLine = _bufferWidth - _exceedScreenCharacterCount;
+
+	const int _widthByteSize = _characterCountInLine * sizeof(wchar_t);
 
 	int _yIndex = _startYIndex;
 	for (int _y = 0;
