@@ -266,14 +266,7 @@ void _Screen_WriteLineToConsole(Screen* _screen, int _startY, wchar_t* _buffer)
 
 void Screen_PrintSprite(Screen* _screen, int _startX, int _startY, Sprite* _sprite)
 {
-	for (int _y = 0; _y < _sprite->height; ++_y)
-	{
-		const int _yScreenPosition = _startY + _y;
-		const wchar_t* _spriteLine = _sprite->dataArr[_y];
-		const int _spriteLineWidth = wcslen(_spriteLine);
-
-		Screen_PrintLine(_screen, _startX, _yScreenPosition, _spriteLine, _spriteLineWidth);
-	}
+	Screen_Print(_screen, _startX, _startY, _sprite->dataArr, _sprite->width, _sprite->height);
 }
 
 void Screen_PrintWorldObject(Screen* _screen, WorldObject* _worldObject)
