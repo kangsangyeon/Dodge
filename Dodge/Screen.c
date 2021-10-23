@@ -152,6 +152,10 @@ void Screen_Print(Screen* _screen, int _startX, int _startY, wchar_t** _buffer, 
 	if (_bufferWidth <= 0 || _bufferHeight <= 0)
 		return;
 
+	if (_startX >= _screen->width - 1
+		|| _startY >= _screen->height - 1)
+		return;
+
 	const int _startYIndex = _screen->height - _startY - 1;
 	const int _endYIndex = _startYIndex - _bufferHeight;
 
