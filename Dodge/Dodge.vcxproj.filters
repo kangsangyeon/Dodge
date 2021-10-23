@@ -13,81 +13,93 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\Engine">
+      <UniqueIdentifier>{cb073a32-4af1-4086-b238-d0da882a1140}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Engine">
+      <UniqueIdentifier>{ea20faba-78c3-478b-99ab-e1df3c9dd38c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Engine\Lib">
+      <UniqueIdentifier>{a0470bd3-452c-49f0-b44f-1f281e77b988}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine\Lib">
+      <UniqueIdentifier>{720c99e4-6633-44d2-9390-06435730f146}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Board.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="DodgeGameInstance.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GameInstance.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PointerStack.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Screen.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Sprite.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Vector2D.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="WorldObject.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Player.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Helper.c">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Board.c">
+      <Filter>Source Files\Engine</Filter>
     </ClCompile>
     <ClCompile Include="Collider.c">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="GameInstance.c">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Screen.c">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprite.c">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector2D.c">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="WorldObject.c">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="PointerStack.c">
+      <Filter>Source Files\Engine\Lib</Filter>
+    </ClCompile>
+    <ClCompile Include="Helper.c">
+      <Filter>Source Files\Engine\Lib</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Board.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DodgeGameInstance.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GameInstance.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PointerStack.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Screen.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Sprite.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Vector2D.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Const.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WorldObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Helper.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Board.h">
+      <Filter>Header Files\Engine</Filter>
     </ClInclude>
     <ClInclude Include="Collider.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Screen.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector2D.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldObject.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="DodgeGameInstance.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameInstance.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Helper.h">
+      <Filter>Header Files\Engine\Lib</Filter>
+    </ClInclude>
+    <ClInclude Include="PointerStack.h">
+      <Filter>Header Files\Engine\Lib</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
