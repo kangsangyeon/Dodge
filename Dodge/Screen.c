@@ -159,7 +159,10 @@ void Screen_Print(Screen* _screen, int _startX, int _startY, wchar_t** _buffer, 
 	const int _startYIndex = _screen->height - _startY - 1;
 	const int _endYIndex = _startYIndex - _bufferHeight;
 
-	const int _exceedScreenCharacterCount = (_startX + _bufferWidth) - _screen->width;
+	int _exceedScreenCharacterCount = (_startX + _bufferWidth) - _screen->width;
+	if (_exceedScreenCharacterCount <= 0)
+		_exceedScreenCharacterCount = 0;
+
 	const int _characterCountInLine = _bufferWidth - _exceedScreenCharacterCount;
 
 	const int _widthByteSize = _characterCountInLine * sizeof(wchar_t);
