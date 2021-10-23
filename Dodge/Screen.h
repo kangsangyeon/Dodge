@@ -34,9 +34,9 @@ void _Screen_ReleaseTextBuffer(int _size, wchar_t** _buffer);
 
 void Screen_Render(Screen* _screen);
 
-void Screen_Print(Screen* _screen, int _startX, int _startY, wchar_t** _buffer, int _bufferWidth, int _bufferHeight);
+void Screen_Print(Screen* _screen, int _startX, int _startY, wchar_t** _image, int _imageWidth, int _imageHeight);
 
-void Screen_PrintLine(Screen* _screen, int _startX, int _startY, wchar_t* _buffer, int _bufferWidth);
+void Screen_PrintLine(Screen* _screen, int _startX, int _startY, wchar_t* _line, int _lineWidth);
 
 void Screen_ClearScreen(Screen* _screen);
 

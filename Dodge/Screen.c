@@ -144,30 +144,32 @@ void Screen_Render(Screen* _screen)
 	_screen->screenIndex = !_screen->screenIndex;
 }
 
-void Screen_Print(Screen* _screen, int _startX, int _startY, wchar_t** _buffer, int _bufferWidth, int _bufferHeight)
+void Screen_Print(Screen* _screen, int _startX, int _startY, wchar_t** _image, int _imageWidth, int _imageHeight)
 {
-	if (_screen == NULL || _buffer == NULL)
+	if (_screen == NULL || _image == NULL)
 		return;
 
-	if (_bufferWidth <= 0 || _bufferHeight <= 0)
+	if (_imageWidth <= 0 || _imageHeight <= 0)
 		return;
 
 	// 화면의 영역 바깥의 오브젝트는 무시합니다.
 	if (_startX >= _screen->width - 1
 		|| _startY >= _screen->height - 1
-		|| _startX + _bufferWidth <= 0
-		|| _startY + _bufferHeight <= 0)
+		|| _startX + _imageWidth <= 0
+		|| _startY + _imageHeight <= 0)
 		return;
 
-	// 화면 크기를 넘어 바깥으로 나가 보이지 않는 글자의 개수를 구합니다.
+	// 출력될 이미지의 영역이 화면 크기를 넘어 바깥으로 나가 보이지 않는 길이를 구합니다.
+	// X축에서 화면 왼쪽으로 넘어가거나 Y축에서 화면 아래쪽으로 넘어가는 이미지인 경우,
+	// 이미지가 적절히 보여지기 위해 이미지의 어느 index부터 표현해야 할 것인지 계산합니다.
 	int _exceedScreenXCharacterCount = 0;
 	int _exceedScreenYLineCount = 0;
 	int _imageStartY = 0;
 	int _imageStartX = 0;
 
-	if (_startX + _bufferWidth >= _screen->width)
+	if (_startX + _imageWidth >= _screen->width)
 	{
-		_exceedScreenXCharacterCount = (_startX + _bufferWidth) - _screen->width;
+		_exceedScreenXCharacterCount = (_startX + _imageWidth) - _screen->width;
 	}
 	else if (_startX < 0)
 	{
@@ -178,9 +180,9 @@ void Screen_Print(Screen* _screen, int _startX, int _startY, wchar_t** _buffer, 
 		_imageStartX = _exceedScreenXCharacterCount;
 	}
 
-	if (_startY + _bufferHeight > _screen->height)
+	if (_startY + _imageHeight > _screen->height)
 	{
-		_exceedScreenYLineCount = (_startY + _bufferHeight) - _screen->height;
+		_exceedScreenYLineCount = (_startY + _imageHeight) - _screen->height;
 	}
 	else if (_startY < 0)
 	{
@@ -191,32 +193,35 @@ void Screen_Print(Screen* _screen, int _startX, int _startY, wchar_t** _buffer, 
 		_imageStartY = _exceedScreenYLineCount;
 	}
 
-	const int _bufferStartYIndex = (_screen->height - 1) - _startY;
-	const int _bufferEndYIndex = _bufferStartYIndex - (_bufferHeight - _exceedScreenYLineCount);
+	// 출력할 이미지의 세로 길이를 구합니다.
+	const int _lineCount = _imageHeight - _exceedScreenYLineCount;
 
-	const int _lineCount = _bufferHeight - _exceedScreenYLineCount;
-
-	const int _characterCountInLine = _bufferWidth - _exceedScreenXCharacterCount;
+	// 출력할 이미지의 가로 길이를 구합니다.
+	const int _characterCountInLine = _imageWidth - _exceedScreenXCharacterCount;
 	const int _widthByteSize = _characterCountInLine * sizeof(wchar_t);
 
+	// 실제로 쓰여질 버퍼의 y 위치를 구합니다.
+	const int _bufferStartYIndex = (_screen->height - 1) - _startY;
+	const int _bufferEndYIndex = _bufferStartYIndex - _lineCount;
+
+	// 버퍼에 이미지의 값을 덮어씁니다.
 	int _bufferY = _bufferStartYIndex;
 	int _imageY = _imageStartY;
 
-	for (int _line = 0;
-	     _line < _lineCount && _bufferY > _bufferEndYIndex;
-	     ++_line, --_bufferY, ++_imageY)
+	for (; _bufferY > _bufferEndYIndex;
+	       --_bufferY, ++_imageY)
 	{
 		const wchar_t* _destination = _screen->textBuffer[_bufferY] + _startX;
 		const int _destinationLeftoverByteSize = _msize(_screen->textBuffer[_bufferY]) - _startX * sizeof(wchar_t);
-		const wchar_t* _source = _buffer[_imageY] + _imageStartX;
+		const wchar_t* _source = _image[_imageY] + _imageStartX;
 
 		memcpy_s(_destination, _destinationLeftoverByteSize, _source, _widthByteSize);
 	}
 }
 
-void Screen_PrintLine(Screen* _screen, int _startX, int _startY, wchar_t* _buffer, int _bufferWidth)
+void Screen_PrintLine(Screen* _screen, int _startX, int _startY, wchar_t* _line, int _lineWidth)
 {
-	Screen_Print(_screen, _startX, _startY, &_buffer, _bufferWidth, 1);
+	Screen_Print(_screen, _startX, _startY, &_line, _lineWidth, 1);
 }
 
 void Screen_ClearScreen(Screen* _screen)
