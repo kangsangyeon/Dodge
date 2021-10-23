@@ -152,27 +152,65 @@ void Screen_Print(Screen* _screen, int _startX, int _startY, wchar_t** _buffer, 
 	if (_bufferWidth <= 0 || _bufferHeight <= 0)
 		return;
 
+	// 화면의 영역 바깥의 오브젝트는 무시합니다.
 	if (_startX >= _screen->width - 1
-		|| _startY >= _screen->height - 1)
+		|| _startY >= _screen->height - 1
+		|| _startX + _bufferWidth <= 0
+		|| _startY + _bufferHeight <= 0)
 		return;
 
-	const int _startYIndex = _screen->height - _startY - 1;
-	const int _endYIndex = _startYIndex - _bufferHeight;
+	// 화면 크기를 넘어 바깥으로 나가 보이지 않는 글자의 개수를 구합니다.
+	int _exceedScreenXCharacterCount = 0;
+	int _exceedScreenYLineCount = 0;
+	int _imageStartY = 0;
+	int _imageStartX = 0;
 
-	int _exceedScreenCharacterCount = (_startX + _bufferWidth) - _screen->width;
-	if (_exceedScreenCharacterCount <= 0)
-		_exceedScreenCharacterCount = 0;
+	if (_startX + _bufferWidth >= _screen->width)
+	{
+		_exceedScreenXCharacterCount = (_startX + _bufferWidth) - _screen->width;
+	}
+	else if (_startX < 0)
+	{
+		// 화면 왼쪽으로 나간 경우,
+		// 화면의 왼쪽 시작 지점부터 출력합니다.
+		_exceedScreenXCharacterCount = -_startX;
+		_startX = 0;
+		_imageStartX = _exceedScreenXCharacterCount;
+	}
 
-	const int _characterCountInLine = _bufferWidth - _exceedScreenCharacterCount;
+	if (_startY + _bufferHeight > _screen->height)
+	{
+		_exceedScreenYLineCount = (_startY + _bufferHeight) - _screen->height;
+	}
+	else if (_startY < 0)
+	{
+		// 화면 아래쪽으로 나간 경우,
+		// 화면의 아래쪽 시작 지점부터 출력합니다.
+		_exceedScreenYLineCount = -_startY;
+		_startY = 0;
+		_imageStartY = _exceedScreenYLineCount;
+	}
 
+	const int _bufferStartYIndex = (_screen->height - 1) - _startY;
+	const int _bufferEndYIndex = _bufferStartYIndex - (_bufferHeight - _exceedScreenYLineCount);
+
+	const int _lineCount = _bufferHeight - _exceedScreenYLineCount;
+
+	const int _characterCountInLine = _bufferWidth - _exceedScreenXCharacterCount;
 	const int _widthByteSize = _characterCountInLine * sizeof(wchar_t);
 
-	int _yIndex = _startYIndex;
-	for (int _y = 0;
-	     _y < _bufferHeight && _yIndex > _endYIndex;
-	     ++_y, ++_yIndex)
+	int _bufferY = _bufferStartYIndex;
+	int _imageY = _imageStartY;
+
+	for (int _line = 0;
+	     _line < _lineCount && _bufferY > _bufferEndYIndex;
+	     ++_line, --_bufferY, ++_imageY)
 	{
-		memcpy_s(_screen->textBuffer[_yIndex] + _startX, _widthByteSize, _buffer[_y], _widthByteSize);
+		const wchar_t* _destination = _screen->textBuffer[_bufferY] + _startX;
+		const int _destinationLeftoverByteSize = _msize(_screen->textBuffer[_bufferY]) - _startX * sizeof(wchar_t);
+		const wchar_t* _source = _buffer[_imageY] + _imageStartX;
+
+		memcpy_s(_destination, _destinationLeftoverByteSize, _source, _widthByteSize);
 	}
 }
 
