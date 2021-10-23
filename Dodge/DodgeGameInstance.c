@@ -18,7 +18,9 @@ DodgeGameInstance* createDodgeGameInstance(int _screenWidth, int _screenHeight, 
 	_instance->board = Board_Create(_boardWidth, _boardHeight);
 
 	// for test
-	_instance->testSprite = Sprite_LoadFromTextFile(L"Sprites/test_chihaya.txt");
+	Vector2D _pivot = {0, 0};
+	Vector2D _position = {0, 0};
+	_instance->player = Player_Create(L"Sprites/test_chihaya.txt", _pivot, _position, 5);
 
 	return _instance;
 }
@@ -35,8 +37,8 @@ void releaseDodgeGameInstance(DodgeGameInstance* _dodgeGame)
 		releaseGameInstance(_dodgeGame->gameInstance);
 
 	// for test
-	if (_dodgeGame->testSprite != NULL)
-		Sprite_Release(_dodgeGame->testSprite);
+	if (_dodgeGame->player != NULL)
+		Player_Release(_dodgeGame->player);
 
 	free(_dodgeGame);
 }
@@ -67,7 +69,9 @@ void gameTick(DodgeGameInstance* _dodgeGame, float _deltaTime)
 
 	int _screenY = _screen->height - 1;
 
+	Player_Move(_dodgeGame->player, Vector2D_Right, _deltaTime);
+
 	// for test
-	if (_dodgeGame->testSprite != NULL)
-		Screen_PrintSprite(_screen, 0, 0, _dodgeGame->testSprite);
+	if (_dodgeGame->player != NULL)
+		Screen_PrintWorldObject(_screen, _dodgeGame->player->worldObject);
 }
