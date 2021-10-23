@@ -76,8 +76,6 @@ void _DodgeGameInstance_GameTick(DodgeGameInstance* _dodgeGame, float _deltaTime
 
 	int _screenY = _screen->height - 1;
 
-	Screen_ClearBuffer(_screen);
-
 	Player_Move(_dodgeGame->player, Vector2D_Right, _deltaTime);
 
 	// for test

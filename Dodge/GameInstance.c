@@ -30,6 +30,8 @@ void GameInstance_Release(GameInstance* _gameInstance)
 
 void GameInstance_PreTick(GameInstance* _gameInstance, float* _outDeltaTime)
 {
+	Screen_ClearBuffer(_gameInstance->screen);
+
 	_gameInstance->currentPreTickMillis = clock();
 	const float _deltaTime = ((double)_gameInstance->currentPreTickMillis - (double)_gameInstance->lastPreTickMillis) / CLOCKS_PER_SEC;
 
