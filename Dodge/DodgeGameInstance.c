@@ -7,7 +7,7 @@
 
 #include "Sprite.h"
 
-DodgeGameInstance* createDodgeGameInstance(int _screenWidth, int _screenHeight, wchar_t* _fontFaceName, COORD _fontSize, int _boardWidth, int _boardHeight, int _desiredFps)
+DodgeGameInstance* DodgeGameInstance_Create(int _screenWidth, int _screenHeight, wchar_t* _fontFaceName, COORD _fontSize, int _boardWidth, int _boardHeight, int _desiredFps)
 {
 	DodgeGameInstance* _instance = (DodgeGameInstance*)calloc(1, sizeof(DodgeGameInstance));
 	_instance->screenWidth = _screenWidth;
@@ -20,12 +20,12 @@ DodgeGameInstance* createDodgeGameInstance(int _screenWidth, int _screenHeight, 
 	// for test
 	Vector2D _pivot = {0, 0};
 	Vector2D _position = {0, 0};
-	_instance->player = Player_Create(L"Sprites/test_chihaya.txt", _pivot, _position, 5);
+	_instance->player = Player_Create(L"Sprites/test_chihaya.txt", _pivot, _position, 50);
 
 	return _instance;
 }
 
-void releaseDodgeGameInstance(DodgeGameInstance* _dodgeGame)
+void DodgeGameInstance_Release(DodgeGameInstance* _dodgeGame)
 {
 	if (_dodgeGame == NULL)
 		return;
@@ -43,7 +43,7 @@ void releaseDodgeGameInstance(DodgeGameInstance* _dodgeGame)
 	free(_dodgeGame);
 }
 
-void tick(DodgeGameInstance* _dodgeGame)
+void DodgeGameInstance_Tick(DodgeGameInstance* _dodgeGame)
 {
 	if (_dodgeGame == NULL)
 		return;
@@ -52,12 +52,12 @@ void tick(DodgeGameInstance* _dodgeGame)
 
 	preTick(_dodgeGame->gameInstance, &_deltaTime);
 
-	gameTick(_dodgeGame, _deltaTime);
+	_DodgeGameInstance_GameTick(_dodgeGame, _deltaTime);
 
 	postTick(_dodgeGame->gameInstance);
 }
 
-void gameTick(DodgeGameInstance* _dodgeGame, float _deltaTime)
+void _DodgeGameInstance_GameTick(DodgeGameInstance* _dodgeGame, float _deltaTime)
 {
 	const Screen* _screen = _dodgeGame->gameInstance->screen;
 	const Board* _board = _dodgeGame->board;

@@ -17,10 +17,10 @@ typedef struct TDodgeGameInstance
 	Player* player;
 } DodgeGameInstance;
 
-DodgeGameInstance* createDodgeGameInstance(int _screenWidth, int _screenHeight, wchar_t* _fontFaceName, COORD _fontSize, int _boardWidth, int _boardHeight, int _desiredFps);
+DodgeGameInstance* DodgeGameInstance_Create(int _screenWidth, int _screenHeight, wchar_t* _fontFaceName, COORD _fontSize, int _boardWidth, int _boardHeight, int _desiredFps);
 
-void releaseDodgeGameInstance(DodgeGameInstance* _dodgeGame);
+void DodgeGameInstance_Release(DodgeGameInstance* _dodgeGame);
 
-void tick(DodgeGameInstance* _dodgeGame);
+void DodgeGameInstance_Tick(DodgeGameInstance* _dodgeGame);
 
-void gameTick(DodgeGameInstance* _dodgeGame, float _deltaTime);
+void _DodgeGameInstance_GameTick(DodgeGameInstance* _dodgeGame, float _deltaTime);

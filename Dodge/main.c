@@ -53,7 +53,7 @@ int main()
 	setlocale(LC_ALL, "KOREAN");
 	srand(time(NULL));
 
-	DodgeGameInstance* _dodgeGame = createDodgeGameInstance(
+	DodgeGameInstance* _dodgeGame = DodgeGameInstance_Create(
 		SCREEN_WIDTH,
 		SCREEN_HEIGHT,
 		FONT_FACE_NAME,
@@ -64,12 +64,12 @@ int main()
 
 	do
 	{
-		tick(_dodgeGame);
+		DodgeGameInstance_Tick(_dodgeGame);
 	}
 	while (exitFlag == false);
 
 	Sprite_Release(_sprite);
 
-	releaseDodgeGameInstance(_dodgeGame);
+	DodgeGameInstance_Release(_dodgeGame);
 	return 0;
 }
