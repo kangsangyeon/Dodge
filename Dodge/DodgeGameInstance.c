@@ -13,7 +13,7 @@ DodgeGameInstance* DodgeGameInstance_Create(int _screenWidth, int _screenHeight,
 	_instance->screenWidth = _screenWidth;
 	_instance->screenHeight = _screenHeight;
 
-	_instance->gameInstance = createGameInstance(_screenWidth, _screenHeight, _fontFaceName, _fontSize, _desiredFps);
+	_instance->gameInstance = GameInstance_Create(_screenWidth, _screenHeight, _fontFaceName, _fontSize, _desiredFps);
 
 	_instance->board = Board_Create(_boardWidth, _boardHeight);
 
@@ -34,7 +34,7 @@ void DodgeGameInstance_Release(DodgeGameInstance* _dodgeGame)
 		Board_Release(&_dodgeGame->board);
 
 	if (_dodgeGame->gameInstance != NULL)
-		releaseGameInstance(_dodgeGame->gameInstance);
+		GameInstance_Release(_dodgeGame->gameInstance);
 
 	// for test
 	if (_dodgeGame->player != NULL)
@@ -50,11 +50,11 @@ void DodgeGameInstance_Tick(DodgeGameInstance* _dodgeGame)
 
 	float _deltaTime = -1;
 
-	preTick(_dodgeGame->gameInstance, &_deltaTime);
+	GameInstance_PreTick(_dodgeGame->gameInstance, &_deltaTime);
 
 	_DodgeGameInstance_GameTick(_dodgeGame, _deltaTime);
 
-	postTick(_dodgeGame->gameInstance);
+	GameInstance_PostTick(_dodgeGame->gameInstance);
 }
 
 void _DodgeGameInstance_GameTick(DodgeGameInstance* _dodgeGame, float _deltaTime)

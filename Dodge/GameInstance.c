@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <time.h>
 
-GameInstance* createGameInstance(int _screenWidth, int _screenHeight, wchar_t* _fontFaceName, COORD _fontSize, int _desiredFps)
+GameInstance* GameInstance_Create(int _screenWidth, int _screenHeight, wchar_t* _fontFaceName, COORD _fontSize, int _desiredFps)
 {
 	GameInstance* _gameInstance = (GameInstance*)calloc(1, sizeof(GameInstance));
 
@@ -17,7 +17,7 @@ GameInstance* createGameInstance(int _screenWidth, int _screenHeight, wchar_t* _
 	return _gameInstance;
 }
 
-void releaseGameInstance(GameInstance* _gameInstance)
+void GameInstance_Release(GameInstance* _gameInstance)
 {
 	if (_gameInstance == NULL)
 		return;
@@ -28,7 +28,7 @@ void releaseGameInstance(GameInstance* _gameInstance)
 	free(_gameInstance);
 }
 
-void preTick(GameInstance* _gameInstance, float* _outDeltaTime)
+void GameInstance_PreTick(GameInstance* _gameInstance, float* _outDeltaTime)
 {
 	_gameInstance->currentPreTickMillis = clock();
 	const float _deltaTime = ((double)_gameInstance->currentPreTickMillis - (double)_gameInstance->lastPreTickMillis) / CLOCKS_PER_SEC;
@@ -37,7 +37,7 @@ void preTick(GameInstance* _gameInstance, float* _outDeltaTime)
 		*_outDeltaTime = _deltaTime;
 }
 
-void postTick(GameInstance* _gameInstance)
+void GameInstance_PostTick(GameInstance* _gameInstance)
 {
 	Screen_Render(_gameInstance->screen);
 

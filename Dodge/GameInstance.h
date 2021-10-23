@@ -14,10 +14,10 @@ typedef struct TGameInstance
 	clock_t currentPreTickMillis;
 } GameInstance;
 
-GameInstance* createGameInstance(int _screenWidth, int _screenHeight, wchar_t* _fontFaceName, COORD _fontSize, int _desiredFps);
+GameInstance* GameInstance_Create(int _screenWidth, int _screenHeight, wchar_t* _fontFaceName, COORD _fontSize, int _desiredFps);
 
-void releaseGameInstance(GameInstance* _gameInstance);
+void GameInstance_Release(GameInstance* _gameInstance);
 
-void preTick(GameInstance* _gameInstance, float* _outDeltaTime);
+void GameInstance_PreTick(GameInstance* _gameInstance, float* _outDeltaTime);
 
-void postTick(GameInstance* _gameInstance);
+void GameInstance_PostTick(GameInstance* _gameInstance);
