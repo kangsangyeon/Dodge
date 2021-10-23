@@ -101,3 +101,25 @@ bool LoadTextFileAsMatrix2D(wchar_t* _filePath, wchar_t*** _outData, int* _outWi
 
 	return true;
 }
+
+double FClamp(double _value, double _min, double _max)
+{
+	if (_value < _min)
+		return _min;
+
+	if (_value > _max)
+		return _max;
+
+	return _value;
+}
+
+int Clamp(int _value, int _min, int _max)
+{
+	if (_value < _min)
+		return _min;
+
+	if (_value > _max)
+		return _max;
+
+	return _value;
+}

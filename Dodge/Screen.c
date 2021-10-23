@@ -271,8 +271,11 @@ void Screen_PrintSprite(Screen* _screen, int _startX, int _startY, Sprite* _spri
 
 void Screen_PrintWorldObject(Screen* _screen, WorldObject* _worldObject)
 {
-	const double _startXWorldPosition = _worldObject->position.x - _worldObject->sprite->width * _worldObject->pivot.x;
-	const double _startYWorldPosition = _worldObject->position.y - _worldObject->sprite->height * _worldObject->pivot.y;
+	const double _pivotX = FClamp(_worldObject->pivot.x, 0, 1);
+	const double _pivotY = FClamp(_worldObject->pivot.y, 0, 1);
+
+	const double _startXWorldPosition = _worldObject->position.x - _worldObject->sprite->width * _pivotX;
+	const double _startYWorldPosition = _worldObject->position.y - _worldObject->sprite->height * _pivotY;
 
 	const int _startXScreenPosition = floor(_startXWorldPosition);
 	const int _startYScreenPosition = floor(_startYWorldPosition);
