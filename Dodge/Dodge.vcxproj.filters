@@ -25,6 +25,12 @@
     <Filter Include="Source Files\Engine\Lib">
       <UniqueIdentifier>{720c99e4-6633-44d2-9390-06435730f146}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Engine\Test">
+      <UniqueIdentifier>{28207d59-567c-4c55-81b7-497c3e93e25d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine\Test">
+      <UniqueIdentifier>{6e686c0c-facf-4032-9fd9-253cd4c26f2f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DodgeGameInstance.c">
@@ -66,6 +72,9 @@
     <ClCompile Include="Const.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Test.c">
+      <Filter>Source Files\Engine\Test</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Const.h">
@@ -103,6 +112,9 @@
     </ClInclude>
     <ClInclude Include="PointerStack.h">
       <Filter>Header Files\Engine\Lib</Filter>
+    </ClInclude>
+    <ClInclude Include="Test.h">
+      <Filter>Header Files\Engine\Test</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
