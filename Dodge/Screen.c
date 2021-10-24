@@ -25,10 +25,10 @@ Screen* Screen_Create(int _width, int _height, wchar_t* _fontFaceName, COORD _fo
 
 	// 화면에 표시되는 색상을 변경합니다.
 	// 색상은 화면이 최초 렌더링 되기 이전에 바뀌어야 올바르게 동작합니다.
-	const WORD _colorAttribute = _foregroundColor | _backgroundColor << 4;
+	const unsigned short _primaryColor = _foregroundColor | _backgroundColor << 4;
 
-	Screen_SetHandleAttribute(outScreen->screenHandles[0], _colorAttribute);
-	Screen_SetHandleAttribute(outScreen->screenHandles[1], _colorAttribute);
+	Screen_SetHandlePrimaryColor(outScreen, outScreen->screenHandles[0], _primaryColor);
+	Screen_SetHandlePrimaryColor(outScreen, outScreen->screenHandles[1], _primaryColor);
 
 	// 화면의 최대 크기는 최초 렌더링 이후에 갱신되기 때문에,
 	// 반드시 1회 렌더링 이후에 크기를 설정해주어야 합니다.
@@ -108,13 +108,26 @@ void Screen_Resize(HANDLE _handle, int _width, int _height)
 	COORD _largestSize = GetLargestConsoleWindowSize(_handle);
 }
 
-void Screen_SetHandleAttribute(HANDLE _handle, WORD _attibutes)
+void Screen_SetHandlePrimaryColor(Screen* _screen, HANDLE _handle, unsigned short _color)
 {
 	CONSOLE_SCREEN_BUFFER_INFOEX cbi = {sizeof(CONSOLE_SCREEN_BUFFER_INFOEX)};
 	GetConsoleScreenBufferInfoEx(_handle, &cbi);
 
-	cbi.wAttributes = _attibutes;
+	cbi.wAttributes = _color;
 	SetConsoleScreenBufferInfoEx(_handle, &cbi);
+
+	_screen->primaryForegroundAndBackgroundColor = _color;
+	_screen->latestForegroundAndBackgroundColor = _color;
+}
+
+void Screen_SetHandleTextColor(Screen* _screen, HANDLE _handle, unsigned short _color)
+{
+	if (_color == _screen->latestForegroundAndBackgroundColor)
+		return;
+
+	SetConsoleTextAttribute(_handle, _color);
+
+	_screen->latestForegroundAndBackgroundColor = _color;
 }
 
 wchar_t** _Screen_CreateTextBuffer(int _width, int _height)

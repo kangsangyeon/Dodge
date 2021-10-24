@@ -13,7 +13,11 @@ typedef struct TScreen
 
 	int screenIndex;
 
+	unsigned short primaryForegroundAndBackgroundColor;
+	unsigned short latestForegroundAndBackgroundColor;
+
 	wchar_t** textBuffer; // [HEIGHT][WIDTH]
+	unsigned short** colorBuffer;
 	wchar_t* clearLine;
 } Screen;
 
@@ -28,7 +32,9 @@ void _Screen_ReleaseScreenHandle(HANDLE _handle);
 
 void Screen_Resize(HANDLE _handle, int _width, int _height);
 
-void Screen_SetHandleAttribute(HANDLE _handle, WORD _attibutes);
+void Screen_SetHandlePrimaryColor(Screen* _screen, HANDLE _handle, unsigned short _color);
+
+void Screen_SetHandleTextColor(Screen* _screen, HANDLE _handle, unsigned short _color);
 
 wchar_t** _Screen_CreateTextBuffer(int _width, int _height);
 
