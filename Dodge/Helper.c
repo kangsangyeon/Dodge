@@ -41,12 +41,12 @@ bool LoadTextFileAsMatrix2D(wchar_t* _filePath, wchar_t*** _outData, int* _outWi
 	// 파일을 읽고 각 라인을 stack에 담습니다.
 	for (int _i = 0; ; ++_i)
 	{
-		wchar_t* _string = (wchar_t*)malloc((MAXIMUM_TEXT_LINE) * sizeof(wchar_t));
-		fgetws(_string, MAXIMUM_TEXT_LINE, _fileStream);
-
-		// 파일의 끝에 도달했을 때 읽은 줄은 무시합니다.
+		// 파일의 끝에 도달했을 때 파일 읽기를 종료합니다.
 		if (feof(_fileStream) != 0)
 			break;
+
+		wchar_t* _string = (wchar_t*)malloc((MAXIMUM_TEXT_LINE) * sizeof(wchar_t));
+		fgetws(_string, MAXIMUM_TEXT_LINE, _fileStream);
 
 		int _strLength = wcslen(_string);
 
