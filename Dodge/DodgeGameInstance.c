@@ -27,6 +27,10 @@ DodgeGameInstance* DodgeGameInstance_Create(int _screenWidth, int _screenHeight,
 	Vector2D _paimonPosition = {-20, -20};
 	_instance->paimon = WorldObject_CreateWithTextFile(L"Sprites/test_paimon.txt", _paimonPivot, _paimonPosition);
 
+
+	// 총알 생성
+
+
 	return _instance;
 }
 
@@ -77,7 +81,8 @@ void _DodgeGameInstance_GameTick(DodgeGameInstance* _dodgeGame, float _deltaTime
 
 	int _screenY = _screen->height - 1;
 
-	Player_Move(_dodgeGame->player, Vector2D_Right, _deltaTime);
+
+		Player_Move(_dodgeGame->player, Vector2D_Right, _deltaTime);
 
 	// for test
 	if (_dodgeGame->player != NULL)
@@ -85,4 +90,9 @@ void _DodgeGameInstance_GameTick(DodgeGameInstance* _dodgeGame, float _deltaTime
 
 	if (_dodgeGame->paimon != NULL)
 		Screen_PrintWorldObject(_screen, _dodgeGame->paimon);
+
+
+	// 총알 이동+그려주기
+
+
 }

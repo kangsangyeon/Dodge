@@ -142,6 +142,7 @@
     <ClCompile Include="Board.c" />
     <ClCompile Include="Collider.c" />
     <ClCompile Include="Const.c" />
+    <ClCompile Include="DirectionalBullet.c" />
     <ClCompile Include="DodgeGameInstance.c" />
     <ClCompile Include="GameInstance.c" />
     <ClCompile Include="Helper.c" />
@@ -156,6 +157,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.h" />
+    <ClInclude Include="DirectionalBullet.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="Const.h" />
     <ClInclude Include="DodgeGameInstance.h" />

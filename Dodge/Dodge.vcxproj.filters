@@ -75,6 +75,9 @@
     <ClCompile Include="Test.c">
       <Filter>Source Files\Engine\Test</Filter>
     </ClCompile>
+    <ClCompile Include="DirectionalBullet.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Const.h">
@@ -115,6 +118,9 @@
     </ClInclude>
     <ClInclude Include="Test.h">
       <Filter>Header Files\Engine\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectionalBullet.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
