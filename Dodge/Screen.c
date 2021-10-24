@@ -8,6 +8,8 @@
 
 Screen* Screen_Create(int _width, int _height, wchar_t* _fontFaceName, COORD _fontSize, unsigned short _foregroundColor, unsigned short _backgroundColor)
 {
+	const unsigned short _primaryColor = _foregroundColor | _backgroundColor << 4;
+
 	Screen* outScreen = (Screen*)calloc(1, sizeof(Screen));
 	outScreen->width = _width;
 	outScreen->height = _height;
@@ -17,16 +19,19 @@ Screen* Screen_Create(int _width, int _height, wchar_t* _fontFaceName, COORD _fo
 	outScreen->screenHandles[1] = _Screen_CreateScreenHandle(_fontFaceName, _fontSize);
 
 	outScreen->textBuffer = _Screen_CreateTextBuffer(_width, _height);
+	outScreen->colorBuffer = _Screen_CreateColorBuffer(_width, _height);
 	Screen_ClearBuffer(outScreen);
 
-	outScreen->clearLine = (wchar_t*)calloc(_width + 1, sizeof(wchar_t));
+	outScreen->clearLineText = (wchar_t*)calloc(_width + 1, sizeof(wchar_t));
+	outScreen->clearLineColor = (unsigned short*)calloc(_width, sizeof(unsigned short));
 	for (int i = 0; i < _width; ++i)
-		outScreen->clearLine[i] = L' ';
+	{
+		outScreen->clearLineText[i] = L' ';
+		outScreen->clearLineColor[i] = _primaryColor;
+	}
 
 	// 화면에 표시되는 색상을 변경합니다.
 	// 색상은 화면이 최초 렌더링 되기 이전에 바뀌어야 올바르게 동작합니다.
-	const unsigned short _primaryColor = _foregroundColor | _backgroundColor << 4;
-
 	Screen_SetHandlePrimaryColor(outScreen, outScreen->screenHandles[0], _primaryColor);
 	Screen_SetHandlePrimaryColor(outScreen, outScreen->screenHandles[1], _primaryColor);
 
@@ -54,8 +59,10 @@ void Screen_Release(Screen* _screen)
 
 	_Screen_ReleaseTextBuffer(_screen->height, _screen->textBuffer);
 
-	if (_screen->clearLine != NULL)
-		free(_screen->clearLine);
+	_Screen_ReleaseColorBuffer(_screen->height, _screen->colorBuffer);
+
+	if (_screen->clearLineText != NULL)
+		free(_screen->clearLineText);
 
 	free(_screen);
 }
@@ -159,13 +166,40 @@ void _Screen_ReleaseTextBuffer(int _size, wchar_t** _buffer)
 	free(_buffer);
 }
 
+unsigned short** _Screen_CreateColorBuffer(int _width, int _height)
+{
+	unsigned short** _outArray = (unsigned short**)calloc(_height, sizeof(unsigned short*));
+	for (int _y = 0; _y < _height; ++_y)
+	{
+		_outArray[_y] = (unsigned short*)calloc(_width + 1, sizeof(unsigned short));
+	}
+
+	return _outArray;
+}
+
+void _Screen_ReleaseColorBuffer(int _height, unsigned short** _buffer)
+{
+	if (_buffer == NULL)
+		return;
+
+	for (int i = 0; i < _height; ++i)
+	{
+		if (_buffer[i] != NULL)
+		{
+			free(_buffer[i]);
+		}
+	}
+
+	free(_buffer);
+}
+
 void Screen_Render(Screen* _screen)
 {
 	// Screen_ClearScreen(_screen);
 
 	for (int y = 0; y < _screen->height; ++y)
 	{
-		_Screen_WriteLineToConsole(_screen, y, _screen->textBuffer[y]);
+		_Screen_WriteLineToConsole(_screen, y, _screen->textBuffer[y], _screen->colorBuffer[y]);
 	}
 
 	// 활성화된(=보여주고 있는) Screen buffer를 front buffer와 back buffer끼리 맞바꿉니다.
@@ -174,6 +208,46 @@ void Screen_Render(Screen* _screen)
 }
 
 void Screen_Print(Screen* _screen, int _startX, int _startY, wchar_t** _image, int _imageWidth, int _imageHeight)
+{
+	_Screen_Print(_screen, _startX, _startY, _image, _imageWidth, _imageHeight, _screen->primaryForegroundAndBackgroundColor);
+}
+
+void Screen_PrintLine(Screen* _screen, int _startX, int _startY, wchar_t* _line, int _lineWidth)
+{
+	_Screen_PrintLine(_screen, _startX, _startY, _line, _lineWidth, _screen->primaryForegroundAndBackgroundColor);
+}
+
+void Screen_PrintWithColor(Screen* _screen, int _startX, int _startY, wchar_t** _image, int _imageWidth, int _imageHeight, unsigned short _color)
+{
+	_Screen_Print(_screen, _startX, _startY, _image, _imageWidth, _imageHeight, _color);
+}
+
+void Screen_PrintLineWithColor(Screen* _screen, int _startX, int _startY, wchar_t* _line, int _lineWidth, unsigned short _color)
+{
+	_Screen_PrintLine(_screen, _startX, _startY, _line, _lineWidth, _color);
+}
+
+void Screen_ClearScreen(Screen* _screen)
+{
+	for (int _y = 0; _y < _screen->height; ++_y)
+	{
+		_Screen_WriteLineToConsole(_screen, _y, _screen->clearLineText, _screen->clearLineColor);
+	}
+}
+
+void Screen_ClearBuffer(Screen* _screen)
+{
+	for (int _y = 0; _y < _screen->height; ++_y)
+	{
+		for (int _x = 0; _x < _screen->width; ++_x)
+		{
+			_screen->textBuffer[_y][_x] = L' ';
+			_screen->colorBuffer[_y][_x] = _screen->primaryForegroundAndBackgroundColor;
+		}
+	}
+}
+
+void _Screen_Print(Screen* _screen, int _startX, int _startY, wchar_t** _image, int _imageWidth, int _imageHeight, unsigned short _color)
 {
 	if (_screen == NULL || _image == NULL)
 		return;
@@ -229,6 +303,8 @@ void Screen_Print(Screen* _screen, int _startX, int _startY, wchar_t** _image, i
 	const int _characterCountInLine = _imageWidth - _exceedScreenXCharacterCount;
 	const int _widthByteSize = _characterCountInLine * sizeof(wchar_t);
 
+	const int _bufferEndXIndex = _startX + _characterCountInLine;
+
 	// 실제로 쓰여질 버퍼의 y 위치를 구합니다.
 	const int _bufferStartYIndex = (_screen->height - 1) - _startY;
 	const int _bufferEndYIndex = _bufferStartYIndex - _lineCount;
@@ -240,39 +316,27 @@ void Screen_Print(Screen* _screen, int _startX, int _startY, wchar_t** _image, i
 	for (; _bufferY > _bufferEndYIndex;
 	       --_bufferY, ++_imageY)
 	{
+		// 텍스트 버퍼를 덮어씁니다.
 		const wchar_t* _destination = _screen->textBuffer[_bufferY] + _startX;
 		const int _destinationLeftoverByteSize = _msize(_screen->textBuffer[_bufferY]) - _startX * sizeof(wchar_t);
 		const wchar_t* _source = _image[_imageY] + _imageStartX;
 
 		memcpy_s(_destination, _destinationLeftoverByteSize, _source, _widthByteSize);
-	}
-}
 
-void Screen_PrintLine(Screen* _screen, int _startX, int _startY, wchar_t* _line, int _lineWidth)
-{
-	Screen_Print(_screen, _startX, _startY, &_line, _lineWidth, 1);
-}
-
-void Screen_ClearScreen(Screen* _screen)
-{
-	for (int _y = 0; _y < _screen->height; ++_y)
-	{
-		_Screen_WriteLineToConsole(_screen, _y, _screen->clearLine);
-	}
-}
-
-void Screen_ClearBuffer(Screen* _screen)
-{
-	for (int _y = 0; _y < _screen->height; ++_y)
-	{
-		for (int _x = 0; _x < _screen->width; ++_x)
+		// 색상 버퍼를 덮어씁니다.
+		for (int _bufferX = _startX; _bufferX < _bufferEndXIndex; ++_bufferX)
 		{
-			_screen->textBuffer[_y][_x] = L' ';
+			_screen->colorBuffer[_bufferY][_bufferX] = _color;
 		}
 	}
 }
 
-void _Screen_WriteLineToConsole(Screen* _screen, int _startY, wchar_t* _buffer)
+void _Screen_PrintLine(Screen* _screen, int _startX, int _startY, wchar_t* _line, int _lineWidth, unsigned short _color)
+{
+	_Screen_Print(_screen, _startX, _startY, &_line, _lineWidth, 1, _color);
+}
+
+void _Screen_WriteLineToConsole(Screen* _screen, int _startY, wchar_t* _textBufferLine, unsigned short* _colorBufferLine)
 {
 	DWORD _dw;
 
@@ -284,13 +348,17 @@ void _Screen_WriteLineToConsole(Screen* _screen, int _startY, wchar_t* _buffer)
 
 	SetConsoleCursorPosition(_screen->screenHandles[_screen->screenIndex], _coord);
 
-	// WriteFile(_screen->screenHandles[_screen->screenIndex],
-	//           _buffer, _bytesToWrite,
-	//           &_dw, NULL);
+	for (int _bufferX = 0; _bufferX < _screen->width; ++_bufferX)
+	{
+		const wchar_t* _character = &_textBufferLine[_bufferX];
+		const unsigned short _color = _colorBufferLine[_bufferX];
 
-	WriteConsoleW(_screen->screenHandles[_screen->screenIndex],
-	              _buffer, wcslen(_buffer),
-	              &_dw, NULL);
+		Screen_SetHandleTextColor(_screen, _screen->screenHandles[_screen->screenIndex], _color);
+
+		WriteConsoleW(_screen->screenHandles[_screen->screenIndex],
+		              _character, 1,
+		              &_dw, NULL);
+	}
 }
 
 void Screen_PrintSprite(Screen* _screen, int _startX, int _startY, Sprite* _sprite)
