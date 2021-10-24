@@ -18,7 +18,7 @@ typedef struct TScreen
 } Screen;
 
 
-Screen* Screen_Create(int _width, int _height, wchar_t* _fontFaceName, COORD _fontSize);
+Screen* Screen_Create(int _width, int _height, wchar_t* _fontFaceName, COORD _fontSize, unsigned short _foregroundColor, unsigned short _backgroundColor);
 
 void Screen_Release(Screen* _screen);
 
@@ -27,6 +27,8 @@ HANDLE _Screen_CreateScreenHandle(wchar_t* _fontFaceName, COORD _fontSize);
 void _Screen_ReleaseScreenHandle(HANDLE _handle);
 
 void Screen_Resize(HANDLE _handle, int _width, int _height);
+
+void Screen_SetHandleAttribute(HANDLE _handle, WORD _attibutes);
 
 wchar_t** _Screen_CreateTextBuffer(int _width, int _height);
 

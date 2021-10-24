@@ -2,6 +2,7 @@
 #include <signal.h>
 #include <stdio.h>
 
+#include "Const.h"
 #include "DodgeGameInstance.h"
 #include "Sprite.h"
 
@@ -11,7 +12,7 @@
 ///	설정 가능한 화면의 최대 크기보다 더 높은 값으로 설정하면 화면 크기 설정이 적용되지 않을 수 있습니다.
 /// </summary>
 const int SCREEN_WIDTH = 300;
-const int SCREEN_HEIGHT = 270;
+const int SCREEN_HEIGHT = 200;
 
 /// <summary>
 /// 화면에 출력될 폰트입니다.
@@ -27,6 +28,9 @@ const int FONT_SIZE_INDEX = 0;
 const int BOARD_WIDTH = 40;
 const int BOARD_HEIGHT = 40;
 const int DESIRED_FPS = 60;
+
+const unsigned short FOREGROUND_COLOR = HANDLE_COLOR_BLACK;
+const unsigned short BACKGROUND_COLOR = HANDLE_COLOR_BRIGHT_WHITE;
 
 const COORD FONT_SIZE_RASTER[] = {
 	{3, 5},
@@ -58,6 +62,8 @@ int main()
 		SCREEN_HEIGHT,
 		FONT_FACE_NAME,
 		FONT_SIZE_RASTER[FONT_SIZE_INDEX],
+		FOREGROUND_COLOR,
+		BACKGROUND_COLOR,
 		BOARD_WIDTH,
 		BOARD_HEIGHT,
 		DESIRED_FPS);

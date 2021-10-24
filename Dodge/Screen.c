@@ -6,7 +6,7 @@
 
 #include "Helper.h"
 
-Screen* Screen_Create(int _width, int _height, wchar_t* _fontFaceName, COORD _fontSize)
+Screen* Screen_Create(int _width, int _height, wchar_t* _fontFaceName, COORD _fontSize, unsigned short _foregroundColor, unsigned short _backgroundColor)
 {
 	Screen* outScreen = (Screen*)calloc(1, sizeof(Screen));
 	outScreen->width = _width;
@@ -22,6 +22,13 @@ Screen* Screen_Create(int _width, int _height, wchar_t* _fontFaceName, COORD _fo
 	outScreen->clearLine = (wchar_t*)calloc(_width + 1, sizeof(wchar_t));
 	for (int i = 0; i < _width; ++i)
 		outScreen->clearLine[i] = L' ';
+
+	// 화면에 표시되는 색상을 변경합니다.
+	// 색상은 화면이 최초 렌더링 되기 이전에 바뀌어야 올바르게 동작합니다.
+	const WORD _colorAttribute = _foregroundColor | _backgroundColor << 4;
+
+	Screen_SetHandleAttribute(outScreen->screenHandles[0], _colorAttribute);
+	Screen_SetHandleAttribute(outScreen->screenHandles[1], _colorAttribute);
 
 	// 화면의 최대 크기는 최초 렌더링 이후에 갱신되기 때문에,
 	// 반드시 1회 렌더링 이후에 크기를 설정해주어야 합니다.
@@ -99,6 +106,15 @@ void Screen_Resize(HANDLE _handle, int _width, int _height)
 
 	// debug me!
 	COORD _largestSize = GetLargestConsoleWindowSize(_handle);
+}
+
+void Screen_SetHandleAttribute(HANDLE _handle, WORD _attibutes)
+{
+	CONSOLE_SCREEN_BUFFER_INFOEX cbi = {sizeof(CONSOLE_SCREEN_BUFFER_INFOEX)};
+	GetConsoleScreenBufferInfoEx(_handle, &cbi);
+
+	cbi.wAttributes = _attibutes;
+	SetConsoleScreenBufferInfoEx(_handle, &cbi);
 }
 
 wchar_t** _Screen_CreateTextBuffer(int _width, int _height)

@@ -141,6 +141,7 @@
   <ItemGroup>
     <ClCompile Include="Board.c" />
     <ClCompile Include="Collider.c" />
+    <ClCompile Include="Const.c" />
     <ClCompile Include="DodgeGameInstance.c" />
     <ClCompile Include="GameInstance.c" />
     <ClCompile Include="Helper.c" />

@@ -7,13 +7,14 @@
 
 #include "Sprite.h"
 
-DodgeGameInstance* DodgeGameInstance_Create(int _screenWidth, int _screenHeight, wchar_t* _fontFaceName, COORD _fontSize, int _boardWidth, int _boardHeight, int _desiredFps)
+DodgeGameInstance* DodgeGameInstance_Create(int _screenWidth, int _screenHeight, wchar_t* _fontFaceName, COORD _fontSize,
+                                            unsigned short _foregroundColor, unsigned short _backgroundColor, int _boardWidth, int _boardHeight, int _desiredFps)
 {
 	DodgeGameInstance* _instance = (DodgeGameInstance*)calloc(1, sizeof(DodgeGameInstance));
 	_instance->screenWidth = _screenWidth;
 	_instance->screenHeight = _screenHeight;
 
-	_instance->gameInstance = GameInstance_Create(_screenWidth, _screenHeight, _fontFaceName, _fontSize, _desiredFps);
+	_instance->gameInstance = GameInstance_Create(_screenWidth, _screenHeight, _fontFaceName, _fontSize, _foregroundColor, _backgroundColor, _desiredFps);
 
 	_instance->board = Board_Create(_boardWidth, _boardHeight);
 
