@@ -102,6 +102,58 @@ bool LoadTextFileAsMatrix2D(wchar_t* _filePath, wchar_t*** _outData, int* _outWi
 	return true;
 }
 
+bool LoadTextFileAsBoolMatrix2D(wchar_t* _filePath, bool*** _outData, int* _outWidth, int* _outHeight)
+{
+	wchar_t** _charDataArr = NULL;
+	int _width = 0;
+	int _height = 0;
+
+	bool _success = LoadTextFileAsMatrix2D(_filePath, &_charDataArr, &_width, &_height);
+	if (_success == false)
+		return false;
+
+
+	bool** _dataArr = (bool**)malloc(_height * sizeof(bool*));
+	for (int i = 0; i < _height; ++i)
+	{
+		_dataArr[i] = (bool*)calloc(_width, sizeof(bool));
+	}
+
+	for (int _y = 0; _y < _height; ++_y)
+	{
+		for (int _x = 0; _x < _width; ++_x)
+		{
+			const wchar_t _character = _charDataArr[_y][_x];
+
+			// 이번 줄의 끝까지 읽었다면,
+			// 다음 줄로 건너뜁니다.
+			const bool _isCharacterNull = _character == '\0';
+
+			if (_isCharacterNull == true)
+				break;
+
+			// 공백 문자가 아닌 경우
+			// 이 칸을 true로 표식을 남깁니다.
+			const bool _isCharacterSpace = _character == L' ';
+
+			if (_isCharacterSpace == false)
+				_dataArr[_y][_x] = true;
+		}
+	}
+
+	// 값을 반환합니다.
+	if (_outData != NULL)
+		*_outData = _dataArr;
+
+	if (_outWidth != NULL)
+		*_outWidth = _width;
+
+	if (_outHeight != NULL)
+		*_outHeight = _height;
+
+	return true;
+}
+
 double FClamp(double _value, double _min, double _max)
 {
 	if (_value < _min)

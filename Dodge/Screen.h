@@ -68,3 +68,5 @@ void _Screen_WriteLineToConsole(Screen* _screen, int _startY, wchar_t* _textBuff
 void Screen_PrintSprite(Screen* _screen, int _startX, int _startY, Sprite* _sprite);
 
 void Screen_PrintWorldObject(Screen* _screen, WorldObject* _worldObject);
+
+void _Screen_PrintSpriteWithMask(Screen* _screen, int _startX, int _startY, Sprite* _sprite);

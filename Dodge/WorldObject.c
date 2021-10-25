@@ -13,9 +13,16 @@ WorldObject* WorldObject_Create(Sprite* _sprite, Vector2D _pivot, Vector2D _posi
 	return _outWorldObject;
 }
 
-WorldObject* WorldObject_CreateWithTextFile(wchar_t* _spriteTextFilePath, Vector2D _pivot, Vector2D _position)
+WorldObject* WorldObject_CreateWithSprite(wchar_t* _spriteImageFilePath, Vector2D _pivot, Vector2D _position)
 {
-	Sprite* _sprite = Sprite_LoadFromTextFile(_spriteTextFilePath);
+	Sprite* _sprite = Sprite_LoadFromImageFile(_spriteImageFilePath);
+
+	return WorldObject_Create(_sprite, _pivot, _position);
+}
+
+WorldObject* WorldObject_CreateWithSpriteMask(wchar_t* _spriteImageFilePath, wchar_t* _spriteMaskFilePath, Vector2D _pivot, Vector2D _position)
+{
+	Sprite* _sprite = Sprite_LoadFromImageAndMaskFiles(_spriteImageFilePath, _spriteMaskFilePath);
 
 	return WorldObject_Create(_sprite, _pivot, _position);
 }

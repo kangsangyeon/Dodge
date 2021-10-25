@@ -382,7 +382,14 @@ void _Screen_WriteLineToConsole(Screen* _screen, int _startY, wchar_t* _textBuff
 
 void Screen_PrintSprite(Screen* _screen, int _startX, int _startY, Sprite* _sprite)
 {
-	Screen_Print(_screen, _startX, _startY, _sprite->dataArr, _sprite->width, _sprite->height);
+	if (_sprite->maskArr != NULL)
+	{
+		_Screen_PrintSpriteWithMask(_screen, _startX, _startY, _sprite);
+	}
+	else
+	{
+		Screen_Print(_screen, _startX, _startY, _sprite->imageArr, _sprite->imageWidth, _sprite->imageHeight);
+	}
 }
 
 void Screen_PrintWorldObject(Screen* _screen, WorldObject* _worldObject)
@@ -390,11 +397,32 @@ void Screen_PrintWorldObject(Screen* _screen, WorldObject* _worldObject)
 	const double _pivotX = FClamp(_worldObject->pivot.x, 0, 1);
 	const double _pivotY = FClamp(_worldObject->pivot.y, 0, 1);
 
-	const double _startXWorldPosition = _worldObject->position.x - _worldObject->sprite->width * _pivotX;
-	const double _startYWorldPosition = _worldObject->position.y - _worldObject->sprite->height * _pivotY;
+	const double _startXWorldPosition = _worldObject->position.x - _worldObject->sprite->imageWidth * _pivotX;
+	const double _startYWorldPosition = _worldObject->position.y - _worldObject->sprite->imageHeight * _pivotY;
 
 	const int _startXScreenPosition = floor(_startXWorldPosition);
 	const int _startYScreenPosition = floor(_startYWorldPosition);
 
 	Screen_PrintSprite(_screen, _startXScreenPosition, _startYScreenPosition, _worldObject->sprite);
+}
+
+void _Screen_PrintSpriteWithMask(Screen* _screen, int _startX, int _startY, Sprite* _sprite)
+{
+	for (int _spriteY = 0;
+	     _spriteY < _sprite->imageHeight && _spriteY < _sprite->maskHeight;
+	     ++_spriteY)
+	{
+		for (int _spriteX = 0;
+		     _spriteX < _sprite->imageWidth && _spriteX < _sprite->maskWidth;
+		     ++_spriteX)
+		{
+			if (_sprite->maskArr[_spriteY][_spriteX] == true)
+			{
+				const int _screenStartX = _startX + _spriteX;
+				const int _screenStartY = _startY + _spriteY;
+				const wchar_t* _imagePosition = _sprite->imageArr[_spriteY] + _spriteX;
+				Screen_Print(_screen, _screenStartX, _screenStartY, &_imagePosition, 1, 1);
+			}
+		}
+	}
 }

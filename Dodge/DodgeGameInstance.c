@@ -8,7 +8,7 @@
 #include "Sprite.h"
 
 DodgeGameInstance* DodgeGameInstance_Create(int _screenWidth, int _screenHeight, wchar_t* _fontFaceName, COORD _fontSize,
-	unsigned short _foregroundColor, unsigned short _backgroundColor, int _boardWidth, int _boardHeight, int _desiredFps)
+                                            unsigned short _foregroundColor, unsigned short _backgroundColor, int _boardWidth, int _boardHeight, int _desiredFps)
 {
 	DodgeGameInstance* _instance = (DodgeGameInstance*)calloc(1, sizeof(DodgeGameInstance));
 	_instance->screenWidth = _screenWidth;
@@ -19,9 +19,9 @@ DodgeGameInstance* DodgeGameInstance_Create(int _screenWidth, int _screenHeight,
 	_instance->board = Board_Create(_boardWidth, _boardHeight);
 
 	// for test
-	Vector2D _pivot = { 0, 0 };
-	Vector2D _position = { 100, 100 };
-	_instance->player = Player_Create(L"Sprites/test_chihaya.txt", _pivot, _position, 50);
+	Vector2D _pivot = {0, 0};
+	Vector2D _position = {100, 100};
+	_instance->player = Player_Create(L"Sprites/test_chihaya.txt", L"Sprites/test_chihaya_mask_cutted.txt", _pivot, _position, 50);
 
 	Vector2D _paimonPivot = { 0, 0 };
 	Vector2D _paimonPosition = { -20, -20 };
@@ -99,12 +99,10 @@ void _DodgeGameInstance_GameTick(DodgeGameInstance* _dodgeGame, float _deltaTime
 
 	Player_Move(_dodgeGame->player, _velocity, _deltaTime);
 
-
-	//if (_dodgeGame->paimon != NULL)
-	//	Screen_PrintWorldObject(_screen, _dodgeGame->paimon);
-
-
 	// for test
+	if (_dodgeGame->paimon != NULL)
+		Screen_PrintWorldObject(_screen, _dodgeGame->paimon);
+
 	if (_dodgeGame->player != NULL)
 		Screen_PrintWorldObject(_screen, _dodgeGame->player->worldObject);
 
