@@ -415,17 +415,27 @@ void _Screen_PrintSpriteWithMask(Screen* _screen, int _startX, int _startY, Spri
 	     _spriteY < _sprite->imageHeight && _spriteY < _sprite->maskHeight;
 	     ++_spriteY)
 	{
-		for (int _spriteX = 0;
-		     _spriteX < _sprite->imageWidth && _spriteX < _sprite->maskWidth;
-		     ++_spriteX)
+		const int _maskArrCount = _msize(_sprite->maskArr[_spriteY]) / sizeof(int);
+		const int _maskLineSeparationCount = _maskArrCount / 2;
+
+		const int _screenStartY = _startY + _spriteY;
+
+		int _spriteX = 0;
+		for (int i = 0; i < _maskLineSeparationCount; ++i)
 		{
-			if (_sprite->maskArr[_spriteY][_spriteX] == true)
-			{
-				const int _screenStartX = _startX + _spriteX;
-				const int _screenStartY = _startY + _spriteY;
-				const wchar_t* _imagePosition = _sprite->imageArr[_spriteY] + _spriteX;
-				Screen_Print(_screen, _screenStartX, _screenStartY, &_imagePosition, 1, 1);
-			}
+			// 표시되지 않아야 할 부분은 건너뜁니다.
+			const int _continuousSpaceCount = _sprite->maskArr[_spriteY][i * 2];
+			_spriteX += _continuousSpaceCount;
+
+			// 마스킹되는 부분을 출력합니다.
+			const int _continuousMaskCount = _sprite->maskArr[_spriteY][i * 2 + 1];
+
+			const int _screenStartX = _startX + _spriteX;
+			const wchar_t* _imagePosition = _sprite->imageArr[_spriteY] + _spriteX;
+
+			Screen_Print(_screen, _screenStartX, _screenStartY, &_imagePosition, _continuousMaskCount, 1);
+
+			_spriteX += _continuousMaskCount;
 		}
 	}
 }

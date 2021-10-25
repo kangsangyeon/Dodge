@@ -8,8 +8,7 @@ typedef struct TSprite
 	int imageWidth;
 	int imageHeight;
 
-	bool** maskArr;
-	int maskWidth;
+	int** maskArr;
 	int maskHeight;
 } Sprite;
 

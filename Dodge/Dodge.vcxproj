@@ -146,6 +146,7 @@
     <ClCompile Include="DodgeGameInstance.c" />
     <ClCompile Include="GameInstance.c" />
     <ClCompile Include="Helper.c" />
+    <ClCompile Include="IntQueue.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="Player.c" />
     <ClCompile Include="PointerStack.c" />
@@ -163,6 +164,7 @@
     <ClInclude Include="DodgeGameInstance.h" />
     <ClInclude Include="GameInstance.h" />
     <ClInclude Include="Helper.h" />
+    <ClInclude Include="IntQueue.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PointerStack.h" />
     <ClInclude Include="Screen.h" />
