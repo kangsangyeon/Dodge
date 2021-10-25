@@ -37,13 +37,10 @@ DodgeGameInstance* DodgeGameInstance_Create(int _screenWidth, int _screenHeight,
 
 	// 총알 생성
 	Vector2D _directionalBulletPivot = {0, 0};
-	Vector2D _directionalBulletPosition = {200, 50};
 	Vector2D _directional = {0, 20};
+	Vector2D _randomPosition = DirectionalBullet_CreateRandomPosition(_screenWidth, _screenHeight);
 
-	int screenHeight = _instance->screenHeight;
-	int screenWidth = _instance->screenWidth;
-
-	_instance->directionalBullet = DirectionalBullet_Create(L"Sprites/test_bullet.txt", _directionalBulletPivot, _directionalBulletPosition, 50, _directional);
+	_instance->directionalBullet = DirectionalBullet_Create(L"Sprites/test_bullet.txt", _directionalBulletPivot, Vector2D_Zero, _directional, 50);
 
 	return _instance;
 }
@@ -74,7 +71,6 @@ void DodgeGameInstance_Release(DodgeGameInstance* _dodgeGame)
 
 	if (_dodgeGame->directionalBullet != NULL)
 		WorldObject_Release(_dodgeGame->directionalBullet);
-
 
 	free(_dodgeGame);
 }
@@ -140,7 +136,7 @@ void _DodgeGameInstance_GameTick(DodgeGameInstance* _dodgeGame, float _deltaTime
 	// test
 	// DirectionalBullet_RandomPositionCreate(_screen->width, _screen->height);
 
-	DirectionalBullet_Move(_dodgeGame->directionalBullet, Vector2D_Right, _deltaTime);
+	DirectionalBullet_Move(_dodgeGame->directionalBullet, _deltaTime);
 
 
 	if (_dodgeGame->directionalBullet != NULL)

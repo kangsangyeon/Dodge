@@ -9,10 +9,10 @@ typedef struct TDirectionalBullet
 }DirectionalBullet;
 
 DirectionalBullet* DirectionalBullet_Create(wchar_t* _spriteFilePath, Vector2D _pivot,
-	Vector2D _position, float _moveSpeed);
+	Vector2D _position, Vector2D _direction, float _moveSpeed);
 
 void DirectionalBullet_Release(DirectionalBullet* _directionalBullet);
 
-void DirectionalBullet_Move(DirectionalBullet* _directionalBullet, Vector2D _vector, float _deltatime);
+void DirectionalBullet_Move(DirectionalBullet* _directionalBullet, float _deltatime);
 
-void DirectionalBullet_RandomPositionCreate(int _width, int _height, Vector2D _direction);
+Vector2D DirectionalBullet_CreateRandomPosition(int _width, int _height);
