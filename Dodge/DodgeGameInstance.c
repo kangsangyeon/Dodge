@@ -43,8 +43,7 @@ DodgeGameInstance* DodgeGameInstance_Create(int _screenWidth, int _screenHeight,
 	int screenHeight = _instance->screenHeight;
 	int screenWidth = _instance->screenWidth;
 
-	_instance->directionalBullet = DirectionalBullet_Create(L"Sprites/test_bullet.txt",
-	                                                        _directionalBulletPivot, _directionalBulletPosition, 50, _directional);
+	_instance->directionalBullet = DirectionalBullet_Create(L"Sprites/test_bullet.txt", _directionalBulletPivot, _directionalBulletPosition, 50, _directional);
 
 	return _instance;
 }
@@ -72,6 +71,10 @@ void DodgeGameInstance_Release(DodgeGameInstance* _dodgeGame)
 
 	if (_dodgeGame->milize != NULL)
 		WorldObject_Release(_dodgeGame->milize);
+
+	if (_dodgeGame->directionalBullet != NULL)
+		WorldObject_Release(_dodgeGame->directionalBullet);
+
 
 	free(_dodgeGame);
 }
@@ -134,7 +137,11 @@ void _DodgeGameInstance_GameTick(DodgeGameInstance* _dodgeGame, float _deltaTime
 		Screen_PrintWorldObject(_screen, _dodgeGame->player->worldObject);
 
 	// 총알 이동 + 그려주기 + 몇 초마다 생성할 것인지를 결정한다.
+	// test
+	// DirectionalBullet_RandomPositionCreate(_screen->width, _screen->height);
+
 	DirectionalBullet_Move(_dodgeGame->directionalBullet, Vector2D_Right, _deltaTime);
+
 
 	if (_dodgeGame->directionalBullet != NULL)
 		Screen_PrintWorldObject(_screen, _dodgeGame->directionalBullet->worldObject);

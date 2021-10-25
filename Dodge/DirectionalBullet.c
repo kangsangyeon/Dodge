@@ -1,26 +1,26 @@
 ﻿#include "DirectionalBullet.h"
-#include "Screen.h"
 
 #include <stdlib.h>
 
-
-
-
 DirectionalBullet* DirectionalBullet_Create(wchar_t* _spriteFilePath, Vector2D _pivot,
-	Vector2D _position, float _moveSpeed, Vector2D _direction)
+	Vector2D _position, float _moveSpeed)
 {
 	DirectionalBullet* _directionalBullet = (DirectionalBullet*)malloc(sizeof(DirectionalBullet));
 	_directionalBullet->worldObject = WorldObject_CreateWithSprite(_spriteFilePath, _pivot, _position);
 	_directionalBullet->moveSpeed = _moveSpeed;
 
+	
 
+	
 	// 5. 총알을 뿌려준다!
 
 	// 6. 해당 사이클은 게임이 종료될때 까지 진행된다. (총알을 꼐속 뿌려줄 예정)
 
+
+
+
 	return _directionalBullet;
 }
-
 
 void DirectionalBullet_Release(DirectionalBullet* _directionalBullet)
 {	
@@ -32,7 +32,6 @@ void DirectionalBullet_Release(DirectionalBullet* _directionalBullet)
 
 	free(_directionalBullet);
 }
-
 
 void DirectionalBullet_Move(DirectionalBullet* _directionalBullet, Vector2D _vector, float _deltatime)
 {
@@ -46,23 +45,32 @@ void DirectionalBullet_Move(DirectionalBullet* _directionalBullet, Vector2D _vec
 }
 
 
-void DirectionalBullet_RandomPositionCreate(int _width, int _heigth)
+void DirectionalBullet_RandomPositionCreate(int _width, int _height, Vector2D _direction)
 {
+	// 폭과 높이의 값으로 외곽 라인값들을 뽑는다.
+	int randomWidthLine = rand() % (_width + 21) - 10;
+	int randomHeightLine = rand() % (_height + 21) - 10;
 
+	Vector2D _randomExternalUpLine = { randomWidthLine, _height + 10 };
+	Vector2D _randomExternalDownLine = { randomWidthLine, _height - 210 };
+	Vector2D _randomExternalRightLine = { _width - 210, randomHeightLine };
+	Vector2D _randomExternalLeftLine = { _width + 10, randomHeightLine };
 
-	// 1. 폭과 높이의 값으로 외곽 라인값을 뽑는다.
-	// 내가 랜덤값을 뽑아야 하는데 .. 아니근데 벡터에 넣어야한단 말이지 그 랜덤 값을.. 그걸 참.. 어ㅏ케 넣는지..흠
+	// 뽑은 값으로 1, 2, 3, 4 만듬
+	int randomExternalLineSelect = rand() % 4;
+	int randomExternalLineRetun = 0;
+	if (randomExternalLineSelect == randomExternalLineSelect)
+		return;
 
-	int randomOne = rand() % (_width + 21) - 10;
-	Vector2D _temp = { randomOne, _heigth + 10 };
-
-
-
-	// 2. 뽑은 값으로 1, 2, 3, 4 만듬
-
-	// 3. 4개의 선택지 중 하나로 분기를 타자!
-
-	// 4. 각 분기별로 설정된 라인의 변동값을 랜덤으로 받는다.
-
-
+	// 각 분기별로 설정된 라인의 변동값을 랜덤으로 받는다.
+	switch (randomExternalLineSelect)
+	{
+		case 0: _randomExternalUpLine; break;
+		case 1: _randomExternalDownLine; break;
+		case 2: _randomExternalRightLine; break;
+		case 3: _randomExternalLeftLine; break;
+	}
+	// 이걸로는 안되지 않나..? 일단 보류..
 }
+
+// void DirectionalBullet_
