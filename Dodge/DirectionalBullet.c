@@ -10,7 +10,7 @@ DirectionalBullet* DirectionalBullet_Create(wchar_t* _spriteFilePath, Vector2D _
 	Vector2D _position, float _moveSpeed, Vector2D _direction)
 {
 	DirectionalBullet* _directionalBullet = (DirectionalBullet*)malloc(sizeof(DirectionalBullet));
-	_directionalBullet->worldObject = WorldObject_CreateWithTextFile(_spriteFilePath, _pivot, _position);
+	_directionalBullet->worldObject = WorldObject_CreateWithSprite(_spriteFilePath, _pivot, _position);
 	_directionalBullet->moveSpeed = _moveSpeed;
 
 

@@ -25,7 +25,7 @@ DodgeGameInstance* DodgeGameInstance_Create(int _screenWidth, int _screenHeight,
 
 	Vector2D _paimonPivot = { 0, 0 };
 	Vector2D _paimonPosition = { -20, -20 };
-	_instance->paimon = WorldObject_CreateWithTextFile(L"Sprites/test_paimon.txt", _paimonPivot, _paimonPosition);
+	_instance->paimon = WorldObject_CreateWithSprite(L"Sprites/test_paimon.txt", _paimonPivot, _paimonPosition);
 
 	// 총알 생성
 	Vector2D _directionalBulletPivot = { 0, 0 };
