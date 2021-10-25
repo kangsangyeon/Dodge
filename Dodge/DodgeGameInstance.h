@@ -4,6 +4,7 @@
 #include "Board.h"
 #include "GameInstance.h"
 #include "Player.h"
+#include "DirectionalBullet.h"
 
 typedef struct TDodgeGameInstance
 {
@@ -16,6 +17,7 @@ typedef struct TDodgeGameInstance
 	// for test
 	Player* player;
 	WorldObject* paimon;
+	DirectionalBullet* directionalBullet;
 } DodgeGameInstance;
 
 DodgeGameInstance* DodgeGameInstance_Create(int _screenWidth, int _screenHeight, wchar_t* _fontFaceName, COORD _fontSize,
