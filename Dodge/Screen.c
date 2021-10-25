@@ -300,10 +300,9 @@ void _Screen_Print(Screen* _screen, int _startX, int _startY, wchar_t** _image, 
 	const int _lineCount = _imageHeight - _exceedScreenYLineCount;
 
 	// 출력할 이미지의 가로 길이를 구합니다.
-	const int _characterCountInLine = _imageWidth - _exceedScreenXCharacterCount;
-	const int _widthByteSize = _characterCountInLine * sizeof(wchar_t);
+	const int _maxCharacterCountInLine = _imageWidth - _exceedScreenXCharacterCount;
 
-	const int _bufferEndXIndex = _startX + _characterCountInLine;
+	const int _bufferEndXIndex = _startX + _maxCharacterCountInLine;
 
 	// 실제로 쓰여질 버퍼의 y 위치를 구합니다.
 	const int _bufferStartYIndex = (_screen->height - 1) - _startY;
@@ -316,14 +315,18 @@ void _Screen_Print(Screen* _screen, int _startX, int _startY, wchar_t** _image, 
 	for (; _bufferY > _bufferEndYIndex;
 	       --_bufferY, ++_imageY)
 	{
-		// 텍스트 버퍼를 덮어씁니다.
+		/* 텍스트 버퍼를 덮어씁니다. */
 		const wchar_t* _destination = _screen->textBuffer[_bufferY] + _startX;
 		const int _destinationLeftoverByteSize = _msize(_screen->textBuffer[_bufferY]) - _startX * sizeof(wchar_t);
 		const wchar_t* _source = _image[_imageY] + _imageStartX;
 
+		// 이미지 line에서 이미지가 출력되어야 하는 글자의 개수를 얻습니다.
+		const int _characterCountInLine = min(wcslen(_source), _maxCharacterCountInLine);
+		const int _widthByteSize = _characterCountInLine * sizeof(wchar_t);
+
 		memcpy_s(_destination, _destinationLeftoverByteSize, _source, _widthByteSize);
 
-		// 색상 버퍼를 덮어씁니다.
+		/* 색상 버퍼를 덮어씁니다. */
 		for (int _bufferX = _startX; _bufferX < _bufferEndXIndex; ++_bufferX)
 		{
 			_screen->colorBuffer[_bufferY][_bufferX] = _color;
