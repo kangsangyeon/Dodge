@@ -72,5 +72,16 @@ void Sprite_Release(Sprite* _sprite)
 		free(_sprite->imageArr);
 	}
 
+	if (_sprite->maskArr != NULL)
+	{
+		for (int i = 0; i < _sprite->maskHeight; ++i)
+		{
+			if (_sprite->maskArr[i] != NULL)
+				free(_sprite->maskArr[i]);
+		}
+
+		free(_sprite->maskArr);
+	}
+
 	free(_sprite);
 }
