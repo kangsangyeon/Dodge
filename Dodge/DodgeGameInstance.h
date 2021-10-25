@@ -17,6 +17,8 @@ typedef struct TDodgeGameInstance
 	// for test
 	Player* player;
 	WorldObject* paimon;
+	WorldObject* takane;
+	WorldObject* milize;
 	DirectionalBullet* directionalBullet;
 } DodgeGameInstance;
 
