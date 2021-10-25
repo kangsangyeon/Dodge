@@ -394,6 +394,9 @@ void Screen_PrintSprite(Screen* _screen, int _startX, int _startY, Sprite* _spri
 
 void Screen_PrintWorldObject(Screen* _screen, WorldObject* _worldObject)
 {
+	if (_worldObject == NULL || _worldObject->sprite == NULL)
+		return;
+
 	const double _pivotX = FClamp(_worldObject->pivot.x, 0, 1);
 	const double _pivotY = FClamp(_worldObject->pivot.y, 0, 1);
 
