@@ -39,6 +39,12 @@ DodgeGameInstance* DodgeGameInstance_Create(int _screenWidth, int _screenHeight,
 	_instance->collider1 = Collider_LoadFromTextFile(L"Sprites/test_matrix20_20.txt");
 	_instance->collider2 = Collider_LoadFromTextFile(L"Sprites/test_matrix_grid_20_20.txt");
 
+	_instance->_audioClip1 = AudioClip_LoadFromFile(_instance->gameInstance->audio, L"Sounds/test_bgm_yokai_disco.mp3", false);
+
+	if (_instance->_audioClip1 != NULL && Audio_IsPlaying(_instance->_audioClip1) == false)
+		Audio_Play(_instance->gameInstance->audio, _instance->_audioClip1, false);
+
+
 	// 총알 생성
 	Vector2D _directionalBulletPivot = {0, 0};
 	Vector2D _directional = {0, 20};
@@ -78,6 +84,12 @@ void DodgeGameInstance_Release(DodgeGameInstance* _dodgeGame)
 
 	if (_dodgeGame->collider2 != NULL)
 		Collider_Release(_dodgeGame->collider2);
+
+	if (_dodgeGame->_audioClip1 != NULL)
+		AudioClip_Release(_dodgeGame->_audioClip1);
+
+	if (_dodgeGame->_audioClip2 != NULL)
+		AudioClip_Release(_dodgeGame->_audioClip2);
 
 	if (_dodgeGame->directionalBullet != NULL)
 		WorldObject_Release(_dodgeGame->directionalBullet);
@@ -152,6 +164,11 @@ void _DodgeGameInstance_GameTick(DodgeGameInstance* _dodgeGame, float _deltaTime
 		Collider_CheckCollisionDebug(_dodgeGame->collider1, _collider1Position, _dodgeGame->collider2, _collider2Position, &_collisionInfo);
 	}
 
+	if (_dodgeGame->_audioClip1 != NULL && GameInstance_GetGameTime(_dodgeGame->gameInstance) > 5.f)
+	{
+		Audio_Stop(_dodgeGame->_audioClip1);
+		_dodgeGame->_audioClip1 = NULL;
+	}
 
 	// 총알 이동 + 그려주기 + 몇 초마다 생성할 것인지를 결정한다.
 	// test

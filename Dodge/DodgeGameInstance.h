@@ -22,6 +22,8 @@ typedef struct TDodgeGameInstance
 	WorldObject* milize;
 	Collider* collider1;
 	Collider* collider2;
+	AudioClip* _audioClip1;
+	AudioClip* _audioClip2;
 	DirectionalBullet* directionalBullet;
 } DodgeGameInstance;
 
