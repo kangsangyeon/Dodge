@@ -44,6 +44,11 @@ void GameInstance_PostTick(GameInstance* _gameInstance)
 {
 	Screen_Render(_gameInstance->screen);
 
-	Sleep(_gameInstance->desiredSleepTimeMillis);
+	const clock_t _processingTimeMillis = clock() - _gameInstance->currentPreTickMillis;
+	const clock_t _targetSleepTimeMillis = _gameInstance->desiredSleepTimeMillis - _processingTimeMillis;
+
+	if (_targetSleepTimeMillis > 0)
+		Sleep(_targetSleepTimeMillis);
+
 	_gameInstance->lastPreTickMillis = _gameInstance->currentPreTickMillis;
 }
