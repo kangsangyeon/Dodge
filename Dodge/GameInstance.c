@@ -1,5 +1,6 @@
 ﻿#include "GameInstance.h"
 
+#include <fmod.h>
 #include <stdio.h>
 #include <time.h>
 
@@ -15,7 +16,7 @@ GameInstance* GameInstance_Create(int _screenWidth, int _screenHeight, wchar_t* 
 
 	_gameInstance->screen = Screen_Create(_screenWidth, _screenHeight, _fontFaceName, _fontSize, _foregroundColor, _backgroundColor);
 
-	_gameInstance->audio = Audio_Create();
+	_gameInstance->audio = Audio_Create(512);
 
 	return _gameInstance;
 }
@@ -27,6 +28,9 @@ void GameInstance_Release(GameInstance* _gameInstance)
 
 	if (_gameInstance->screen != NULL)
 		Screen_Release(_gameInstance->screen);
+
+	if (_gameInstance->audio != NULL)
+		Audio_Release(_gameInstance->audio);
 
 	free(_gameInstance);
 }
@@ -45,6 +49,9 @@ void GameInstance_PreTick(GameInstance* _gameInstance, float* _outDeltaTime)
 void GameInstance_PostTick(GameInstance* _gameInstance)
 {
 	Screen_Render(_gameInstance->screen);
+
+	if (_gameInstance->audio != NULL)
+		FMOD_System_Update(_gameInstance->audio);
 
 	const clock_t _processingTimeMillis = clock() - _gameInstance->currentPreTickMillis;
 	const clock_t _targetSleepTimeMillis = _gameInstance->desiredSleepTimeMillis - _processingTimeMillis;

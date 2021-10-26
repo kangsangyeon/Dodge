@@ -4,13 +4,8 @@
 typedef struct TAudio
 {
 	FMOD_SYSTEM* system;
-
-	int soundCount;
-	int channelCount;
-	FMOD_SOUND** soundArr;
-	FMOD_CHANNEL** channelArr;
 } Audio;
 
-Audio* Audio_Create();
+Audio* Audio_Create(int _maxChannelCount);
 
-void Audio_Release();
+void Audio_Release(Audio* _audio);
