@@ -150,6 +150,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Audio.c" />
+    <ClCompile Include="AudioClip.c" />
     <ClCompile Include="Board.c" />
     <ClCompile Include="Collider.c" />
     <ClCompile Include="CollisionInfo.c" />
@@ -170,6 +171,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Audio.h" />
+    <ClInclude Include="AudioClip.h" />
     <ClInclude Include="Board.h" />
     <ClInclude Include="CollisionInfo.h" />
     <ClInclude Include="DirectionalBullet.h" />

@@ -32,3 +32,52 @@ void Audio_Release(Audio* _audio)
 
 	free(_audio);
 }
+
+bool Audio_IsPlaying(AudioClip* _audioClip)
+{
+	if (_audioClip == NULL || _audioClip->channel == NULL)
+		return false;
+
+	FMOD_BOOL _isPlaying;
+	const FMOD_RESULT _result = FMOD_Channel_IsPlaying(_audioClip->channel, &_isPlaying);
+
+	if (_result != FMOD_OK)
+		return false;
+
+	return _isPlaying == true;
+}
+
+bool Audio_Play(Audio* _audio, AudioClip* _audioClip, bool _forcePlay)
+{
+	if (_audio == NULL || _audio->system == NULL)
+		return false;
+
+	if (_audioClip == NULL || _audioClip->sound == NULL)
+		return false;
+
+	if (_forcePlay == false && Audio_IsPlaying(_audioClip) == true)
+		return false;
+
+	const FMOD_RESULT _result = FMOD_System_PlaySound(_audio->system, _audioClip->sound, NULL, false, &_audioClip->channel);
+
+	if (_result != FMOD_OK)
+		return false;
+
+	return true;
+}
+
+bool Audio_Stop(AudioClip* _audioClip)
+{
+	if (_audioClip == NULL || _audioClip->sound == NULL)
+		return false;
+
+	if (Audio_IsPlaying(_audioClip) == false)
+		return false;
+
+	const FMOD_RESULT _result = FMOD_Channel_Stop(_audioClip->channel);
+
+	if (_result != FMOD_OK)
+		return false;
+
+	return true;
+}
