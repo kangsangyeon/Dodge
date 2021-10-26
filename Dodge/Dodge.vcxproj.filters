@@ -84,6 +84,9 @@
     <ClCompile Include="CollisionInfo.c">
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
+    <ClCompile Include="Audio.c">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Const.h">
@@ -133,6 +136,9 @@
     </ClInclude>
     <ClInclude Include="CollisionInfo.h">
       <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Audio.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

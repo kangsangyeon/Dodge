@@ -2,11 +2,13 @@
 
 #include <time.h>
 
+#include "Audio.h"
 #include "Screen.h"
 
 typedef struct TGameInstance
 {
 	Screen* screen;
+	Audio* audio;
 
 	unsigned int desiredSleepTimeMillis;
 	clock_t startGameMillis;

@@ -15,6 +15,8 @@ GameInstance* GameInstance_Create(int _screenWidth, int _screenHeight, wchar_t* 
 
 	_gameInstance->screen = Screen_Create(_screenWidth, _screenHeight, _fontFaceName, _fontSize, _foregroundColor, _backgroundColor);
 
+	_gameInstance->audio = Audio_Create();
+
 	return _gameInstance;
 }
 
