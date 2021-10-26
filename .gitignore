@@ -386,3 +386,6 @@ FodyWeavers.xsd
 # JetBrains Rider
 .idea/
 *.sln.iml
+
+# fmod library 파일을 포함합니다.
+!Dodge/fmod_api_core/**
