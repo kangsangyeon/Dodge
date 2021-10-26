@@ -5,6 +5,7 @@
 #include <conio.h>
 #include <stdio.h>
 
+#include "Collider.h"
 #include "Sprite.h"
 
 DodgeGameInstance* DodgeGameInstance_Create(int _screenWidth, int _screenHeight, wchar_t* _fontFaceName, COORD _fontSize,
@@ -34,6 +35,9 @@ DodgeGameInstance* DodgeGameInstance_Create(int _screenWidth, int _screenHeight,
 	Vector2D _milizePivot = {0, 0};
 	Vector2D _milizePosition = {-20, 30};
 	_instance->milize = WorldObject_CreateWithSpriteMask(L"Sprites/test_milize.txt", L"Sprites/test_milize_mask.txt", _milizePivot, _milizePosition);
+
+	_instance->collider1 = Collider_LoadFromTextFile(L"Sprites/test_matrix20_20.txt");
+	_instance->collider2 = Collider_LoadFromTextFile(L"Sprites/test_matrix_grid_20_20.txt");
 
 	// 총알 생성
 	Vector2D _directionalBulletPivot = {0, 0};
@@ -68,6 +72,12 @@ void DodgeGameInstance_Release(DodgeGameInstance* _dodgeGame)
 
 	if (_dodgeGame->milize != NULL)
 		WorldObject_Release(_dodgeGame->milize);
+
+	if (_dodgeGame->collider1 != NULL)
+		Collider_Release(_dodgeGame->collider1);
+
+	if (_dodgeGame->collider2 != NULL)
+		Collider_Release(_dodgeGame->collider2);
 
 	if (_dodgeGame->directionalBullet != NULL)
 		WorldObject_Release(_dodgeGame->directionalBullet);
@@ -132,12 +142,22 @@ void _DodgeGameInstance_GameTick(DodgeGameInstance* _dodgeGame, float _deltaTime
 	if (_dodgeGame->player != NULL)
 		Screen_PrintWorldObject(_screen, _dodgeGame->player->worldObject);
 
+	if (_dodgeGame->collider1 != NULL && _dodgeGame->collider2 != NULL)
+	{
+		Vector2D _collider1Position = {0, 0};
+		Vector2D _collider2Position = {15, 15};
+
+		CollisionInfo* _collisionInfo = NULL;
+
+		Collider_CheckCollisionDebug(_dodgeGame->collider1, _collider1Position, _dodgeGame->collider2, _collider2Position, &_collisionInfo);
+	}
+
+
 	// 총알 이동 + 그려주기 + 몇 초마다 생성할 것인지를 결정한다.
 	// test
 	// DirectionalBullet_RandomPositionCreate(_screen->width, _screen->height);
 
 	DirectionalBullet_Move(_dodgeGame->directionalBullet, _deltaTime);
-
 
 	if (_dodgeGame->directionalBullet != NULL)
 		Screen_PrintWorldObject(_screen, _dodgeGame->directionalBullet->worldObject);

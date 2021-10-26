@@ -2,6 +2,7 @@
 #include <wchar.h>
 
 #include "Board.h"
+#include "Collider.h"
 #include "GameInstance.h"
 #include "Player.h"
 #include "DirectionalBullet.h"
@@ -19,6 +20,8 @@ typedef struct TDodgeGameInstance
 	WorldObject* paimon;
 	WorldObject* takane;
 	WorldObject* milize;
+	Collider* collider1;
+	Collider* collider2;
 	DirectionalBullet* directionalBullet;
 } DodgeGameInstance;
 
