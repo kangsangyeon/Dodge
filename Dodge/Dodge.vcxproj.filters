@@ -81,6 +81,9 @@
     <ClCompile Include="IntQueue.c">
       <Filter>Source Files\Engine\Lib</Filter>
     </ClCompile>
+    <ClCompile Include="CollisionInfo.c">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Const.h">
@@ -127,6 +130,9 @@
     </ClInclude>
     <ClInclude Include="IntQueue.h">
       <Filter>Header Files\Engine\Lib</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionInfo.h">
+      <Filter>Header Files\Engine</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

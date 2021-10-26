@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <wchar.h>
 
+#include "CollisionInfo.h"
 #include "Vector2D.h"
 
 typedef struct TCollider
@@ -16,3 +17,5 @@ Collider* Collider_LoadFromTextFile(wchar_t* _filePath);
 void Collider_Release(Collider* _collider);
 
 bool Collider_CheckCollision(Collider* _source, Vector2D _sourcePosition, Collider* _other, Vector2D _otherPosition);
+
+bool Collider_CheckCollisionDebug(Collider* _source, Vector2D _sourcePosition, Collider* _other, Vector2D _otherPosition, CollisionInfo** _outCollisionInfo);
