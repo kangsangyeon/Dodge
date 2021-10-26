@@ -21,3 +21,5 @@ void GameInstance_Release(GameInstance* _gameInstance);
 void GameInstance_PreTick(GameInstance* _gameInstance, float* _outDeltaTime);
 
 void GameInstance_PostTick(GameInstance* _gameInstance);
+
+double GameInstance_GetGameTime(GameInstance* _gameInstance);

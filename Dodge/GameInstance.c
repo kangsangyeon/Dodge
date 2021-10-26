@@ -52,3 +52,9 @@ void GameInstance_PostTick(GameInstance* _gameInstance)
 
 	_gameInstance->lastPreTickMillis = _gameInstance->currentPreTickMillis;
 }
+
+double GameInstance_GetGameTime(GameInstance* _gameInstance)
+{
+	const long _gameTimeMillis = clock() - _gameInstance->startGameMillis;
+	return _gameTimeMillis / 1000.;
+}
