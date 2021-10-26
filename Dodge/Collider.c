@@ -86,8 +86,11 @@ bool Collider_CheckCollision(Collider* _source, Vector2D _sourcePosition, Collid
 			_sourceX < _source->width && _otherX < _other->width;
 			++_sourceX, ++_otherX)
 		{
-			const bool _sourceCollision = _source->dataArr[_sourceY][_sourceX];
-			const bool _otherCollision = _other->dataArr[_otherY][_otherX];
+			const wchar_t _sourceCharacter = _source->dataArr[_sourceY][_sourceX];
+			const wchar_t _otherCharacter = _other->dataArr[_otherY][_otherX];
+
+			const bool _sourceCollision = _sourceCharacter != ' ' && _sourceCharacter != '\0';
+			const bool _otherCollision = _otherCharacter != ' ' && _otherCharacter != '\0';
 
 			if (_sourceCollision & _otherCollision)
 				return true;
