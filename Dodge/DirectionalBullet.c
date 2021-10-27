@@ -36,7 +36,6 @@ void DirectionalBullet_Move(DirectionalBullet* _directionalBullet, float _deltat
 
 Vector2D DirectionalBullet_CreateRandomPosition(int _width, int _height, Vector2D* _outDirection)
 {
-	// 폭과 높이의 값으로 외곽 라인값들을 뽑는다.
 	int randomWidthLine = rand() % (_width + 21) - 10;
 	int randomHeightLine = rand() % (_height + 21) - 10;
 
@@ -52,10 +51,8 @@ Vector2D DirectionalBullet_CreateRandomPosition(int _width, int _height, Vector2
 	Vector2D _randomMiddleHorizontalLine = { _upNdownLineDirectional, (_height / 2) };
 	Vector2D _randomMiddleVerticalLine = { (_width / 2), _rightNLeftLineDirectional };
 
-	// 뽑은 값으로 1, 2, 3, 4 만듬
-	// 각 분기별로 설정된 라인의 변동값을 랜덤으로 받는다.
-	int randomExternalLineSelect = rand() % 4;
 
+	int randomExternalLineSelect = rand() % 4;
 	switch (randomExternalLineSelect)
 	{
 	case 0:
@@ -65,10 +62,10 @@ Vector2D DirectionalBullet_CreateRandomPosition(int _width, int _height, Vector2
 		*_outDirection = Vector2D_Sub(_randomMiddleHorizontalLine, _randomExternalDownLine);
 		return _randomExternalDownLine;
 	case 2:
-		*_outDirection = Vector2D_Sub(_randomMiddleVerticalLine, _randomExternalLeftLine);
+		*_outDirection = Vector2D_Sub(_randomMiddleVerticalLine, _randomExternalRightLine);
 		return _randomExternalRightLine;
 	case 3:
-		*_outDirection = Vector2D_Sub(_randomMiddleVerticalLine, _randomExternalRightLine);
+		*_outDirection = Vector2D_Sub(_randomMiddleVerticalLine, _randomExternalLeftLine);
 		return _randomExternalLeftLine;
 	}
 
