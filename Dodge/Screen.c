@@ -17,11 +17,14 @@ Screen* Screen_Create(int _width, int _height, wchar_t* _fontFaceName, COORD _fo
 	outScreen->useColor = _useColor;
 
 	outScreen->clearLineText = (wchar_t*)calloc(_width + 1, sizeof(wchar_t));
-	outScreen->clearLineColor = (unsigned short*)calloc(_width, sizeof(unsigned short));
 	for (int i = 0; i < _width; ++i)
-	{
 		outScreen->clearLineText[i] = L' ';
-		outScreen->clearLineColor[i] = _primaryColor;
+
+	if (_useColor == true)
+	{
+		outScreen->clearLineColor = (unsigned short*)calloc(_width, sizeof(unsigned short));
+		for (int i = 0; i < _width; ++i)
+			outScreen->clearLineColor[i] = _primaryColor;
 	}
 
 	outScreen->screenHandles[0] = _Screen_CreateScreenHandle(_fontFaceName, _fontSize);
@@ -203,11 +206,17 @@ void Screen_Render(Screen* _screen)
 {
 	// Screen_ClearScreen(_screen);
 
-	for (int y = 0; y < _screen->height; ++y)
+	if (_screen->useColor == true)
 	{
-		_Screen_WriteLineToConsole(_screen, y, _screen->textBuffer[y],
-		                           _screen->useColor == true ? _screen->colorBuffer[y] : NULL);
+		for (int y = 0; y < _screen->height; ++y)
+			_Screen_WriteLineToConsole(_screen, y, _screen->textBuffer[y], _screen->colorBuffer[y]);
 	}
+	else
+	{
+		for (int y = 0; y < _screen->height; ++y)
+			_Screen_WriteLineToConsole(_screen, y, _screen->textBuffer[y], NULL);
+	}
+
 
 	// 활성화된(=보여주고 있는) Screen buffer를 front buffer와 back buffer끼리 맞바꿉니다.
 	SetConsoleActiveScreenBuffer(_screen->screenHandles[_screen->screenIndex]);
@@ -247,12 +256,18 @@ void Screen_ClearBuffer(Screen* _screen)
 	const int _lineTextByteSize = _screen->width * sizeof(wchar_t);
 	const int _lineColorByteSize = _screen->width * sizeof(unsigned short);
 
-	for (int _y = 0; _y < _screen->height; ++_y)
+	if (_screen->useColor == true)
 	{
-		memcpy_s(_screen->textBuffer[_y], _lineTextByteSize, _screen->clearLineText, _lineTextByteSize);
-
-		if (_screen->useColor == true)
+		for (int _y = 0; _y < _screen->height; ++_y)
+		{
+			memcpy_s(_screen->textBuffer[_y], _lineTextByteSize, _screen->clearLineText, _lineTextByteSize);
 			memcpy_s(_screen->colorBuffer[_y], _lineColorByteSize, _screen->clearLineColor, _lineColorByteSize);
+		}
+	}
+	else
+	{
+		for (int _y = 0; _y < _screen->height; ++_y)
+			memcpy_s(_screen->textBuffer[_y], _lineTextByteSize, _screen->clearLineText, _lineTextByteSize);
 	}
 }
 
@@ -390,8 +405,8 @@ void _Screen_WriteLineToConsole(Screen* _screen, int _startY, wchar_t* _textBuff
 		else
 		{
 			// 색상을 사용하지 않는 경우,
-			// 문자열을 모두 같은 색상으로 칠합니다.
-			_sameColorContinuousTextCount = wcslen(_textBufferLine);
+			// 한 줄의 문자을 모두 같은 색상으로 칠합니다.
+			_sameColorContinuousTextCount = _screen->width;
 		}
 
 		// 한 번에 그릴 글자만큼 bufferX의 커서를 뒤로 옮깁니다.
