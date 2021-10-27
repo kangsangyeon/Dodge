@@ -28,7 +28,8 @@ typedef struct TDodgeGameInstance
 } DodgeGameInstance;
 
 DodgeGameInstance* DodgeGameInstance_Create(int _screenWidth, int _screenHeight, wchar_t* _fontFaceName, COORD _fontSize,
-                                            unsigned short _foregroundColor, unsigned short _backgroundColor, int _boardWidth, int _boardHeight, int _desiredFps);
+                                            unsigned short _foregroundColor, unsigned short _backgroundColor, bool _useColor,
+                                            int _boardWidth, int _boardHeight, int _desiredFps);
 
 void DodgeGameInstance_Release(DodgeGameInstance* _dodgeGame);
 

@@ -16,7 +16,9 @@ typedef struct TGameInstance
 	clock_t currentPreTickMillis;
 } GameInstance;
 
-GameInstance* GameInstance_Create(int _screenWidth, int _screenHeight, wchar_t* _fontFaceName, COORD _fontSize, unsigned short _foregroundColor, unsigned short _backgroundColor, int _desiredFps);
+GameInstance* GameInstance_Create(int _screenWidth, int _screenHeight, wchar_t* _fontFaceName, COORD _fontSize,
+                                  unsigned short _foregroundColor, unsigned short _backgroundColor, bool _useColor,
+                                  int _desiredFps);
 
 void GameInstance_Release(GameInstance* _gameInstance);
 

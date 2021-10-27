@@ -4,7 +4,8 @@
 #include <stdio.h>
 #include <time.h>
 
-GameInstance* GameInstance_Create(int _screenWidth, int _screenHeight, wchar_t* _fontFaceName, COORD _fontSize, unsigned short _foregroundColor, unsigned short _backgroundColor,
+GameInstance* GameInstance_Create(int _screenWidth, int _screenHeight, wchar_t* _fontFaceName, COORD _fontSize,
+                                  unsigned short _foregroundColor, unsigned short _backgroundColor, bool _useColor,
                                   int _desiredFps)
 {
 	GameInstance* _gameInstance = (GameInstance*)calloc(1, sizeof(GameInstance));
@@ -14,7 +15,7 @@ GameInstance* GameInstance_Create(int _screenWidth, int _screenHeight, wchar_t* 
 	_gameInstance->startGameMillis = clock();
 	_gameInstance->currentPreTickMillis = _gameInstance->startGameMillis;
 
-	_gameInstance->screen = Screen_Create(_screenWidth, _screenHeight, _fontFaceName, _fontSize, _foregroundColor, _backgroundColor);
+	_gameInstance->screen = Screen_Create(_screenWidth, _screenHeight, _fontFaceName, _fontSize, _foregroundColor, _backgroundColor, _useColor);
 
 	_gameInstance->audio = Audio_Create(512);
 

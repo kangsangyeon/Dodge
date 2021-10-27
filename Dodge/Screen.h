@@ -16,6 +16,8 @@ typedef struct TScreen
 	unsigned short primaryForegroundAndBackgroundColor;
 	unsigned short latestForegroundAndBackgroundColor;
 
+	bool useColor;
+
 	wchar_t** textBuffer; // [HEIGHT][WIDTH]
 	unsigned short** colorBuffer;
 	wchar_t* clearLineText;
@@ -23,7 +25,7 @@ typedef struct TScreen
 } Screen;
 
 
-Screen* Screen_Create(int _width, int _height, wchar_t* _fontFaceName, COORD _fontSize, unsigned short _foregroundColor, unsigned short _backgroundColor);
+Screen* Screen_Create(int _width, int _height, wchar_t* _fontFaceName, COORD _fontSize, unsigned short _foregroundColor, unsigned short _backgroundColor, bool _useColor);
 
 void Screen_Release(Screen* _screen);
 
