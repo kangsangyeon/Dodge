@@ -48,10 +48,13 @@ DodgeGameInstance* DodgeGameInstance_Create(int _screenWidth, int _screenHeight,
 
 	// 총알 생성
 	Vector2D _directionalBulletPivot = {0, 0};
-	Vector2D _directional = {0, 20};
-	Vector2D _randomPosition = DirectionalBullet_CreateRandomPosition(_screenWidth, _screenHeight);
 
-	_instance->directionalBullet = DirectionalBullet_Create(L"Sprites/test_bullet.txt", _directionalBulletPivot, Vector2D_Zero, _directional, 50);
+
+	// 랜덤으로 생성한 위치를 받아와서 if문으로 ditrectional 처리
+	Vector2D _directional = { 0,0 };
+	// Vector2D _randomPosition = DirectionalBullet_CreateRandomPosition(_screenWidth, _screenHeight, &_randomMiddleHorizontalLine);
+	Vector2D _randomPosition = DirectionalBullet_CreateRandomPosition(_screenWidth, _screenHeight, &_directional);
+	_instance->directionalBullet = DirectionalBullet_Create(L"Sprites/test_bullet.txt", _directionalBulletPivot, _randomPosition, _directional, 50);
 
 	return _instance;
 }
