@@ -77,3 +77,12 @@ double Vector2D_Distance(Vector2D _first, Vector2D _second)
 	const float _magnitude = Vector2D_Magnitude(_difference);
 	return _magnitude;
 }
+
+Vector2D Vector2D_Lerp(Vector2D _origin, Vector2D _destination, float _delta)
+{
+	const Vector2D _direction = Vector2D_Sub(_destination, _origin);
+	const Vector2D _deltaVector = Vector2D_Multiply(_direction, _delta);
+	const Vector2D _outVector2D = Vector2D_Add(_origin, _deltaVector);
+
+	return _outVector2D;
+}
