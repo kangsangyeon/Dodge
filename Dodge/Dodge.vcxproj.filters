@@ -93,6 +93,9 @@
     <ClCompile Include="WarningSign.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Boss_DogeMusk.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Const.h">
@@ -150,6 +153,9 @@
       <Filter>Header Files\Engine</Filter>
     </ClInclude>
     <ClInclude Include="WarningSign.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss_DogeMusk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

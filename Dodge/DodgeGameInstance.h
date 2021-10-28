@@ -2,11 +2,27 @@
 #include <wchar.h>
 
 #include "Board.h"
+#include "Boss_DogeMusk.h"
 #include "Collider.h"
 #include "GameInstance.h"
 #include "Player.h"
 #include "DirectionalBullet.h"
 #include "WarningSign.h"
+
+typedef enum TEGameState
+{
+	EGS_NONE = 0,
+	EGS_START = 1,
+	EGS_BOSS_PLAYING = 2,
+	EGS_BOSS_WAITING = 3
+} EGameState;
+
+typedef enum TEBossType
+{
+	EBI_NONE = 0,
+	EBI_DOGE_MUSK = 1,
+	EBI_MAX = 2
+} EBossType;
 
 typedef struct TDodgeGameInstance
 {
@@ -16,6 +32,9 @@ typedef struct TDodgeGameInstance
 	int screenHeight;
 
 	Player* player;
+
+	EBossType bossType;
+	Boss_DogeMusk* dogeMusk;
 } DodgeGameInstance;
 
 DodgeGameInstance* DodgeGameInstance_Create(int _screenWidth, int _screenHeight, wchar_t* _fontFaceName, COORD _fontSize,
