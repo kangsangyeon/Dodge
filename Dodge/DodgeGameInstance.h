@@ -11,22 +11,11 @@
 typedef struct TDodgeGameInstance
 {
 	GameInstance* gameInstance;
-	Board* board;
 
 	int screenWidth;
 	int screenHeight;
 
-	// for test
 	Player* player;
-	WorldObject* paimon;
-	WorldObject* takane;
-	WorldObject* milize;
-	Collider* collider1;
-	Collider* collider2;
-	AudioClip* _audioClip1;
-	AudioClip* _audioClip2;
-	DirectionalBullet* directionalBullet;
-	WarningSign* warningSign;
 } DodgeGameInstance;
 
 DodgeGameInstance* DodgeGameInstance_Create(int _screenWidth, int _screenHeight, wchar_t* _fontFaceName, COORD _fontSize,
