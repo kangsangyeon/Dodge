@@ -9,8 +9,8 @@
 #include "Sprite.h"
 
 DodgeGameInstance* DodgeGameInstance_Create(int _screenWidth, int _screenHeight, wchar_t* _fontFaceName, COORD _fontSize,
-                                            unsigned short _foregroundColor, unsigned short _backgroundColor, bool _useColor,
-                                            int _boardWidth, int _boardHeight, int _desiredFps)
+	unsigned short _foregroundColor, unsigned short _backgroundColor, bool _useColor,
+	int _boardWidth, int _boardHeight, int _desiredFps)
 {
 	DodgeGameInstance* _instance = (DodgeGameInstance*)calloc(1, sizeof(DodgeGameInstance));
 	_instance->screenWidth = _screenWidth;
@@ -23,8 +23,20 @@ DodgeGameInstance* DodgeGameInstance_Create(int _screenWidth, int _screenHeight,
 	_instance->player = Player_Create(L"Sprites/player_heart.txt", L"Sprites/player_heart.txt", Vector2D_Center, _screenCenter, 150);
 
 	// boss
-	_instance->bossType = EBI_NONE;
+	_instance->bossType = EBT_NONE;
 	_instance->dogeMusk = NULL;
+
+	//총알
+	Vector2D _directionalBulletPivot = { 0, 0 };
+	Vector2D _directionalBulletDirectional = { 0,0 };
+	Vector2D _directionalBulletRandomPosition = DirectionalBullet_CreateRandomPosition(_screenWidth, _screenHeight, &_directionalBulletDirectional);
+	_instance->directionalBullet = DirectionalBullet_Create(L"Sprites/test_bullet.txt", _directionalBulletPivot, _directionalBulletRandomPosition, _directionalBulletDirectional, 110);
+
+	//직선총알
+	Vector2D _linearBulletPivot = { 0, 0 };
+	Vector2D _linearBulletDirectional = { 0, 0 };
+	Vector2D _linearBulletRandomPosition = LinearBullet_CreatRandomPosition(_screenWidth, _screenHeight,&_linearBulletDirectional);
+	_instance->linearBullet = LinearBullet_Create(L"Sprites/test_paimon.txt", _linearBulletPivot, _linearBulletRandomPosition, _linearBulletDirectional, 110);
 
 	return _instance;
 }
@@ -44,6 +56,14 @@ void DodgeGameInstance_Release(DodgeGameInstance* _dodgeGame)
 	// boss
 	if (_dodgeGame->dogeMusk != NULL)
 		Boss_DogeMusk_Release(_dodgeGame->dogeMusk);
+
+	//총알
+	if (_dodgeGame->directionalBullet != NULL)
+		WorldObject_Release(_dodgeGame->directionalBullet);
+
+	//직선총알
+	if (_dodgeGame->linearBullet != NULL)
+		WorldObject_Release(_dodgeGame->linearBullet);
 
 	free(_dodgeGame);
 }
@@ -68,21 +88,21 @@ void _DodgeGameInstance_GameTick(DodgeGameInstance* _dodgeGame, float _deltaTime
 
 	// boss
 	if (GameInstance_GetGameTime(_dodgeGame->gameInstance) > 1
-		&& _dodgeGame->bossType == EBI_NONE)
+		&& _dodgeGame->bossType == EBT_NONE)
 	{
 		// 보스가 재생될 시간이 되었고, 보스가 재생중이지 않을 때
 		// 보스를 새로 재생합니다.
 
 		if (_dodgeGame->dogeMusk == NULL)
 		{
-			_dodgeGame->bossType = EBI_DOGE_MUSK;
+			_dodgeGame->bossType = EBT_DOGE_MUSK;
 			_dodgeGame->dogeMusk = Boss_DogeMusk_Create(_dodgeGame);
 		}
 	}
 
 	switch (_dodgeGame->bossType)
 	{
-	case EBI_DOGE_MUSK:
+	case EBT_DOGE_MUSK:
 		Boss_DogeMusk_Tick(_dodgeGame, _dodgeGame->dogeMusk, _deltaTime);
 		break;
 	}
@@ -112,4 +132,23 @@ void _DodgeGameInstance_GameTick(DodgeGameInstance* _dodgeGame, float _deltaTime
 		Player_Move(_dodgeGame->player, _velocity, _deltaTime);
 		Screen_PrintWorldObject(_screen, _dodgeGame->player->worldObject);
 	}
+
+	//총알
+	if (_dodgeGame->directionalBullet != NULL)
+		Screen_PrintWorldObject(_screen, _dodgeGame->directionalBullet->worldObject);
+
+	//직선총알
+	if (_dodgeGame->linearBullet != NULL)
+		Screen_PrintWorldObject(_screen, _dodgeGame->linearBullet->worldObject);
+
+
+	const int _destoryWidth = _screen->width;
+	const int _destoryHeight = _screen->height;
+	DirectionalBullet_Move(_dodgeGame->directionalBullet, _deltaTime);
+	LinearBullet_Move(_dodgeGame->linearBullet, _deltaTime);
+
+	bool _checkDestroy = DirectionalBullet_Destroy(_dodgeGame->directionalBullet, _destoryWidth, _destoryHeight);
+
+	if (_checkDestroy == true)
+		_dodgeGame->directionalBullet = NULL;
 }

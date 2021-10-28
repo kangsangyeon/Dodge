@@ -7,6 +7,7 @@
 #include "GameInstance.h"
 #include "Player.h"
 #include "DirectionalBullet.h"
+#include "LinearBullet.h"
 #include "WarningSign.h"
 
 typedef enum TEGameState
@@ -19,9 +20,9 @@ typedef enum TEGameState
 
 typedef enum TEBossType
 {
-	EBI_NONE = 0,
-	EBI_DOGE_MUSK = 1,
-	EBI_MAX = 2
+	EBT_NONE = 0,
+	EBT_DOGE_MUSK = 1,
+	EBT_MAX = 2
 } EBossType;
 
 typedef struct TDodgeGameInstance
@@ -32,9 +33,10 @@ typedef struct TDodgeGameInstance
 	int screenHeight;
 
 	Player* player;
-
 	EBossType bossType;
 	Boss_DogeMusk* dogeMusk;
+	DirectionalBullet* directionalBullet;
+	LinearBullet* linearBullet;
 } DodgeGameInstance;
 
 DodgeGameInstance* DodgeGameInstance_Create(int _screenWidth, int _screenHeight, wchar_t* _fontFaceName, COORD _fontSize,

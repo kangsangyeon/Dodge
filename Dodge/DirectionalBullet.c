@@ -32,6 +32,8 @@ void DirectionalBullet_Move(DirectionalBullet* _directionalBullet, float _deltat
 		return;
 
 	Vector2D _velocity = Vector2D_Multiply(_directionalBullet->direction, _directionalBullet->moveSpeed * _deltatime);
+	_velocity.x = _velocity.x * 1.67;
+
 	_directionalBullet->worldObject->position = Vector2D_Add(_directionalBullet->worldObject->position, _velocity);
 }
 
