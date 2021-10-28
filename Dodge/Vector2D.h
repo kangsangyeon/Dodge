@@ -12,7 +12,13 @@ extern const Vector2D Vector2D_Left;
 extern const Vector2D Vector2D_Right;
 extern const Vector2D Vector2D_Up;
 extern const Vector2D Vector2D_Down;
+extern const Vector2D Vector2D_RightUp;
+extern const Vector2D Vector2D_RightDown;
+extern const Vector2D Vector2D_LeftUp;
+extern const Vector2D Vector2D_LeftDown;
 extern const Vector2D Vector2D_Zero;
+extern const Vector2D Vector2D_Center;
+extern const Vector2D Vector2D_One;
 
 Vector2D Vector2D_Add(Vector2D _first, Vector2D _second);
 

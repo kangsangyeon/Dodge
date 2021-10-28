@@ -8,6 +8,13 @@ const Vector2D Vector2D_Left = {-1, 0};
 const Vector2D Vector2D_Right = {1, 0};
 const Vector2D Vector2D_Up = {0, 1};
 const Vector2D Vector2D_Down = {0, -1};
+const Vector2D Vector2D_RightUp = {1, 1};
+const Vector2D Vector2D_RightDown = {1, -1};
+const Vector2D Vector2D_LeftUp = {-1, 1};
+const Vector2D Vector2D_LeftDown = {-1, -1};
+const Vector2D Vector2D_Zero = {0, 0};
+const Vector2D Vector2D_Center = {.5, .5};
+const Vector2D Vector2D_One = {1, 1};
 
 Vector2D Vector2D_Add(Vector2D _first, Vector2D _second)
 {
