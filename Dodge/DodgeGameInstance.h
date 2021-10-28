@@ -6,6 +6,7 @@
 #include "GameInstance.h"
 #include "Player.h"
 #include "DirectionalBullet.h"
+#include "WarningSign.h"
 
 typedef struct TDodgeGameInstance
 {
@@ -25,6 +26,7 @@ typedef struct TDodgeGameInstance
 	AudioClip* _audioClip1;
 	AudioClip* _audioClip2;
 	DirectionalBullet* directionalBullet;
+	WarningSign* warningSign;
 } DodgeGameInstance;
 
 DodgeGameInstance* DodgeGameInstance_Create(int _screenWidth, int _screenHeight, wchar_t* _fontFaceName, COORD _fontSize,

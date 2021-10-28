@@ -1,4 +1,6 @@
 ﻿#pragma once
+#include <stdbool.h>
+
 #include "WorldObject.h"
 
 typedef struct TDirectionalBullet
@@ -17,4 +19,4 @@ void DirectionalBullet_Move(DirectionalBullet* _directionalBullet, float _deltat
 
 Vector2D DirectionalBullet_CreateRandomPosition(int _width, int _height, Vector2D* _outDirection);
 
-void DirectionalBullet_Destroy(DirectionalBullet* _directionalBullet, int _width, int _height);
+bool DirectionalBullet_Destroy(DirectionalBullet* _directionalBullet, int _width, int _height);

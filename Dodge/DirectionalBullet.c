@@ -9,7 +9,6 @@ DirectionalBullet* DirectionalBullet_Create(wchar_t* _spriteFilePath, Vector2D _
 	_directionalBullet->worldObject = WorldObject_CreateWithSprite(_spriteFilePath, _pivot, _position);
 	_directionalBullet->moveSpeed = _moveSpeed;
 	_directionalBullet->direction = Vector2D_Normalized(_direction);
-
 	return _directionalBullet;
 }
 
@@ -26,6 +25,9 @@ void DirectionalBullet_Release(DirectionalBullet* _directionalBullet)
 
 void DirectionalBullet_Move(DirectionalBullet* _directionalBullet, float _deltatime)
 {
+	if (_directionalBullet == NULL)
+		return;
+
 	if (Vector2D_IsEquals(_directionalBullet->direction, Vector2D_Zero) == true)
 		return;
 
@@ -72,8 +74,11 @@ Vector2D DirectionalBullet_CreateRandomPosition(int _width, int _height, Vector2
 	return Vector2D_Zero;
 }
 
-void DirectionalBullet_Destroy(DirectionalBullet* _directionalBullet, int _width, int _height)
+bool DirectionalBullet_Destroy(DirectionalBullet* _directionalBullet, int _width, int _height)
 {
+	if (_directionalBullet == NULL)
+		return;
+
 	const int _destroyRange = 15;
 	Vector2D _checkToDestroyDirectionalBullet = _directionalBullet->worldObject->position;
 	Vector2D _destoryScreenMinRange = { -_destroyRange, -_destroyRange };
@@ -84,7 +89,8 @@ void DirectionalBullet_Destroy(DirectionalBullet* _directionalBullet, int _width
 		_checkToDestroyDirectionalBullet.y < _destoryScreenMinRange.y ||
 		_checkToDestroyDirectionalBullet.y > _destoryScreenMaxRange.y)
 	{
-		_directionalBullet = NULL;
 		DirectionalBullet_Release(_directionalBullet);
+		return true;
 	}
+	return false;
 }

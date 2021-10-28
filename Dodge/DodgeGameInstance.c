@@ -25,17 +25,17 @@ DodgeGameInstance* DodgeGameInstance_Create(int _screenWidth, int _screenHeight,
 	Vector2D _position = {100, 100};
 	_instance->player = Player_Create(L"Sprites/test_chihaya.txt", L"Sprites/test_chihaya_mask_cutted.txt", _pivot, _position, 50);
 
-	Vector2D _paimonPivot = {0, 0};
-	Vector2D _paimonPosition = {-20, -20};
-	_instance->paimon = WorldObject_CreateWithSprite(L"Sprites/test_paimon.txt", _paimonPivot, _paimonPosition);
+	//Vector2D _paimonPivot = {0, 0};
+	//Vector2D _paimonPosition = {-20, -20};
+	//_instance->paimon = WorldObject_CreateWithSprite(L"Sprites/test_paimon.txt", _paimonPivot, _paimonPosition);
 
-	Vector2D _takanePivot = {0, 0};
-	Vector2D _takanePosition = {100, 0};
-	_instance->takane = WorldObject_CreateWithSprite(L"Sprites/test_takane.txt", _takanePivot, _takanePosition);
+	//Vector2D _takanePivot = {0, 0};
+	//Vector2D _takanePosition = {100, 0};
+	//_instance->takane = WorldObject_CreateWithSprite(L"Sprites/test_takane.txt", _takanePivot, _takanePosition);
 
-	Vector2D _milizePivot = {0, 0};
-	Vector2D _milizePosition = {-20, 30};
-	_instance->milize = WorldObject_CreateWithSpriteMask(L"Sprites/test_milize.txt", L"Sprites/test_milize_mask.txt", _milizePivot, _milizePosition);
+	//Vector2D _milizePivot = {0, 0};
+	//Vector2D _milizePosition = {-20, 30};
+	//_instance->milize = WorldObject_CreateWithSpriteMask(L"Sprites/test_milize.txt", L"Sprites/test_milize_mask.txt", _milizePivot, _milizePosition);
 
 	_instance->collider1 = Collider_LoadFromTextFile(L"Sprites/test_matrix20_20.txt");
 	_instance->collider2 = Collider_LoadFromTextFile(L"Sprites/test_matrix_grid_20_20.txt");
@@ -49,7 +49,13 @@ DodgeGameInstance* DodgeGameInstance_Create(int _screenWidth, int _screenHeight,
 	Vector2D _directionalBulletPivot = {0, 0};
 	Vector2D _directional = { 0,0 };
 	Vector2D _randomPosition = DirectionalBullet_CreateRandomPosition(_screenWidth, _screenHeight, &_directional);
-	_instance->directionalBullet = DirectionalBullet_Create(L"Sprites/test_bullet.txt", _directionalBulletPivot, _randomPosition, _directional, 70);
+	_instance->directionalBullet = DirectionalBullet_Create(L"Sprites/test_bullet.txt", _directionalBulletPivot, _randomPosition, _directional, 110);
+
+
+	Vector2D _warningSignPivot = { 0, 0 };
+	Vector2D _warningSignPosition = { 100, 30 };
+	float _holdWarningTime = 0;
+	_instance->warningSign = WarningSign_Create(L"Sprites/test_warning.txt", _warningSignPivot, _warningSignPosition, _holdWarningTime);
 
 	return _instance;
 }
@@ -92,6 +98,9 @@ void DodgeGameInstance_Release(DodgeGameInstance* _dodgeGame)
 
 	if (_dodgeGame->directionalBullet != NULL)
 		WorldObject_Release(_dodgeGame->directionalBullet);
+
+	if (_dodgeGame->warningSign != NULL)
+		WorldObject_Release(_dodgeGame->warningSign);
 
 	free(_dodgeGame);
 }
@@ -153,6 +162,9 @@ void _DodgeGameInstance_GameTick(DodgeGameInstance* _dodgeGame, float _deltaTime
 	if (_dodgeGame->player != NULL)
 		Screen_PrintWorldObject(_screen, _dodgeGame->player->worldObject);
 
+	if (_dodgeGame->warningSign != NULL)
+		Screen_PrintWorldObject(_screen, _dodgeGame->warningSign->worldObject);
+
 	if (_dodgeGame->collider1 != NULL && _dodgeGame->collider2 != NULL)
 	{
 		Vector2D _collider1Position = {0, 0};
@@ -169,14 +181,13 @@ void _DodgeGameInstance_GameTick(DodgeGameInstance* _dodgeGame, float _deltaTime
 		_dodgeGame->_audioClip1 = NULL;
 	}
 
-	// 총알 이동 + 그려주기 + 몇 초마다 생성할 것인지를 결정한다.
-	// test
-	// DirectionalBullet_RandomPositionCreate(_screen->width, _screen->height);
-
 	const int _destoryWidth = _screen->width;
 	const int _destoryHeight = _screen->height;
 	DirectionalBullet_Move(_dodgeGame->directionalBullet, _deltaTime);
-	DirectionalBullet_Destroy(_dodgeGame->directionalBullet, _destoryWidth, _destoryHeight);
+	bool _checkDestroy = DirectionalBullet_Destroy(_dodgeGame->directionalBullet, _destoryWidth, _destoryHeight);
+
+	if (_checkDestroy == true)
+		_dodgeGame->directionalBullet = NULL;
 
 	if (_dodgeGame->directionalBullet != NULL)
 		Screen_PrintWorldObject(_screen, _dodgeGame->directionalBullet->worldObject);

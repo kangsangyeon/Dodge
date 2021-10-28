@@ -90,6 +90,9 @@
     <ClCompile Include="AudioClip.c">
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
+    <ClCompile Include="WarningSign.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Const.h">
@@ -145,6 +148,9 @@
     </ClInclude>
     <ClInclude Include="AudioClip.h">
       <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="WarningSign.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

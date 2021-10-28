@@ -167,6 +167,7 @@
     <ClCompile Include="Sprite.c" />
     <ClCompile Include="Test.c" />
     <ClCompile Include="Vector2D.c" />
+    <ClCompile Include="WarningSign.c" />
     <ClCompile Include="WorldObject.c" />
   </ItemGroup>
   <ItemGroup>
@@ -187,6 +188,7 @@
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Test.h" />
     <ClInclude Include="Vector2D.h" />
+    <ClInclude Include="WarningSign.h" />
     <ClInclude Include="WorldObject.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
