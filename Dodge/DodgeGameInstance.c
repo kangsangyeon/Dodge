@@ -173,7 +173,10 @@ void _DodgeGameInstance_GameTick(DodgeGameInstance* _dodgeGame, float _deltaTime
 	// test
 	// DirectionalBullet_RandomPositionCreate(_screen->width, _screen->height);
 
+	const int _destoryWidth = _screen->width;
+	const int _destoryHeight = _screen->height;
 	DirectionalBullet_Move(_dodgeGame->directionalBullet, _deltaTime);
+	DirectionalBullet_Destroy(_dodgeGame->directionalBullet, _destoryWidth, _destoryHeight);
 
 	if (_dodgeGame->directionalBullet != NULL)
 		Screen_PrintWorldObject(_screen, _dodgeGame->directionalBullet->worldObject);

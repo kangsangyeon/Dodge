@@ -33,20 +33,21 @@ void DirectionalBullet_Move(DirectionalBullet* _directionalBullet, float _deltat
 	_directionalBullet->worldObject->position = Vector2D_Add(_directionalBullet->worldObject->position, _velocity);
 }
 
-
 Vector2D DirectionalBullet_CreateRandomPosition(int _width, int _height, Vector2D* _outDirection)
 {
-	int randomWidthLine = rand() % (_width + 21) - 10;
-	int randomHeightLine = rand() % (_height + 21) - 10;
+	const int createDirectionalBulletRange = 21;
+	const int createDirectionalBulletCorrection = 10;
+	const int randomWidthLine = rand() % (_width + createDirectionalBulletRange) - createDirectionalBulletCorrection;
+	const int randomHeightLine = rand() % (_height + createDirectionalBulletRange) - createDirectionalBulletCorrection;
 
-	Vector2D _randomExternalUpLine = { randomWidthLine, _height + 10 };
-	Vector2D _randomExternalDownLine = { randomWidthLine, -10 };
-	Vector2D _randomExternalRightLine = { _width + 10 , randomHeightLine };
-	Vector2D _randomExternalLeftLine = { -10, randomHeightLine };
+	Vector2D _randomExternalUpLine = { randomWidthLine, _height + createDirectionalBulletCorrection };
+	Vector2D _randomExternalDownLine = { randomWidthLine, -createDirectionalBulletCorrection };
+	Vector2D _randomExternalRightLine = { _width + createDirectionalBulletCorrection , randomHeightLine };
+	Vector2D _randomExternalLeftLine = { -createDirectionalBulletCorrection, randomHeightLine };
 
 
-	int _upNdownLineDirectional = rand() % _width;
-	int _rightNLeftLineDirectional = rand() % _height;
+	const int _upNdownLineDirectional = rand() % _width;
+	const int _rightNLeftLineDirectional = rand() % _height;
 
 	Vector2D _randomMiddleHorizontalLine = { _upNdownLineDirectional, (_height / 2) };
 	Vector2D _randomMiddleVerticalLine = { (_width / 2), _rightNLeftLineDirectional };
@@ -68,6 +69,22 @@ Vector2D DirectionalBullet_CreateRandomPosition(int _width, int _height, Vector2
 		*_outDirection = Vector2D_Sub(_randomMiddleVerticalLine, _randomExternalLeftLine);
 		return _randomExternalLeftLine;
 	}
-
 	return Vector2D_Zero;
+}
+
+void DirectionalBullet_Destroy(DirectionalBullet* _directionalBullet, int _width, int _height)
+{
+	const int _destroyRange = 15;
+	Vector2D _checkToDestroyDirectionalBullet = _directionalBullet->worldObject->position;
+	Vector2D _destoryScreenMinRange = { -_destroyRange, -_destroyRange };
+	Vector2D _destoryScreenMaxRange = { _width + _destroyRange, _height + _destroyRange };
+
+	if (_checkToDestroyDirectionalBullet.x < _destoryScreenMinRange.x ||
+		_checkToDestroyDirectionalBullet.x > _destoryScreenMaxRange.x ||
+		_checkToDestroyDirectionalBullet.y < _destoryScreenMinRange.y ||
+		_checkToDestroyDirectionalBullet.y > _destoryScreenMaxRange.y)
+	{
+		_directionalBullet = NULL;
+		DirectionalBullet_Release(_directionalBullet);
+	}
 }

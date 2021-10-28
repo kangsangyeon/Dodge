@@ -16,3 +16,5 @@ void DirectionalBullet_Release(DirectionalBullet* _directionalBullet);
 void DirectionalBullet_Move(DirectionalBullet* _directionalBullet, float _deltatime);
 
 Vector2D DirectionalBullet_CreateRandomPosition(int _width, int _height, Vector2D* _outDirection);
+
+void DirectionalBullet_Destroy(DirectionalBullet* _directionalBullet, int _width, int _height);
