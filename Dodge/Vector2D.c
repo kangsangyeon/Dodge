@@ -4,33 +4,32 @@
 
 #include "Const.h"
 
-const Vector2D Vector2D_Left = { -1, 0 };
-const Vector2D Vector2D_Right = { 1, 0 };
-const Vector2D Vector2D_Up = { 0, 1 };
-const Vector2D Vector2D_Down = { 0, -1 };
-const Vector2D Vector2D_Zero = { 0, 0 };
+const Vector2D Vector2D_Left = {-1, 0};
+const Vector2D Vector2D_Right = {1, 0};
+const Vector2D Vector2D_Up = {0, 1};
+const Vector2D Vector2D_Down = {0, -1};
 
 Vector2D Vector2D_Add(Vector2D _first, Vector2D _second)
 {
-	const Vector2D _outVector2D = { _first.x + _second.x, _first.y + _second.y };
+	const Vector2D _outVector2D = {_first.x + _second.x, _first.y + _second.y};
 	return _outVector2D;
 }
 
 Vector2D Vector2D_Sub(Vector2D _first, Vector2D _second)
 {
-	const Vector2D _outVector2D = { _first.x - _second.x, _first.y - _second.y };
+	const Vector2D _outVector2D = {_first.x - _second.x, _first.y - _second.y};
 	return _outVector2D;
 }
 
 Vector2D Vector2D_Multiply(Vector2D _vector, double _scalar)
 {
-	const Vector2D _outVector2D = { _vector.x * _scalar, _vector.y * _scalar };
+	const Vector2D _outVector2D = {_vector.x * _scalar, _vector.y * _scalar};
 	return _outVector2D;
 }
 
 Vector2D Vector2D_Divide(Vector2D _vector, double _scalar)
 {
-	const Vector2D _outVector2D = { _vector.x / _scalar, _vector.y / _scalar };
+	const Vector2D _outVector2D = {_vector.x / _scalar, _vector.y / _scalar};
 	return _outVector2D;
 }
 
