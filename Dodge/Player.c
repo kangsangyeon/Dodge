@@ -88,8 +88,8 @@ void Player_Move(Player* _player, Vector2D _vector, float _moveSpeed, float _del
 	_player->worldObject->position = Vector2D_Add(_player->worldObject->position, _velocity);
 
 	// 화면 밖으로 나가는 것을 보정
-	int correctionWidth = 7;
-	int correctionHeight = 5;
+	int correctionWidth = _player->worldObject->sprite->imageWidth / 2;
+	int correctionHeight = _player->worldObject->sprite->imageHeight / 2;
 	Vector2D _getPlayerVector = _player->worldObject->position;
 	_player->worldObject->position.x = FClamp(_getPlayerVector.x, correctionWidth, _width - correctionWidth);
 	_player->worldObject->position.y = FClamp(_getPlayerVector.y, correctionHeight, _height - correctionHeight);
