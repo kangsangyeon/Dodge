@@ -158,10 +158,10 @@
     <ClInclude Include="WarningSign.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Boss_DogeMusk.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="LinearBullet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss_DogeMusk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
