@@ -27,7 +27,7 @@ Boss_DogeMusk* Boss_DogeMusk_Create(DodgeGameInstance* _dodgeGameInstance)
 	_outBoss->bossStartTime = GameInstance_GetGameTime(_dodgeGameInstance->gameInstance);
 
 	// state
-	_outBoss->currentState = EBDPS_START;
+	_outBoss->currentState = EBDMS_START;
 
 	// patterns
 	_outBoss->currentPatternType = EBDMPT_NONE;
@@ -55,7 +55,7 @@ void Boss_DogeMusk_Release(Boss_DogeMusk* _boss)
 bool _Boss_DogeMusk_ShouldStartNewPattern(DodgeGameInstance* _dodgeGameInstance, Boss_DogeMusk* _boss)
 {
 	if (_dodgeGameInstance == NULL || _boss == NULL)
-		return;
+		return false;
 
 #define PATTERN_DELAY 1.f
 
@@ -63,11 +63,11 @@ bool _Boss_DogeMusk_ShouldStartNewPattern(DodgeGameInstance* _dodgeGameInstance,
 
 	switch (_boss->currentState)
 	{
-	case EBDPS_START:
+	case EBDMS_START:
 		// 보스가 시작되었을 때에는 무조건 새로운 패턴을 재생합니다.
 		return true;
 
-	case EBDPS_PATTERN_DELAYED:
+	case EBDMS_PATTERN_DELAYED:
 		{
 			// 패턴을 재생하고 난 뒤 일정 시간이 흐른 뒤에 새로운 패턴을 재생합니다.
 			const double _elapsedTimeAfterPatternEnd = _gameTime - _boss->patternEndTime;
@@ -75,7 +75,7 @@ bool _Boss_DogeMusk_ShouldStartNewPattern(DodgeGameInstance* _dodgeGameInstance,
 
 			return _shouldStartNewPattern;
 		}
-	case EBDPT_PATTERN_PLAYING:
+	case EBDMS_PATTERN_PLAYING:
 		// 이미 패턴을 재생하고 있을 때에는 새로운 패턴을 재생하지 않습니다.
 		return false;
 	}
@@ -120,7 +120,7 @@ void Boss_DogeMusk_Tick(DodgeGameInstance* _dodgeGameInstance, Boss_DogeMusk* _b
 	{
 		// 현재 패턴을 재생합니다.
 		// 만약 재생중인 패턴이 없다면 어떠한 동작도 하지 않습니다.
-	case EBDPT_PATTERN_PLAYING:
+	case EBDMS_PATTERN_PLAYING:
 		_patternEnd = _Boss_DogeMusk_Pattern1Tick(_dodgeGameInstance, _boss, _deltaTime, _startNewPattern);
 		break;
 	}
@@ -143,7 +143,7 @@ void _Boss_DogeMusk_PrePattern(DodgeGameInstance* _dodgeGameInstance, Boss_DogeM
 
 	// 패턴을 시작하기 앞서 변수들을 초기화합니다.
 	_boss->patternStartTime = _gameTime;
-	_boss->currentState = EBDPT_PATTERN_PLAYING;
+	_boss->currentState = EBDMS_PATTERN_PLAYING;
 
 	// 이번에 재생할 패턴의 유형을 선택합니다.
 	// 패턴의 개수가 2개 이상일 때,
@@ -164,8 +164,8 @@ void _Boss_DogeMusk_PostPattern(DodgeGameInstance* _dodgeGameInstance, Boss_Doge
 	_boss->patternEndTime = _gameTime;
 
 	_boss->previousPatternType = _boss->currentPatternType;
-	_boss->currentState = EBDPS_PATTERN_DELAYED;
-	_boss->currentPatternType = EBDPS_NONE;
+	_boss->currentState = EBDMS_PATTERN_DELAYED;
+	_boss->currentPatternType = EBDMS_NONE;
 }
 
 bool _Boss_DogeMusk_Pattern1Tick(DodgeGameInstance* _dodgeGameInstance, Boss_DogeMusk* _boss, double _deltaTime, bool _patternStart)

@@ -4,10 +4,10 @@
 
 typedef enum TEBoss_DogeMusk_State
 {
-	EBDPS_NONE = 0,
-	EBDPS_START = 1,
-	EBDPT_PATTERN_PLAYING = 2,
-	EBDPS_PATTERN_DELAYED = 3
+	EBDMS_NONE = 0,
+	EBDMS_START = 1,
+	EBDMS_PATTERN_PLAYING = 2,
+	EBDMS_PATTERN_DELAYED = 3
 } EBoss_DogeMusk_State;
 
 typedef enum TEBoss_DogeMusk_PatternType
