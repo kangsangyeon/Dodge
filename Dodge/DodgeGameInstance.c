@@ -19,8 +19,8 @@ DodgeGameInstance* DodgeGameInstance_Create(int _screenWidth, int _screenHeight,
 	_instance->gameInstance = GameInstance_Create(_screenWidth, _screenHeight, _fontFaceName, _fontSize, _foregroundColor, _backgroundColor, _useColor, _desiredFps);
 
 	// player
-	const Vector2D _screenCenter = {_screenWidth / 2, _screenHeight / 2};
-	_instance->player = Player_Create(L"Sprites/player_heart.txt", L"Sprites/player_heart.txt", Vector2D_Center, _screenCenter, 150);
+	const Vector2D _screenCenter = { _screenWidth / 2, _screenHeight / 2 };
+	_instance->player = Player_Create(L"Sprites/player_heart.txt", L"Sprites/player_heart.txt", Vector2D_Center, _screenCenter, 150, 300, 0.2f);
 
 	// boss
 	_instance->bossType = EBT_NONE;
@@ -35,7 +35,7 @@ DodgeGameInstance* DodgeGameInstance_Create(int _screenWidth, int _screenHeight,
 	//직선총알
 	Vector2D _linearBulletPivot = { 0, 0 };
 	Vector2D _linearBulletDirectional = { 0, 0 };
-	Vector2D _linearBulletRandomPosition = LinearBullet_CreatRandomPosition(_screenWidth, _screenHeight,&_linearBulletDirectional);
+	Vector2D _linearBulletRandomPosition = LinearBullet_CreatRandomPosition(_screenWidth, _screenHeight, &_linearBulletDirectional);
 	_instance->linearBullet = LinearBullet_Create(L"Sprites/test_paimon.txt", _linearBulletPivot, _linearBulletRandomPosition, _linearBulletDirectional, 110);
 
 	return _instance;
@@ -113,23 +113,7 @@ void _DodgeGameInstance_GameTick(DodgeGameInstance* _dodgeGame, float _deltaTime
 	// player
 	if (_dodgeGame->player != NULL)
 	{
-		Vector2D _velocity = {0, 0};
-
-		if (GetAsyncKeyState(VK_RIGHT))
-			_velocity.x += 1;
-
-		if (GetAsyncKeyState(VK_LEFT))
-			_velocity.x -= 1;
-
-		if (GetAsyncKeyState(VK_UP))
-			_velocity.y += 1;
-
-		if (GetAsyncKeyState(VK_DOWN))
-			_velocity.y -= 1;
-
-		_velocity = Vector2D_Normalized(_velocity);
-
-		Player_Move(_dodgeGame->player, _velocity, _deltaTime);
+		Player_Tick(_dodgeGame->player, _deltaTime, GameInstance_GetGameTime(_dodgeGame->gameInstance));
 		Screen_PrintWorldObject(_screen, _dodgeGame->player->worldObject);
 	}
 
