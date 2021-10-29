@@ -20,7 +20,7 @@ DodgeGameInstance* DodgeGameInstance_Create(int _screenWidth, int _screenHeight,
 
 	// player
 	const Vector2D _screenCenter = { _screenWidth / 2, _screenHeight / 2 };
-	_instance->player = Player_Create(L"Sprites/player_heart.txt", L"Sprites/player_heart.txt", Vector2D_Center, _screenCenter, 150, 300, 0.2f);
+	_instance->player = Player_Create(L"Sprites/player_heart.txt", L"Sprites/player_heart.txt", Vector2D_Center, _screenCenter, 120, .5f, 300, .2f);
 
 	// boss
 	_instance->bossType = EBT_NONE;
@@ -113,7 +113,7 @@ void _DodgeGameInstance_GameTick(DodgeGameInstance* _dodgeGame, float _deltaTime
 	// player
 	if (_dodgeGame->player != NULL)
 	{
-		Player_Tick(_dodgeGame->player, _deltaTime, GameInstance_GetGameTime(_dodgeGame->gameInstance));
+		Player_Tick(_dodgeGame->player, _deltaTime, GameInstance_GetGameTime(_dodgeGame->gameInstance), _screen->width, _screen->height);
 		Screen_PrintWorldObject(_screen, _dodgeGame->player->worldObject);
 	}
 
