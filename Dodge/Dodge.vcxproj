@@ -167,6 +167,7 @@
     <ClCompile Include="PointerStack.c" />
     <ClCompile Include="Screen.c" />
     <ClCompile Include="Sprite.c" />
+    <ClCompile Include="SpriteFlickerAnimation.c" />
     <ClCompile Include="Test.c" />
     <ClCompile Include="Vector2D.c" />
     <ClCompile Include="WarningSign.c" />
@@ -190,6 +191,7 @@
     <ClInclude Include="PointerStack.h" />
     <ClInclude Include="Screen.h" />
     <ClInclude Include="Sprite.h" />
+    <ClInclude Include="SpriteFlickerAnimation.h" />
     <ClInclude Include="Test.h" />
     <ClInclude Include="Vector2D.h" />
     <ClInclude Include="WarningSign.h" />
