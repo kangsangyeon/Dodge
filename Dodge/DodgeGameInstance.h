@@ -1,42 +1,24 @@
 ﻿#pragma once
 #include <wchar.h>
 
-#include "Board.h"
-#include "Boss_DogeMusk.h"
 #include "Collider.h"
 #include "GameInstance.h"
-#include "Player.h"
-#include "DirectionalBullet.h"
-#include "LinearBullet.h"
-#include "WarningSign.h"
 
-typedef enum TEGameState
-{
-	EGS_NONE = 0,
-	EGS_START = 1,
-	EGS_BOSS_PLAYING = 2,
-	EGS_BOSS_WAITING = 3
-} EGameState;
+typedef struct TGameInstance GameInstance;
+typedef struct TScene_Game Scene_Game;
 
-typedef enum TEBossType
+typedef enum TESceneType
 {
-	EBT_NONE = 0,
-	EBT_DOGE_MUSK = 1,
-	EBT_MAX = 2
-} EBossType;
+	EST_NONE = 0,
+	EST_GAME = 1
+} ESceneType;
 
 typedef struct TDodgeGameInstance
 {
 	GameInstance* gameInstance;
 
-	int screenWidth;
-	int screenHeight;
-
-	Player* player;
-	EBossType bossType;
-	Boss_DogeMusk* dogeMusk;
-	DirectionalBullet* directionalBullet;
-	LinearBullet* linearBullet;
+	ESceneType sceneType;
+	Scene_Game* gameScene;
 } DodgeGameInstance;
 
 DodgeGameInstance* DodgeGameInstance_Create(int _screenWidth, int _screenHeight, wchar_t* _fontFaceName, COORD _fontSize,

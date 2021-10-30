@@ -99,6 +99,9 @@
     <ClCompile Include="LinearBullet.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Scene_Game.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Const.h">
@@ -162,6 +165,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Boss_DogeMusk.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene_Game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
