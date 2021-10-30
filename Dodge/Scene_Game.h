@@ -35,4 +35,8 @@ Scene_Game* Scene_Game_Create(DodgeGameInstance* _dodgeGame);
 
 void Scene_Game_Release(Scene_Game* _scene);
 
+void Scene_Game_OnEnter(Scene_Game* _scene, DodgeGameInstance* _dodgeGame);
+
+void Scene_Game_OnExit(Scene_Game* _scene, DodgeGameInstance* _dodgeGame);
+
 void Scene_Game_Tick(Scene_Game* _scene, DodgeGameInstance* _dodgeGame, float _deltaTime);

@@ -4,6 +4,7 @@
 #include <stdlib.h>
 
 #include "Scene_Game.h"
+#include "Scene_Title.h"
 
 DodgeGameInstance* DodgeGameInstance_Create(int _screenWidth, int _screenHeight, wchar_t* _fontFaceName, COORD _fontSize,
                                             unsigned short _foregroundColor, unsigned short _backgroundColor, bool _useColor,
@@ -13,6 +14,7 @@ DodgeGameInstance* DodgeGameInstance_Create(int _screenWidth, int _screenHeight,
 	_instance->gameInstance = GameInstance_Create(_screenWidth, _screenHeight, _fontFaceName, _fontSize, _foregroundColor, _backgroundColor, _useColor, _desiredFps);
 
 	_instance->sceneType = EST_GAME;
+	_instance->titleScene = Scene_Title_Create(_instance);
 	_instance->gameScene = Scene_Game_Create(_instance);
 
 	return _instance;
@@ -25,6 +27,9 @@ void DodgeGameInstance_Release(DodgeGameInstance* _dodgeGame)
 
 	if (_dodgeGame->gameInstance != NULL)
 		GameInstance_Release(_dodgeGame->gameInstance);
+
+	if (_dodgeGame->titleScene != NULL)
+		Scene_Title_Release(_dodgeGame->titleScene);
 
 	if (_dodgeGame->gameScene != NULL)
 		Scene_Game_Release(_dodgeGame->gameScene);
@@ -41,17 +46,61 @@ void DodgeGameInstance_Tick(DodgeGameInstance* _dodgeGame)
 
 	GameInstance_PreTick(_dodgeGame->gameInstance, &_deltaTime);
 
-	_DodgeGameInstance_GameTick(_dodgeGame, _deltaTime);
+	switch (_dodgeGame->sceneType)
+	{
+	case EST_TITLE:
+		Scene_Title_Tick(_dodgeGame->titleScene, _dodgeGame, _deltaTime);
+		break;
+	case EST_GAME:
+		Scene_Game_Tick(_dodgeGame->gameScene, _dodgeGame, _deltaTime);
+		break;
+	}
 
 	GameInstance_PostTick(_dodgeGame->gameInstance);
 }
 
-void _DodgeGameInstance_GameTick(DodgeGameInstance* _dodgeGame, float _deltaTime)
+void DodgeGameInstance_ChangeScene(DodgeGameInstance* _dodgeGame, ESceneType _targetScene)
 {
-	switch (_dodgeGame->sceneType)
+	if (_dodgeGame == NULL)
+		return;
+
+	if (_dodgeGame->sceneType == _targetScene)
+		return;
+
+	_DodgeGameInstance_EndScene(_dodgeGame, _dodgeGame->sceneType);
+
+	_dodgeGame->sceneType = _targetScene;
+	_DodgeGameInstance_StartScene(_dodgeGame, _targetScene);
+}
+
+void _DodgeGameInstance_StartScene(DodgeGameInstance* _dodgeGame, ESceneType _sceneType)
+{
+	if (_dodgeGame == NULL)
+		return;
+
+	switch (_sceneType)
 	{
+	case EST_TITLE:
+		Scene_Title_OnEnter(_dodgeGame->titleScene, _dodgeGame);
+		break;
 	case EST_GAME:
-		Scene_Game_Tick(_dodgeGame->gameScene, _dodgeGame, _deltaTime);
+		Scene_Game_OnEnter(_dodgeGame->gameScene, _dodgeGame);
+		break;
+	}
+}
+
+void _DodgeGameInstance_EndScene(DodgeGameInstance* _dodgeGame, ESceneType _sceneType)
+{
+	if (_dodgeGame == NULL)
+		return;
+
+	switch (_sceneType)
+	{
+	case EST_TITLE:
+		Scene_Title_OnExit(_dodgeGame->titleScene, _dodgeGame);
+		break;
+	case EST_GAME:
+		Scene_Game_OnExit(_dodgeGame->gameScene, _dodgeGame);
 		break;
 	}
 }

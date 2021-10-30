@@ -63,6 +63,18 @@ void Scene_Game_Release(Scene_Game* _scene)
 	free(_scene);
 }
 
+void Scene_Game_OnEnter(Scene_Game* _scene, DodgeGameInstance* _dodgeGame)
+{
+	if (_scene == NULL || _dodgeGame == NULL)
+		return;
+}
+
+void Scene_Game_OnExit(Scene_Game* _scene, DodgeGameInstance* _dodgeGame)
+{
+	if (_scene == NULL || _dodgeGame == NULL)
+		return;
+}
+
 void Scene_Game_Tick(Scene_Game* _scene, DodgeGameInstance* _dodgeGame, float _deltaTime)
 {
 	const GameInstance* _gameInstance = _dodgeGame->gameInstance;
