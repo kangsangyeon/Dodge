@@ -4,20 +4,21 @@
 #include <stdlib.h>
 
 #include "DodgeGameInstance.h"
+#include "Player.h"
+#include "Scene_Game.h"
 
 
-Boss_DogeMusk* Boss_DogeMusk_Create(DodgeGameInstance* _dodgeGameInstance)
+Boss_DogeMusk* Boss_DogeMusk_Create(GameInstance* _gameInstance)
 {
 	Boss_DogeMusk* _outBoss = (Boss_DogeMusk*)malloc(sizeof(Boss_DogeMusk));
 
 	// boss object
 	_outBoss->visibleWorldObject = false;
 
-	const Vector2D _position = {_dodgeGameInstance->screenWidth / 2, _dodgeGameInstance->screenHeight * 0.75f};
+	const Vector2D _position = {_gameInstance->screen->width / 2, _gameInstance->screen->height * 0.75f};
 	const Vector2D _pivot = Vector2D_Center;
 	_outBoss->worldObject = WorldObject_CreateWithSpriteMask(L"Sprites/boss_dogemusk/boss_dogemusk.txt", L"Sprites/boss_dogemusk/boss_dogemusk.txt",
 	                                                         L"Sprites/boss_dogemusk/boss_dogemusk.txt", _pivot, _position);
-
 
 	// warningSignObject
 	_outBoss->visibleWarningSign = false;
@@ -31,7 +32,7 @@ Boss_DogeMusk* Boss_DogeMusk_Create(DodgeGameInstance* _dodgeGameInstance)
 	                                                        L"Sprites/boss_dogemusk/boss_dogemusk_fullmoon.txt",
 	                                                        Vector2D_Center, Vector2D_Zero);
 
-	_outBoss->bossStartTime = GameInstance_GetGameTime(_dodgeGameInstance->gameInstance);
+	_outBoss->bossStartTime = GameInstance_GetGameTime(_gameInstance);
 
 	// state
 	_outBoss->currentState = EBDMS_START;
@@ -59,14 +60,14 @@ void Boss_DogeMusk_Release(Boss_DogeMusk* _boss)
 	free(_boss);
 }
 
-bool _Boss_DogeMusk_ShouldStartNewPattern(DodgeGameInstance* _dodgeGameInstance, Boss_DogeMusk* _boss)
+bool _Boss_DogeMusk_ShouldStartNewPattern(GameInstance* _gameInstance, Boss_DogeMusk* _boss)
 {
-	if (_dodgeGameInstance == NULL || _boss == NULL)
+	if (_gameInstance == NULL || _boss == NULL)
 		return false;
 
 #define PATTERN_DELAY 1.f
 
-	const double _gameTime = GameInstance_GetGameTime(_dodgeGameInstance->gameInstance);
+	const double _gameTime = GameInstance_GetGameTime(_gameInstance);
 
 	switch (_boss->currentState)
 	{
@@ -90,12 +91,12 @@ bool _Boss_DogeMusk_ShouldStartNewPattern(DodgeGameInstance* _dodgeGameInstance,
 	return false;
 }
 
-void Boss_DogeMusk_DrawTick(DodgeGameInstance* _dodgeGameInstance, Boss_DogeMusk* _boss)
+void Boss_DogeMusk_DrawTick(GameInstance* _gameInstance, Boss_DogeMusk* _boss)
 {
-	if (_dodgeGameInstance == NULL || _boss == NULL)
+	if (_gameInstance == NULL || _boss == NULL)
 		return;
 
-	const Screen* _screen = _dodgeGameInstance->gameInstance->screen;
+	const Screen* _screen = _gameInstance->screen;
 
 	if (_boss->warningSignObject != NULL && _boss->visibleWarningSign == true)
 		Screen_PrintWorldObject(_screen, _boss->warningSignObject);
@@ -109,25 +110,30 @@ void Boss_DogeMusk_DrawTick(DodgeGameInstance* _dodgeGameInstance, Boss_DogeMusk
 
 void Boss_DogeMusk_CollisionTick(DodgeGameInstance* _dodgeGameInstance, Boss_DogeMusk* _boss)
 {
-	if (_dodgeGameInstance == NULL || _boss == NULL || _dodgeGameInstance->player == NULL)
+	if (_dodgeGameInstance == NULL || _boss == NULL || _dodgeGameInstance->gameScene == NULL)
+		return;
+
+	const Player* _player = _dodgeGameInstance->gameScene->player;
+
+	if (_player == NULL)
 		return;
 
 	const Collider* _dogeMuskCollider = _boss->worldObject->collider;
 	const Vector2D _dogeMuskPosition = _boss->worldObject->position;
 	const Vector2D _dogeMuskPivot = _boss->worldObject->pivot;
 
-	const Collider* _playerCollider = _dodgeGameInstance->player->worldObject->collider;
-	const Vector2D _playerPosition = _dodgeGameInstance->player->worldObject->position;
-	const Vector2D _playerPivot = _dodgeGameInstance->player->worldObject->pivot;
+	const Collider* _playerCollider = _player->worldObject->collider;
+	const Vector2D _playerPosition = _player->worldObject->position;
+	const Vector2D _playerPivot = _player->worldObject->pivot;
 
 	const bool _collisionResult = Collider_CheckCollision(_dogeMuskCollider, _dogeMuskPosition, _dogeMuskPivot,
 	                                                      _playerCollider, _playerPosition, _playerPivot);
 
-	if (_collisionResult && _dodgeGameInstance->player->isInvincible == false)
+	if (_collisionResult && _player->isInvincible == false)
 	{
 		const double _gameTime = GameInstance_GetGameTime(_dodgeGameInstance->gameInstance);
 
-		Player_Damaged(_dodgeGameInstance->player, 1, _gameTime);
+		Player_Damaged(_player, 1, _gameTime);
 	}
 }
 
@@ -136,13 +142,13 @@ void Boss_DogeMusk_Tick(DodgeGameInstance* _dodgeGameInstance, Boss_DogeMusk* _b
 	if (_dodgeGameInstance == NULL || _boss == NULL)
 		return;
 
-	const bool _startNewPattern = _Boss_DogeMusk_ShouldStartNewPattern(_dodgeGameInstance, _boss);
+	const bool _startNewPattern = _Boss_DogeMusk_ShouldStartNewPattern(_dodgeGameInstance->gameInstance, _boss);
 
 	if (_startNewPattern == true)
 	{
 		// 패턴을 재생할 때가 되었을 때,
 		// 패턴 관련 변수의 값들을 설정하고 패턴을 시작합니다.
-		_Boss_DogeMusk_PrePattern(_dodgeGameInstance, _boss);
+		_Boss_DogeMusk_PrePattern(_dodgeGameInstance->gameInstance, _boss);
 	}
 
 	bool _patternEnd = false;
@@ -152,25 +158,25 @@ void Boss_DogeMusk_Tick(DodgeGameInstance* _dodgeGameInstance, Boss_DogeMusk* _b
 		// 현재 패턴을 재생합니다.
 		// 만약 재생중인 패턴이 없다면 어떠한 동작도 하지 않습니다.
 	case EBDMS_PATTERN_PLAYING:
-		_patternEnd = _Boss_DogeMusk_Pattern1Tick(_dodgeGameInstance, _boss, _deltaTime, _startNewPattern);
+		_patternEnd = _Boss_DogeMusk_Pattern1Tick(_dodgeGameInstance->gameInstance, _boss, _deltaTime, _startNewPattern);
 		break;
 	}
 
 	if (_patternEnd == true)
 	{
 		// 패턴이 끝난 직후라면, PostPattern을 호출합니다.
-		_Boss_DogeMusk_PostPattern(_dodgeGameInstance, _boss);
+		_Boss_DogeMusk_PostPattern(_dodgeGameInstance->gameInstance, _boss);
 	}
 }
 
-void _Boss_DogeMusk_PrePattern(DodgeGameInstance* _dodgeGameInstance, Boss_DogeMusk* _boss)
+void _Boss_DogeMusk_PrePattern(GameInstance* _gameInstance, Boss_DogeMusk* _boss)
 {
-	if (_dodgeGameInstance == NULL || _boss == NULL)
+	if (_gameInstance == NULL || _boss == NULL)
 		return;
 
 #define PATTERN_COUNT 1
 
-	const double _gameTime = GameInstance_GetGameTime(_dodgeGameInstance->gameInstance);
+	const double _gameTime = GameInstance_GetGameTime(_gameInstance);
 
 	// 패턴을 시작하기 앞서 변수들을 초기화합니다.
 	_boss->patternStartTime = _gameTime;
@@ -183,12 +189,12 @@ void _Boss_DogeMusk_PrePattern(DodgeGameInstance* _dodgeGameInstance, Boss_DogeM
 	while (PATTERN_COUNT >= 2 && _boss->currentPatternType == _boss->previousPatternType);
 }
 
-void _Boss_DogeMusk_PostPattern(DodgeGameInstance* _dodgeGameInstance, Boss_DogeMusk* _boss)
+void _Boss_DogeMusk_PostPattern(GameInstance* _gameInstance, Boss_DogeMusk* _boss)
 {
-	if (_dodgeGameInstance == NULL || _boss == NULL)
+	if (_gameInstance == NULL || _boss == NULL)
 		return;
 
-	const double _gameTime = GameInstance_GetGameTime(_dodgeGameInstance->gameInstance);
+	const double _gameTime = GameInstance_GetGameTime(_gameInstance);
 
 	// 패턴이 종료된 이후 변수들을 초기화합니다.
 
@@ -199,7 +205,7 @@ void _Boss_DogeMusk_PostPattern(DodgeGameInstance* _dodgeGameInstance, Boss_Doge
 	_boss->currentPatternType = EBDMS_NONE;
 }
 
-bool _Boss_DogeMusk_Pattern1Tick(DodgeGameInstance* _dodgeGameInstance, Boss_DogeMusk* _boss, double _deltaTime, bool _patternStart)
+bool _Boss_DogeMusk_Pattern1Tick(GameInstance* _gameInstance, Boss_DogeMusk* _boss, double _deltaTime, bool _patternStart)
 {
 #define PATTERN1_NODE1_DURATION .5f
 #define PATTERN1_NODE2_DURATION 1.f
@@ -217,7 +223,7 @@ bool _Boss_DogeMusk_Pattern1Tick(DodgeGameInstance* _dodgeGameInstance, Boss_Dog
 
 	const float _behaviorDuration = PATTERN1_NODE1_DURATION + PATTERN1_NODE2_DURATION + PATTERN1_NODE3_DURATION;
 
-	const double _patternElapsedTime = GameInstance_GetGameTime(_dodgeGameInstance->gameInstance) - _boss->patternStartTime;
+	const double _patternElapsedTime = GameInstance_GetGameTime(_gameInstance) - _boss->patternStartTime;
 
 	// 이번 pattern을 재생하면서 behavior를 몇 번 반복적으로 재생했는지 얻습니다.
 	// 그 behavior의 경과시간도 얻습니다.
@@ -242,19 +248,22 @@ bool _Boss_DogeMusk_Pattern1Tick(DodgeGameInstance* _dodgeGameInstance, Boss_Dog
 
 	// 제 1사분면부터 제 4사분면까지 목적지 값을 초기화합니다.
 
+	const int _screenWidth = _gameInstance->screen->width;
+	const int _screenHeight = _gameInstance->screen->height;
+
 	const float _gapFromScreen = 20;
 	const Vector2D _destinationArr[4] = {
-		{_dodgeGameInstance->screenWidth - _gapFromScreen, _dodgeGameInstance->screenHeight - _gapFromScreen},
-		{_gapFromScreen, _dodgeGameInstance->screenHeight - _gapFromScreen},
+		{_screenWidth - _gapFromScreen, _screenHeight - _gapFromScreen},
+		{_gapFromScreen, _screenHeight - _gapFromScreen},
 		{_gapFromScreen, _gapFromScreen},
-		{_dodgeGameInstance->screenWidth - _gapFromScreen, _gapFromScreen}
+		{_screenWidth - _gapFromScreen, _gapFromScreen}
 	};
 
 	const Vector2D _warningSignPositionArr[4] = {
-		{_dodgeGameInstance->screenWidth - _gapFromScreen, _dodgeGameInstance->screenHeight - _gapFromScreen},
-		{_gapFromScreen, _dodgeGameInstance->screenHeight - _gapFromScreen},
+		{_screenWidth - _gapFromScreen, _screenHeight - _gapFromScreen},
+		{_gapFromScreen, _screenHeight - _gapFromScreen},
 		{_gapFromScreen, _gapFromScreen},
-		{_dodgeGameInstance->screenWidth - _gapFromScreen, _gapFromScreen}
+		{_screenWidth - _gapFromScreen, _gapFromScreen}
 	};
 
 	const Vector2D _pivotArr[4] = {
@@ -268,10 +277,10 @@ bool _Boss_DogeMusk_Pattern1Tick(DodgeGameInstance* _dodgeGameInstance, Boss_Dog
 	const int _muskImageHeight = _boss->worldObject->sprite->imageHeight;
 
 	const Vector2D _muskStartPositionArr[4] = {
-		{_dodgeGameInstance->screenWidth + _muskImageWidth / 2, _dodgeGameInstance->screenHeight + _muskImageHeight / 2},
-		{-_muskImageWidth / 2, _dodgeGameInstance->screenHeight + _muskImageHeight / 2},
+		{_screenWidth + _muskImageWidth / 2, _screenHeight + _muskImageHeight / 2},
+		{-_muskImageWidth / 2, _screenHeight + _muskImageHeight / 2},
 		{-_muskImageWidth / 2, -_muskImageHeight},
-		{_dodgeGameInstance->screenWidth + _muskImageWidth / 2, -_muskImageHeight}
+		{_screenWidth + _muskImageWidth / 2, -_muskImageHeight}
 	};
 
 	static int _latestDestinationIndex = -1;

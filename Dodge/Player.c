@@ -129,13 +129,29 @@ void _Player_StateTick(GameInstance* _gameInstance, Player* _player)
 	}
 }
 
+void Player_DrawTick(GameInstance* _gameInstance, Player* _player)
+{
+	if (_gameInstance == NULL || _player == NULL)
+		return;
+
+	const double _gameTime = GameInstance_GetGameTime(_gameInstance);
+
+	if (_player->flickerAnim->enable)
+	{
+		SpriteFlickerAnimation_Tick(_player->flickerAnim, _gameTime);
+
+		if (_player->flickerAnim->visible)
+			Screen_PrintWorldObject(_gameInstance->screen, _player->worldObject);
+	}
+	else
+	{
+		Screen_PrintWorldObject(_gameInstance->screen, _player->worldObject);
+	}
+}
+
 void Player_Tick(GameInstance* _gameInstance, Player* _player, float _deltaTime)
 {
 	const double _gameTime = GameInstance_GetGameTime(_gameInstance);
-
-	// flicker
-	if (_player->flickerAnim->enable)
-		SpriteFlickerAnimation_Tick(_player->flickerAnim, _gameTime);
 
 	_Player_MoveTick(_gameInstance, _player, _deltaTime);
 
@@ -172,7 +188,12 @@ void Player_Damaged(Player* _player, int _damage, double _gameTime)
 	if (_player == NULL)
 		return;
 
+	// 플레이어가 무적 상태라면 데미지 처리를 무시합니다.
 	if (_player->isInvincible == true)
+		return;
+
+	// 플레이어가 이미 죽었다면 데미지 처리를 무시합니다.
+	if (_player->health <= 0)
 		return;
 
 	_player->health -= _damage;

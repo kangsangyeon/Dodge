@@ -42,6 +42,8 @@ void _Player_MoveTick(GameInstance* _gameInstance, Player* _player, float _delta
 
 void _Player_StateTick(GameInstance* _gameInstance, Player* _player);
 
+void Player_DrawTick(GameInstance* _gameInstance, Player* _player);
+
 void Player_Tick(GameInstance* _gameInstance, Player* _player, float _deltaTime);
 
 void Player_Move(Player* _player, Vector2D _vector, float _moveSpeed, float _deltaTime, int _width, int _height);

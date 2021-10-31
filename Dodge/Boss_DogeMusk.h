@@ -37,20 +37,20 @@ typedef struct TBoss_DogeMusk
 	double patternEndTime;
 } Boss_DogeMusk;
 
-Boss_DogeMusk* Boss_DogeMusk_Create(struct DodgeGameInstance* _dodgeGameInstance);
+Boss_DogeMusk* Boss_DogeMusk_Create(struct GameInstance* _gameInstance);
 
 void Boss_DogeMusk_Release(Boss_DogeMusk* _boss);
 
-void Boss_DogeMusk_DrawTick(struct DodgeGameInstance* _dodgeGameInstance, Boss_DogeMusk* _boss);
+void Boss_DogeMusk_DrawTick(struct GameInstance* _gameInstance, Boss_DogeMusk* _boss);
 
 void Boss_DogeMusk_CollisionTick(struct DodgeGameInstance* _dodgeGameInstance, Boss_DogeMusk* _boss);
 
 void Boss_DogeMusk_Tick(struct DodgeGameInstance* _dodgeGameInstance, Boss_DogeMusk* _boss, double _deltaTime);
 
-bool _Boss_DogeMusk_ShouldStartNewPattern(struct DodgeGameInstance* _dodgeGameInstance, Boss_DogeMusk* _boss);
+bool _Boss_DogeMusk_ShouldStartNewPattern(struct GameInstance* _gameInstance, Boss_DogeMusk* _boss);
 
-void _Boss_DogeMusk_PrePattern(struct DodgeGameInstance* _dodgeGameInstance, Boss_DogeMusk* _boss);
+void _Boss_DogeMusk_PrePattern(struct GameInstance* _gameInstance, Boss_DogeMusk* _boss);
 
-void _Boss_DogeMusk_PostPattern(struct DodgeGameInstance* _dodgeGameInstance, Boss_DogeMusk* _boss);
+void _Boss_DogeMusk_PostPattern(struct GameInstance* _gameInstance, Boss_DogeMusk* _boss);
 
-bool _Boss_DogeMusk_Pattern1Tick(struct DodgeGameInstance* _dodgeGameInstance, Boss_DogeMusk* _boss, double _deltaTime, bool _patternStart);
+bool _Boss_DogeMusk_Pattern1Tick(struct GameInstance* _gameInstance, Boss_DogeMusk* _boss, double _deltaTime, bool _patternStart);

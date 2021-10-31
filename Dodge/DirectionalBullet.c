@@ -79,7 +79,7 @@ Vector2D DirectionalBullet_CreateRandomPosition(int _width, int _height, Vector2
 bool DirectionalBullet_Destroy(DirectionalBullet* _directionalBullet, int _width, int _height)
 {
 	if (_directionalBullet == NULL)
-		return;
+		return false;
 
 	const int _destroyRange = 15;
 	Vector2D _checkToDestroyDirectionalBullet = _directionalBullet->worldObject->position;
