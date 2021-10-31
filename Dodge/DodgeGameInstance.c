@@ -19,8 +19,8 @@ DodgeGameInstance* DodgeGameInstance_Create(int _screenWidth, int _screenHeight,
 	_instance->gameInstance = GameInstance_Create(_screenWidth, _screenHeight, _fontFaceName, _fontSize, _foregroundColor, _backgroundColor, _useColor, _desiredFps);
 
 	// player
-	const Vector2D _screenCenter = { _screenWidth / 2, _screenHeight / 2 };
-	_instance->player = Player_Create(L"Sprites/player_heart.txt", L"Sprites/player_heart.txt", Vector2D_Center, _screenCenter, 120, .5f, 300, .2f);
+	const Vector2D _screenCenter = {_screenWidth / 2, _screenHeight / 2};
+	_instance->player = Player_Create(L"Sprites/player_heart.txt", L"Sprites/player_heart.txt", Vector2D_Center, _screenCenter, 120, .5f, 300, .2f, 1.5);
 
 	// boss
 	_instance->bossType = EBT_NONE;
@@ -113,8 +113,12 @@ void _DodgeGameInstance_GameTick(DodgeGameInstance* _dodgeGame, float _deltaTime
 	// player
 	if (_dodgeGame->player != NULL)
 	{
-		Player_Tick(_dodgeGame->player, _deltaTime, GameInstance_GetGameTime(_dodgeGame->gameInstance), _screen->width, _screen->height);
-		Screen_PrintWorldObject(_screen, _dodgeGame->player->worldObject);
+		Player_Tick(_dodgeGame->gameInstance, _dodgeGame->player, _deltaTime);
+
+		if (_dodgeGame->player->flickerAnim->enable == true && _dodgeGame->player->flickerAnim->visible == true)
+			Screen_PrintWorldObject(_screen, _dodgeGame->player->worldObject);
+		else if (_dodgeGame->player->flickerAnim->enable == false)
+			Screen_PrintWorldObject(_screen, _dodgeGame->player->worldObject);
 	}
 
 	//총알
@@ -135,4 +139,11 @@ void _DodgeGameInstance_GameTick(DodgeGameInstance* _dodgeGame, float _deltaTime
 
 	if (_checkDestroy == true)
 		_dodgeGame->directionalBullet = NULL;
+
+	switch (_dodgeGame->bossType)
+	{
+	case EBT_DOGE_MUSK:
+		Boss_DogeMusk_CollisionTick(_dodgeGame, _dodgeGame->dogeMusk);
+		break;
+	}
 }

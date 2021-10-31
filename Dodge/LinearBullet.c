@@ -7,7 +7,7 @@ LinearBullet* LinearBullet_Create(wchar_t* _spriteFilePath, Vector2D _pivot,
 	Vector2D _position, Vector2D _direction, float _moveSpeed)
 {
 	LinearBullet* _linearBullet = (LinearBullet*)malloc(sizeof(LinearBullet));
-	_linearBullet->worldObject = WorldObject_CreateWithSprite(_spriteFilePath, _pivot, _position);
+	_linearBullet->worldObject = WorldObject_CreateWithSprite(_spriteFilePath, _spriteFilePath, _pivot, _position);
 	_linearBullet->moveSpeed = _moveSpeed;
 	_linearBullet->direction = Vector2D_Normalized(_direction);
 	return _linearBullet;
