@@ -220,8 +220,8 @@ void _Boss_DogeMusk_PostPattern(GameInstance* _gameInstance, Boss_DogeMusk* _bos
 
 bool _Boss_DogeMusk_Pattern1Tick(GameInstance* _gameInstance, Boss_DogeMusk* _boss, double _deltaTime, bool _patternStart)
 {
-#define PATTERN1_NODE1_DURATION .75f
-#define PATTERN1_NODE2_DURATION 1.25f
+#define PATTERN1_NODE1_DURATION .6f
+#define PATTERN1_NODE2_DURATION 1.f
 #define PATTERN1_NODE3_DURATION 0.f
 
 #define PATTERN1_BEHAVIOR_LOOP_COUNT 5
@@ -351,7 +351,7 @@ bool _Boss_DogeMusk_Pattern1Tick(GameInstance* _gameInstance, Boss_DogeMusk* _bo
 
 		// 이번 프레임의 위치를 새로고칩니다.
 		const Vector2D _destination = _destinationArr[_latestDestinationIndex];
-		const Vector2D _nextPosition = Vector2D_Lerp(_boss->worldObject->position, _destination, 3 * _deltaTime);
+		const Vector2D _nextPosition = Vector2D_Lerp(_boss->worldObject->position, _destination, 5 * _deltaTime);
 		_boss->worldObject->position = _nextPosition;
 	}
 	else if (_behaviorElapsedTime < PATTERN1_NODE1_DURATION + PATTERN1_NODE2_DURATION + PATTERN1_NODE3_DURATION)
