@@ -20,6 +20,9 @@ void Scene_Title_Release(Scene_Title* _scene)
 	if (_scene == NULL)
 		return;
 
+	if (_scene->titleObject != NULL)
+		WorldObject_Release(_scene->titleObject);
+
 	free(_scene);
 }
 
