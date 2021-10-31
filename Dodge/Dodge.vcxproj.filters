@@ -108,6 +108,9 @@
     <ClCompile Include="Scene_Title.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Scene_GameOver.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Const.h">
@@ -180,6 +183,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Scene_Title.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene_GameOver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

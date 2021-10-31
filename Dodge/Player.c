@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <Windows.h>
 
+#include "DodgeGameInstance.h"
 #include "GameInstance.h"
 
 Player* Player_Create(wchar_t* _spriteImageFilePath, wchar_t* _spriteMaskFilePath, Vector2D _pivot, Vector2D _position,
@@ -183,7 +184,7 @@ void Player_StartDash(Player* _player, Vector2D _vector, float _gameTime)
 	_player->dashDirection = _vector;
 }
 
-void Player_Damaged(Player* _player, int _damage, double _gameTime)
+void Player_Damaged(DodgeGameInstance* _dodgeGame, Player* _player, int _damage, double _gameTime)
 {
 	if (_player == NULL)
 		return;
@@ -200,9 +201,10 @@ void Player_Damaged(Player* _player, int _damage, double _gameTime)
 
 	if (_player->health <= 0)
 	{
-		// 플레이어가 사망했을 때
-
+		// 플레이어가 사망했을 때 게임오버 씬으로 전환합니다.
 		_player->health = 0;
+
+		DodgeGameInstance_ChangeScene(_dodgeGame, EST_GAMEOVER);
 	}
 	else
 	{
