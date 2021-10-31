@@ -113,8 +113,7 @@ void _DodgeGameInstance_GameTick(DodgeGameInstance* _dodgeGame, float _deltaTime
 	// player
 	if (_dodgeGame->player != NULL)
 	{
-		Player_Tick(_dodgeGame->player, _deltaTime, GameInstance_GetGameTime(_dodgeGame->gameInstance), _screen->width, _screen->height);
-
+		Player_Tick(_dodgeGame->gameInstance, _dodgeGame->player, _deltaTime);
 
 		if (_dodgeGame->player->flickerAnim->enable == true && _dodgeGame->player->flickerAnim->visible == true)
 			Screen_PrintWorldObject(_screen, _dodgeGame->player->worldObject);

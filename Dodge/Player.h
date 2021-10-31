@@ -5,6 +5,8 @@
 
 #define PLAYER_MAX_HEALTH 2
 
+typedef struct TGameInstance GameInstance;
+
 typedef struct TPlayer
 {
 	WorldObject* worldObject;
@@ -36,7 +38,11 @@ Player* Player_Create(wchar_t* _spriteImageFilePath, wchar_t* _spriteMaskFilePat
 
 void Player_Release(Player* _player);
 
-void Player_Tick(Player* _player, float _deltaTime, float _gameTime, int _width, int _height);
+void _Player_MoveTick(GameInstance* _gameInstance, Player* _player, float _deltaTime);
+
+void _Player_StateTick(GameInstance* _gameInstance, Player* _player);
+
+void Player_Tick(GameInstance* _gameInstance, Player* _player, float _deltaTime);
 
 void Player_Move(Player* _player, Vector2D _vector, float _moveSpeed, float _deltaTime, int _width, int _height);
 

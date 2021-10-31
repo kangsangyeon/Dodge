@@ -59,8 +59,13 @@ void Player_Release(Player* _player)
 	free(_player);
 }
 
-void Player_Tick(Player* _player, float _deltaTime, float _gameTime, int _width, int _height)
+void _Player_MoveTick(GameInstance* _gameInstance, Player* _player, float _deltaTime)
 {
+	const double _gameTime = GameInstance_GetGameTime(_gameInstance);
+
+	const int _screenWidth = _gameInstance->screen->width;
+	const int _screenHeight = _gameInstance->screen->height;
+
 	Vector2D _velocity = {0, 0};
 
 	if (_player->isDash)
@@ -104,13 +109,14 @@ void Player_Tick(Player* _player, float _deltaTime, float _gameTime, int _width,
 	}
 
 	if (_player->isDash == true)
-		Player_Move(_player, _player->dashDirection, _player->dashSpeed, _deltaTime, _width, _height);
+		Player_Move(_player, _player->dashDirection, _player->dashSpeed, _deltaTime, _screenWidth, _screenHeight);
 	else
-		Player_Move(_player, _velocity, _player->moveSpeed, _deltaTime, _width, _height);
+		Player_Move(_player, _velocity, _player->moveSpeed, _deltaTime, _screenWidth, _screenHeight);
+}
 
-	// flicker
-	if (_player->flickerAnim->enable)
-		SpriteFlickerAnimation_Tick(_player->flickerAnim, _gameTime);
+void _Player_StateTick(GameInstance* _gameInstance, Player* _player)
+{
+	const double _gameTime = GameInstance_GetGameTime(_gameInstance);
 
 	if (_player->isInvincible == true && _gameTime - _player->lastDamagedTime >= _player->invincibleDuration)
 	{
@@ -121,6 +127,19 @@ void Player_Tick(Player* _player, float _deltaTime, float _gameTime, int _width,
 
 		SpriteFlickerAnimation_SetEnable(_player->flickerAnim, false, _gameTime);
 	}
+}
+
+void Player_Tick(GameInstance* _gameInstance, Player* _player, float _deltaTime)
+{
+	const double _gameTime = GameInstance_GetGameTime(_gameInstance);
+
+	// flicker
+	if (_player->flickerAnim->enable)
+		SpriteFlickerAnimation_Tick(_player->flickerAnim, _gameTime);
+
+	_Player_MoveTick(_gameInstance, _player, _deltaTime);
+
+	_Player_StateTick(_gameInstance, _player);
 }
 
 void Player_Move(Player* _player, Vector2D _vector, float _moveSpeed, float _deltaTime, int _width, int _height)
