@@ -11,6 +11,9 @@ AudioClip* AudioClip_LoadFromFile(Audio* _audio, wchar_t* _filePath, bool _loop)
 	if (_audio == NULL || _audio->system == NULL)
 		return NULL;
 
+	if (_filePath == NULL)
+		return NULL;
+
 	FMOD_SOUND* _sound = NULL;
 
 	const char* _filePathMbs = WcharStringToCharString(_filePath);

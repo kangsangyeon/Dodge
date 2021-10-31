@@ -22,6 +22,9 @@ char* WcharStringToCharString(wchar_t* _source)
 
 bool LoadTextFileAsMatrix2D(wchar_t* _filePath, wchar_t*** _outData, int* _outWidth, int* _outHeight)
 {
+	if (_filePath == NULL)
+		return false;
+
 	const char* _filePathStr = WcharStringToCharString(_filePath);
 
 	FILE* _fileStream;
@@ -104,6 +107,9 @@ bool LoadTextFileAsMatrix2D(wchar_t* _filePath, wchar_t*** _outData, int* _outWi
 
 bool LoadTextFileAsBoolMatrix2D(wchar_t* _filePath, bool*** _outData, int* _outWidth, int* _outHeight)
 {
+	if (_filePath == NULL)
+		return false;
+
 	wchar_t** _charDataArr = NULL;
 	int _width = 0;
 	int _height = 0;

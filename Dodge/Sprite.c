@@ -1,14 +1,15 @@
 ﻿#include "Sprite.h"
 
-#include <stdio.h>
 #include <stdlib.h>
 
-#include "PointerStack.h"
 #include "Helper.h"
 #include "IntQueue.h"
 
 Sprite* Sprite_LoadFromImageFile(wchar_t* _imageFilePath)
 {
+	if (_imageFilePath == NULL)
+		return NULL;
+
 	wchar_t** _imageArr = NULL;
 	int _imageWidth = 0;
 	int _imageHeight = 0;
@@ -28,6 +29,9 @@ Sprite* Sprite_LoadFromImageFile(wchar_t* _imageFilePath)
 
 Sprite* Sprite_LoadFromImageAndMaskFiles(wchar_t* _imageFilePath, wchar_t* _maskFilePath)
 {
+	if (_imageFilePath == NULL)
+		return NULL;
+
 	wchar_t** _imageArr = NULL;
 	int _imageWidth = 0;
 	int _imageHeight = 0;
