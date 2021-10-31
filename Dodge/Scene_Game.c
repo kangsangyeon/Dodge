@@ -159,6 +159,14 @@ void Scene_Game_Tick(Scene_Game* _scene, DodgeGameInstance* _dodgeGame, float _d
 	const GameInstance* _gameInstance = _dodgeGame->gameInstance;
 	const Screen* _screen = _gameInstance->screen;
 
+	// 게임을 클리어했다면, GameClear 씬으로 전환합니다.
+	if (_scene->gameState == EGS_CLEAR)
+	{
+		DodgeGameInstance_ChangeScene(_dodgeGame, EST_GAMECLAER);
+		return;
+	}
+
+
 	// 플레이어는 게임 상태와 상관없이 움직일 수 있습니다.
 	if (_scene->player != NULL)
 		Player_Tick(_gameInstance, _scene->player, _deltaTime);

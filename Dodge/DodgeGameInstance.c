@@ -4,6 +4,7 @@
 #include <stdlib.h>
 
 #include "Scene_Game.h"
+#include "Scene_GameClear.h"
 #include "Scene_GameOver.h"
 #include "Scene_Title.h"
 
@@ -17,6 +18,7 @@ DodgeGameInstance* DodgeGameInstance_Create(int _screenWidth, int _screenHeight,
 	_instance->titleScene = Scene_Title_Create(_instance);
 	_instance->gameScene = Scene_Game_Create(_instance);
 	_instance->gameOverScene = Scene_GameOver_Create(_instance);
+	_instance->gameClearScene = Scene_GameClear_Create(_instance);
 
 	DodgeGameInstance_ChangeScene(_instance, EST_TITLE);
 	return _instance;
@@ -35,6 +37,12 @@ void DodgeGameInstance_Release(DodgeGameInstance* _dodgeGame)
 
 	if (_dodgeGame->gameScene != NULL)
 		Scene_Game_Release(_dodgeGame->gameScene);
+
+	if (_dodgeGame->gameOverScene != NULL)
+		Scene_GameOver_Release(_dodgeGame->gameOverScene);
+
+	if (_dodgeGame->gameClearScene != NULL)
+		Scene_GameClear_Release(_dodgeGame->gameClearScene);
 
 	free(_dodgeGame);
 }
@@ -59,6 +67,8 @@ void DodgeGameInstance_Tick(DodgeGameInstance* _dodgeGame)
 	case EST_GAMEOVER:
 		Scene_GameOver_Tick(_dodgeGame->gameOverScene, _dodgeGame, _deltaTime);
 		break;
+	case EST_GAMECLAER:
+		Scene_GameClear_Tick(_dodgeGame->gameClearScene, _dodgeGame, _deltaTime);
 	}
 
 	GameInstance_PostTick(_dodgeGame->gameInstance);
@@ -94,6 +104,9 @@ void _DodgeGameInstance_StartScene(DodgeGameInstance* _dodgeGame, ESceneType _sc
 	case EST_GAMEOVER:
 		Scene_GameOver_OnEnter(_dodgeGame->gameOverScene, _dodgeGame);
 		break;
+	case EST_GAMECLAER:
+		Scene_GameClear_OnEnter(_dodgeGame->gameClearScene, _dodgeGame);
+		break;
 	}
 }
 
@@ -112,6 +125,9 @@ void _DodgeGameInstance_EndScene(DodgeGameInstance* _dodgeGame, ESceneType _scen
 		break;
 	case EST_GAMEOVER:
 		Scene_GameOver_OnExit(_dodgeGame->gameOverScene, _dodgeGame);
+		break;
+	case EST_GAMECLAER:
+		Scene_GameClear_OnExit(_dodgeGame->gameClearScene, _dodgeGame);
 		break;
 	}
 }

@@ -158,6 +158,7 @@
     <ClCompile Include="Const.c" />
     <ClCompile Include="DirectionalBullet.c" />
     <ClCompile Include="DodgeGameInstance.c" />
+    <ClCompile Include="Scene_GameClear.c" />
     <ClCompile Include="GameInstance.c" />
     <ClCompile Include="Helper.c" />
     <ClCompile Include="IntQueue.c" />
@@ -193,6 +194,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="PointerStack.h" />
     <ClInclude Include="Scene_Game.h" />
+    <ClInclude Include="Scene_GameClear.h" />
     <ClInclude Include="Scene_GameOver.h" />
     <ClInclude Include="Scene_Title.h" />
     <ClInclude Include="Screen.h" />

@@ -8,13 +8,15 @@ typedef struct TGameInstance GameInstance;
 typedef struct TScene_Title Scene_Title;
 typedef struct TScene_Game Scene_Game;
 typedef struct TScene_GameOver Scene_GameOver;
+typedef struct TScene_GameClear Scene_GameClear;
 
 typedef enum TESceneType
 {
 	EST_NONE = 0,
 	EST_TITLE = 1,
 	EST_GAME = 2,
-	EST_GAMEOVER = 3
+	EST_GAMEOVER = 3,
+	EST_GAMECLAER = 4
 } ESceneType;
 
 typedef struct TDodgeGameInstance
@@ -25,6 +27,7 @@ typedef struct TDodgeGameInstance
 	Scene_Title* titleScene;
 	Scene_Game* gameScene;
 	Scene_GameOver* gameOverScene;
+	Scene_GameClear* gameClearScene;
 } DodgeGameInstance;
 
 DodgeGameInstance* DodgeGameInstance_Create(int _screenWidth, int _screenHeight, wchar_t* _fontFaceName, COORD _fontSize,
