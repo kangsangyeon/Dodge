@@ -6,6 +6,7 @@
 #define PLAYER_MAX_HEALTH 2
 
 typedef struct TGameInstance GameInstance;
+typedef struct TDodgeGameInstance DodgeGameInstance;
 
 typedef struct TPlayer
 {
@@ -38,6 +39,8 @@ Player* Player_Create(wchar_t* _spriteImageFilePath, wchar_t* _spriteMaskFilePat
 
 void Player_Release(Player* _player);
 
+void Player_Initialize(Player* _player);
+
 void _Player_MoveTick(GameInstance* _gameInstance, Player* _player, float _deltaTime);
 
 void _Player_StateTick(GameInstance* _gameInstance, Player* _player);
@@ -50,6 +53,6 @@ void Player_Move(Player* _player, Vector2D _vector, float _moveSpeed, float _del
 
 void Player_StartDash(Player* _player, Vector2D _vector, float _gameTime);
 
-void Player_Damaged(Player* _player, int _damage, double _gameTime);
+void Player_Damaged(DodgeGameInstance* _dodgeGame, Player* _player, int _damage, double _gameTime);
 
 void _Player_UpdateSpriteAndCollider(Player* _player);

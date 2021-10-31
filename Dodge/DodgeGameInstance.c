@@ -4,6 +4,7 @@
 #include <stdlib.h>
 
 #include "Scene_Game.h"
+#include "Scene_GameOver.h"
 #include "Scene_Title.h"
 
 DodgeGameInstance* DodgeGameInstance_Create(int _screenWidth, int _screenHeight, wchar_t* _fontFaceName, COORD _fontSize,
@@ -13,9 +14,10 @@ DodgeGameInstance* DodgeGameInstance_Create(int _screenWidth, int _screenHeight,
 	DodgeGameInstance* _instance = (DodgeGameInstance*)calloc(1, sizeof(DodgeGameInstance));
 	_instance->gameInstance = GameInstance_Create(_screenWidth, _screenHeight, _fontFaceName, _fontSize, _foregroundColor, _backgroundColor, _useColor, _desiredFps);
 
-	_instance->sceneType = EST_GAME;
+	_instance->sceneType = EST_TITLE;
 	_instance->titleScene = Scene_Title_Create(_instance);
 	_instance->gameScene = Scene_Game_Create(_instance);
+	_instance->gameOverScene = Scene_GameOver_Create(_instance);
 
 	return _instance;
 }
@@ -54,6 +56,9 @@ void DodgeGameInstance_Tick(DodgeGameInstance* _dodgeGame)
 	case EST_GAME:
 		Scene_Game_Tick(_dodgeGame->gameScene, _dodgeGame, _deltaTime);
 		break;
+	case EST_GAMEOVER:
+		Scene_GameOver_Tick(_dodgeGame->gameOverScene, _dodgeGame, _deltaTime);
+		break;
 	}
 
 	GameInstance_PostTick(_dodgeGame->gameInstance);
@@ -86,6 +91,9 @@ void _DodgeGameInstance_StartScene(DodgeGameInstance* _dodgeGame, ESceneType _sc
 	case EST_GAME:
 		Scene_Game_OnEnter(_dodgeGame->gameScene, _dodgeGame);
 		break;
+	case EST_GAMEOVER:
+		Scene_GameOver_OnEnter(_dodgeGame->gameOverScene, _dodgeGame);
+		break;
 	}
 }
 
@@ -101,6 +109,9 @@ void _DodgeGameInstance_EndScene(DodgeGameInstance* _dodgeGame, ESceneType _scen
 		break;
 	case EST_GAME:
 		Scene_Game_OnExit(_dodgeGame->gameScene, _dodgeGame);
+		break;
+	case EST_GAMEOVER:
+		Scene_GameOver_OnExit(_dodgeGame->gameOverScene, _dodgeGame);
 		break;
 	}
 }

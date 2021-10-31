@@ -2,11 +2,14 @@
 
 #include <stdlib.h>
 
-DirectionalBullet* DirectionalBullet_Create(wchar_t* _spriteFilePath, Vector2D _pivot,
-	Vector2D _position, Vector2D _direction, float _moveSpeed)
+#include "DodgeGameInstance.h"
+#include "Player.h"
+
+DirectionalBullet* DirectionalBullet_Create(wchar_t* _spriteImageFilePath, wchar_t* _spriteMaskFilePath, Vector2D _pivot,
+                                            Vector2D _position, Vector2D _direction, float _moveSpeed)
 {
 	DirectionalBullet* _directionalBullet = (DirectionalBullet*)malloc(sizeof(DirectionalBullet));
-	_directionalBullet->worldObject = WorldObject_CreateWithSprite(_spriteFilePath, _spriteFilePath, _pivot, _position);
+	_directionalBullet->worldObject = WorldObject_CreateWithSpriteMask(_spriteImageFilePath, _spriteMaskFilePath, _spriteMaskFilePath, _pivot, _position);
 	_directionalBullet->moveSpeed = _moveSpeed;
 	_directionalBullet->direction = Vector2D_Normalized(_direction);
 	return _directionalBullet;
@@ -21,6 +24,30 @@ void DirectionalBullet_Release(DirectionalBullet* _directionalBullet)
 		WorldObject_Release(_directionalBullet->worldObject);
 
 	free(_directionalBullet);
+}
+
+void DirectionalBullet_CollisionTick(DodgeGameInstance* _dodgeGame, DirectionalBullet* _bullet, Player* _player)
+{
+	if (_bullet == NULL || _player == NULL)
+		return;
+
+	const Collider* _bulletCollider = _bullet->worldObject->collider;
+	const Vector2D _bulletPosition = _bullet->worldObject->position;
+	const Vector2D _bulletPivot = _bullet->worldObject->pivot;
+
+	const Collider* _playerCollider = _player->worldObject->collider;
+	const Vector2D _playerPosition = _player->worldObject->position;
+	const Vector2D _playerPivot = _player->worldObject->pivot;
+
+	const bool _collisionResult = Collider_CheckCollision(_bulletCollider, _bulletPosition, _bulletPivot,
+	                                                      _playerCollider, _playerPosition, _playerPivot);
+
+	if (_collisionResult && _player->isInvincible == false)
+	{
+		const double _gameTime = GameInstance_GetGameTime(_dodgeGame->gameInstance);
+
+		Player_Damaged(_dodgeGame, _player, 1, _gameTime);
+	}
 }
 
 void DirectionalBullet_Move(DirectionalBullet* _directionalBullet, float _deltatime)
@@ -44,17 +71,17 @@ Vector2D DirectionalBullet_CreateRandomPosition(int _width, int _height, Vector2
 	const int randomWidthLine = rand() % (_width + createDirectionalBulletRange) - createDirectionalBulletCorrection;
 	const int randomHeightLine = rand() % (_height + createDirectionalBulletRange) - createDirectionalBulletCorrection;
 
-	Vector2D _randomExternalUpLine = { randomWidthLine, _height + createDirectionalBulletCorrection };
-	Vector2D _randomExternalDownLine = { randomWidthLine, -createDirectionalBulletCorrection };
-	Vector2D _randomExternalRightLine = { _width + createDirectionalBulletCorrection , randomHeightLine };
-	Vector2D _randomExternalLeftLine = { -createDirectionalBulletCorrection, randomHeightLine };
+	Vector2D _randomExternalUpLine = {randomWidthLine, _height + createDirectionalBulletCorrection};
+	Vector2D _randomExternalDownLine = {randomWidthLine, -createDirectionalBulletCorrection};
+	Vector2D _randomExternalRightLine = {_width + createDirectionalBulletCorrection, randomHeightLine};
+	Vector2D _randomExternalLeftLine = {-createDirectionalBulletCorrection, randomHeightLine};
 
 
 	const int _upNdownLineDirectional = rand() % _width;
 	const int _rightNLeftLineDirectional = rand() % _height;
 
-	Vector2D _randomMiddleHorizontalLine = { _upNdownLineDirectional, (_height / 2) };
-	Vector2D _randomMiddleVerticalLine = { (_width / 2), _rightNLeftLineDirectional };
+	Vector2D _randomMiddleHorizontalLine = {_upNdownLineDirectional, (_height / 2)};
+	Vector2D _randomMiddleVerticalLine = {(_width / 2), _rightNLeftLineDirectional};
 
 
 	int randomExternalLineSelect = rand() % 4;
@@ -83,8 +110,8 @@ bool DirectionalBullet_Destroy(DirectionalBullet* _directionalBullet, int _width
 
 	const int _destroyRange = 15;
 	Vector2D _checkToDestroyDirectionalBullet = _directionalBullet->worldObject->position;
-	Vector2D _destoryScreenMinRange = { -_destroyRange, -_destroyRange };
-	Vector2D _destoryScreenMaxRange = { _width + _destroyRange, _height + _destroyRange };
+	Vector2D _destoryScreenMinRange = {-_destroyRange, -_destroyRange};
+	Vector2D _destoryScreenMaxRange = {_width + _destroyRange, _height + _destroyRange};
 
 	if (_checkToDestroyDirectionalBullet.x < _destoryScreenMinRange.x ||
 		_checkToDestroyDirectionalBullet.x > _destoryScreenMaxRange.x ||
