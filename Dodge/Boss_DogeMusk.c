@@ -72,6 +72,7 @@ bool _Boss_DogeMusk_ShouldStartNewPattern(GameInstance* _gameInstance, Boss_Doge
 	if (_gameInstance == NULL || _boss == NULL)
 		return false;
 
+#define START_DELAY 2.f
 #define PATTERN_DELAY 1.f
 
 	const double _gameTime = GameInstance_GetGameTime(_gameInstance);
@@ -79,8 +80,13 @@ bool _Boss_DogeMusk_ShouldStartNewPattern(GameInstance* _gameInstance, Boss_Doge
 	switch (_boss->currentState)
 	{
 	case EBDMS_START:
-		// 보스가 시작되었을 때에는 무조건 새로운 패턴을 재생합니다.
-		return true;
+		{
+			// 보스가 시작되었을 때 일정 시간이 흐른 뒤에 새로운 패턴을 재생합니다.
+			const double _elapsedTimeAfterBossStart = _gameTime - _boss->bossStartTime;
+			const bool _shouldStartNewPattern = _elapsedTimeAfterBossStart >= START_DELAY;
+
+			return _shouldStartNewPattern;
+		}
 
 	case EBDMS_PATTERN_DELAYED:
 		{
@@ -214,8 +220,8 @@ void _Boss_DogeMusk_PostPattern(GameInstance* _gameInstance, Boss_DogeMusk* _bos
 
 bool _Boss_DogeMusk_Pattern1Tick(GameInstance* _gameInstance, Boss_DogeMusk* _boss, double _deltaTime, bool _patternStart)
 {
-#define PATTERN1_NODE1_DURATION .5f
-#define PATTERN1_NODE2_DURATION 1.f
+#define PATTERN1_NODE1_DURATION .75f
+#define PATTERN1_NODE2_DURATION 1.25f
 #define PATTERN1_NODE3_DURATION 0.f
 
 #define PATTERN1_BEHAVIOR_LOOP_COUNT 5
@@ -345,7 +351,7 @@ bool _Boss_DogeMusk_Pattern1Tick(GameInstance* _gameInstance, Boss_DogeMusk* _bo
 
 		// 이번 프레임의 위치를 새로고칩니다.
 		const Vector2D _destination = _destinationArr[_latestDestinationIndex];
-		const Vector2D _nextPosition = Vector2D_Lerp(_boss->worldObject->position, _destination, 5 * _deltaTime);
+		const Vector2D _nextPosition = Vector2D_Lerp(_boss->worldObject->position, _destination, 3 * _deltaTime);
 		_boss->worldObject->position = _nextPosition;
 	}
 	else if (_behaviorElapsedTime < PATTERN1_NODE1_DURATION + PATTERN1_NODE2_DURATION + PATTERN1_NODE3_DURATION)
