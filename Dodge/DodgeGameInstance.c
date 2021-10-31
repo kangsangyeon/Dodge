@@ -114,7 +114,12 @@ void _DodgeGameInstance_GameTick(DodgeGameInstance* _dodgeGame, float _deltaTime
 	if (_dodgeGame->player != NULL)
 	{
 		Player_Tick(_dodgeGame->player, _deltaTime, GameInstance_GetGameTime(_dodgeGame->gameInstance), _screen->width, _screen->height);
-		Screen_PrintWorldObject(_screen, _dodgeGame->player->worldObject);
+
+
+		if (_dodgeGame->player->flickerAnim->enable == true && _dodgeGame->player->flickerAnim->visible == true)
+			Screen_PrintWorldObject(_screen, _dodgeGame->player->worldObject);
+		else if (_dodgeGame->player->flickerAnim->enable == false)
+			Screen_PrintWorldObject(_screen, _dodgeGame->player->worldObject);
 	}
 
 	//총알
