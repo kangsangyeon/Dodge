@@ -107,6 +107,30 @@ void Boss_DogeMusk_DrawTick(DodgeGameInstance* _dodgeGameInstance, Boss_DogeMusk
 		Screen_PrintWorldObject(_screen, _boss->worldObject);
 }
 
+void Boss_DogeMusk_CollisionTick(DodgeGameInstance* _dodgeGameInstance, Boss_DogeMusk* _boss)
+{
+	if (_dodgeGameInstance == NULL || _boss == NULL || _dodgeGameInstance->player == NULL)
+		return;
+
+	const Collider* _dogeMuskCollider = _boss->worldObject->collider;
+	const Vector2D _dogeMuskPosition = _boss->worldObject->position;
+	const Vector2D _dogeMuskPivot = _boss->worldObject->pivot;
+
+	const Collider* _playerCollider = _dodgeGameInstance->player->worldObject->collider;
+	const Vector2D _playerPosition = _dodgeGameInstance->player->worldObject->position;
+	const Vector2D _playerPivot = _dodgeGameInstance->player->worldObject->pivot;
+
+	const bool _collisionResult = Collider_CheckCollision(_dogeMuskCollider, _dogeMuskPosition, _dogeMuskPivot,
+	                                                      _playerCollider, _playerPosition, _playerPivot);
+
+	if (_collisionResult && _dodgeGameInstance->player->isInvincible == false)
+	{
+		const double _gameTime = GameInstance_GetGameTime(_dodgeGameInstance->gameInstance);
+
+		Player_Damaged(_dodgeGameInstance->player, 1, _gameTime);
+	}
+}
+
 void Boss_DogeMusk_Tick(DodgeGameInstance* _dodgeGameInstance, Boss_DogeMusk* _boss, double _deltaTime)
 {
 	if (_dodgeGameInstance == NULL || _boss == NULL)

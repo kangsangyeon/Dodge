@@ -140,4 +140,11 @@ void _DodgeGameInstance_GameTick(DodgeGameInstance* _dodgeGame, float _deltaTime
 
 	if (_checkDestroy == true)
 		_dodgeGame->directionalBullet = NULL;
+
+	switch (_dodgeGame->bossType)
+	{
+	case EBT_DOGE_MUSK:
+		Boss_DogeMusk_CollisionTick(_dodgeGame, _dodgeGame->dogeMusk);
+		break;
+	}
 }
