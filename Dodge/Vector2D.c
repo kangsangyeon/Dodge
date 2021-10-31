@@ -3,6 +3,7 @@
 #include <math.h>
 
 #include "Const.h"
+#include "Helper.h"
 
 const Vector2D Vector2D_Left = {-1, 0};
 const Vector2D Vector2D_Right = {1, 0};
@@ -85,4 +86,16 @@ Vector2D Vector2D_Lerp(Vector2D _origin, Vector2D _destination, float _delta)
 	const Vector2D _outVector2D = Vector2D_Add(_origin, _deltaVector);
 
 	return _outVector2D;
+}
+
+Vector2D Vector2D_GetPivotAppliedPosition(Vector2D _position, Vector2D _pivot, int _width, int _height)
+{
+	const double _pivotX = FClamp(_pivot.x, 0, 1);
+	const double _pivotY = FClamp(_pivot.y, 0, 1);
+
+	const double _startXWorldPosition = _position.x - _width * _pivotX;
+	const double _startYWorldPosition = _position.y - _height * _pivotY;
+
+	const Vector2D _outPosition = {_startXWorldPosition, _startYWorldPosition};
+	return _outPosition;
 }
