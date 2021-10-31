@@ -11,7 +11,7 @@ const int g_GameStateDurations[10] = {
 	// 대기 시간은 3초입니다.
 	-1, 0, 3,
 	// BOSS 를 제외한 모든 상태는 10초간 유지됩니다.
-	10, 10, 10, 10, 10, 10,
+	0, 10, 10, 10, 10, 10,
 	// BOSS는 20초간 출현합니다.
 	20
 };
@@ -65,6 +65,8 @@ const wchar_t* g_CharacterBulletSpriteMaskFiles[6] = {
 	L"Sprites/Bullets/Lbullet_pikachu_mask.txt", L"Sprites/Bullets/Lbullet_saitama_mask.txt"
 };
 
+AudioClip* g_CharacterSounds[6];
+
 Scene_Game* Scene_Game_Create(DodgeGameInstance* _dodgeGame)
 {
 	const GameInstance* _gameInstance = _dodgeGame->gameInstance;
@@ -90,9 +92,16 @@ Scene_Game* Scene_Game_Create(DodgeGameInstance* _dodgeGame)
 	// bullets
 	const int _bulletArrByteSize = sizeof(_outScene->bulletArr);
 	memset(_outScene->bulletArr, 0, _bulletArrByteSize);
-	
+
 	_outScene->ingameBgmClip = AudioClip_LoadFromFile(_dodgeGame->gameInstance->audio, L"Sounds/Bgm/ingame_bgm.wav", false);
 
+	// global
+	g_CharacterSounds[0] = AudioClip_LoadFromFile(_dodgeGame->gameInstance->audio, L"Sounds/Sfx/dogemusk.wav", false); // 페이몬
+	g_CharacterSounds[1] = AudioClip_LoadFromFile(_dodgeGame->gameInstance->audio, L"Sounds/Sfx/dogemusk.wav", false); // 니코
+	g_CharacterSounds[2] = AudioClip_LoadFromFile(_dodgeGame->gameInstance->audio, L"Sounds/Sfx/dogemusk.wav", false); // 치하야
+	g_CharacterSounds[3] = AudioClip_LoadFromFile(_dodgeGame->gameInstance->audio, L"Sounds/Sfx/dogemusk.wav", false); // 개구리
+	g_CharacterSounds[4] = AudioClip_LoadFromFile(_dodgeGame->gameInstance->audio, L"Sounds/Sfx/dogemusk.wav", false); // 피카츄
+	g_CharacterSounds[5] = AudioClip_LoadFromFile(_dodgeGame->gameInstance->audio, L"Sounds/Sfx/dogemusk.wav", false); // 사이타마
 
 	return _outScene;
 }
@@ -424,10 +433,18 @@ void SpawnBullets(Scene_Game* _scene, int _screenWidth, int _screenHeight)
 		const wchar_t* _randomImageFile = _bulletSpriteImageFiles[_randomIndex];
 		const wchar_t* _randomMaskFile = _bulletSpriteMaskFiles[_randomIndex];
 
+		AudioClip* _characterSound = NULL;
+		if (_scene->gameState == EGS_CHARACTER_EASY || _scene->gameState == EGS_CHARACTER_NORMAL || _scene->gameState == EGS_CHARACTER_HARD)
+		{
+			_characterSound = g_CharacterSounds[_randomIndex];
+		}
+
 		Vector2D _randomDirection = Vector2D_Zero;
 		const Vector2D _randomPosition = DirectionalBullet_CreateRandomPosition(_screenWidth, _screenHeight, &_randomDirection);
 
 		_scene->bulletArr[i] = DirectionalBullet_Create(_randomImageFile, _randomMaskFile, Vector2D_Center, _randomPosition, _randomDirection, _moveSpeed);
+
+		_scene->bulletArr[i]->audioClip = _characterSound;
 	}
 }
 
@@ -463,12 +480,20 @@ DirectionalBullet* SpawnBullet(Scene_Game* _scene, int _screenWidth, int _screen
 	const wchar_t* _randomImageFile = _bulletSpriteImageFiles[_randomIndex];
 	const wchar_t* _randomMaskFile = _bulletSpriteMaskFiles[_randomIndex];
 
+	AudioClip* _characterSound = NULL;
+	if (_scene->gameState == EGS_CHARACTER_EASY || _scene->gameState == EGS_CHARACTER_NORMAL || _scene->gameState == EGS_CHARACTER_HARD)
+	{
+		_characterSound = g_CharacterSounds[_randomIndex];
+	}
+
 	const float _moveSpeed = g_GameStateBulletSpeed[_scene->gameState];
 	Vector2D _direction = Vector2D_Zero;
 	const Vector2D _position = DirectionalBullet_CreateRandomPosition(_screenWidth, _screenHeight, &_direction);
 
 	DirectionalBullet* _newBullet = DirectionalBullet_Create(_randomImageFile, _randomMaskFile,
 	                                                         Vector2D_Center, _position, _direction, _moveSpeed);
+
+	_newBullet->audioClip = _characterSound;
 
 	return _newBullet;
 }

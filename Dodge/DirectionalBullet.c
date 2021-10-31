@@ -12,6 +12,9 @@ DirectionalBullet* DirectionalBullet_Create(wchar_t* _spriteImageFilePath, wchar
 	_directionalBullet->worldObject = WorldObject_CreateWithSpriteMask(_spriteImageFilePath, _spriteMaskFilePath, _spriteMaskFilePath, _pivot, _position);
 	_directionalBullet->moveSpeed = _moveSpeed;
 	_directionalBullet->direction = Vector2D_Normalized(_direction);
+
+	_directionalBullet->audioClip = NULL;
+
 	return _directionalBullet;
 }
 
@@ -47,6 +50,9 @@ void DirectionalBullet_CollisionTick(DodgeGameInstance* _dodgeGame, DirectionalB
 		const double _gameTime = GameInstance_GetGameTime(_dodgeGame->gameInstance);
 
 		Player_Damaged(_dodgeGame, _player, 1, _gameTime);
+
+		if (_bullet->audioClip != NULL)
+			Audio_Play(_dodgeGame->gameInstance->audio, _bullet->audioClip, true);
 	}
 }
 

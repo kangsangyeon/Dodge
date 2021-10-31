@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <stdbool.h>
 
+#include "AudioClip.h"
 #include "WorldObject.h"
 
 typedef struct TDodgeGameInstance DodgeGameInstance;
@@ -8,6 +9,8 @@ typedef struct TPlayer Player;
 
 typedef struct TDirectionalBullet
 {
+	AudioClip* audioClip;
+
 	WorldObject* worldObject;
 	float moveSpeed;
 	Vector2D direction;
