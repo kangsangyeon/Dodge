@@ -165,6 +165,8 @@
     <ClCompile Include="main.c" />
     <ClCompile Include="Player.c" />
     <ClCompile Include="PointerStack.c" />
+    <ClCompile Include="Scene_Game.c" />
+    <ClCompile Include="Scene_Title.c" />
     <ClCompile Include="Screen.c" />
     <ClCompile Include="Sprite.c" />
     <ClCompile Include="Test.c" />
@@ -188,6 +190,8 @@
     <ClInclude Include="LinearBullet.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PointerStack.h" />
+    <ClInclude Include="Scene_Game.h" />
+    <ClInclude Include="Scene_Title.h" />
     <ClInclude Include="Screen.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Test.h" />
