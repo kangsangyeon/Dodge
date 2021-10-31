@@ -37,3 +37,5 @@ double Vector2D_Magnitude(Vector2D _vector);
 double Vector2D_Distance(Vector2D _first, Vector2D _second);
 
 Vector2D Vector2D_Lerp(Vector2D _origin, Vector2D _destination, float _delta);
+
+Vector2D Vector2D_GetPivotAppliedPosition(Vector2D _position, Vector2D _pivot, int _width, int _height);

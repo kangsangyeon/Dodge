@@ -6,7 +6,7 @@ DirectionalBullet* DirectionalBullet_Create(wchar_t* _spriteFilePath, Vector2D _
 	Vector2D _position, Vector2D _direction, float _moveSpeed)
 {
 	DirectionalBullet* _directionalBullet = (DirectionalBullet*)malloc(sizeof(DirectionalBullet));
-	_directionalBullet->worldObject = WorldObject_CreateWithSprite(_spriteFilePath, _pivot, _position);
+	_directionalBullet->worldObject = WorldObject_CreateWithSprite(_spriteFilePath, _spriteFilePath, _pivot, _position);
 	_directionalBullet->moveSpeed = _moveSpeed;
 	_directionalBullet->direction = Vector2D_Normalized(_direction);
 	return _directionalBullet;

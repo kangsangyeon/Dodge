@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Collider.h"
 #include "Vector2D.h"
 #include "WorldObject.h"
 
@@ -42,7 +43,9 @@ void Boss_DogeMusk_Release(Boss_DogeMusk* _boss);
 
 void Boss_DogeMusk_DrawTick(struct GameInstance* _gameInstance, Boss_DogeMusk* _boss);
 
-void Boss_DogeMusk_Tick(struct GameInstance* _gameInstance, Boss_DogeMusk* _boss, double _deltaTime);
+void Boss_DogeMusk_CollisionTick(struct DodgeGameInstance* _dodgeGameInstance, Boss_DogeMusk* _boss);
+
+void Boss_DogeMusk_Tick(struct DodgeGameInstance* _dodgeGameInstance, Boss_DogeMusk* _boss, double _deltaTime);
 
 bool _Boss_DogeMusk_ShouldStartNewPattern(struct GameInstance* _gameInstance, Boss_DogeMusk* _boss);
 

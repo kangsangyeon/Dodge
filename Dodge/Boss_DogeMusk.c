@@ -11,17 +11,23 @@ Boss_DogeMusk* Boss_DogeMusk_Create(GameInstance* _gameInstance)
 	Boss_DogeMusk* _outBoss = (Boss_DogeMusk*)malloc(sizeof(Boss_DogeMusk));
 
 	// boss object
-	const Vector2D _position = { _gameInstance->screen->width / 2, _gameInstance->screen->height * 0.75f};
-	_outBoss->worldObject = WorldObject_CreateWithSpriteMask(L"Sprites/boss_dogemusk/boss_dogemusk.txt", L"Sprites/boss_dogemusk/boss_dogemusk.txt", Vector2D_Center, _position);
+	_outBoss->visibleWorldObject = false;
+
+	const Vector2D _position = {_dodgeGameInstance->screenWidth / 2, _dodgeGameInstance->screenHeight * 0.75f};
+	const Vector2D _pivot = Vector2D_Center;
+	_outBoss->worldObject = WorldObject_CreateWithSpriteMask(L"Sprites/boss_dogemusk/boss_dogemusk.txt", L"Sprites/boss_dogemusk/boss_dogemusk.txt",
+	                                                         L"Sprites/boss_dogemusk/boss_dogemusk.txt", _pivot, _position);
 
 	// warningSignObject
 	_outBoss->visibleWarningSign = false;
-	_outBoss->warningSignObject = WorldObject_CreateWithSpriteMask(L"Sprites/test_warning.txt", L"Sprites/test_warning.txt",
+	_outBoss->warningSignObject = WorldObject_CreateWithSpriteMask(L"Sprites/test_warning.txt", L"Sprites/test_warning.txt", L"Sprites/test_warning.txt",
 	                                                               Vector2D_Center, Vector2D_Zero);
 
 	// moon
 	_outBoss->visibleMoon = false;
-	_outBoss->moonObject = WorldObject_CreateWithSpriteMask(L"Sprites/boss_dogemusk/boss_dogemusk_fullmoon.txt", L"Sprites/boss_dogemusk/boss_dogemusk_fullmoon.txt",
+	_outBoss->moonObject = WorldObject_CreateWithSpriteMask(L"Sprites/boss_dogemusk/boss_dogemusk_fullmoon.txt",
+	                                                        L"Sprites/boss_dogemusk/boss_dogemusk_fullmoon.txt",
+	                                                        L"Sprites/boss_dogemusk/boss_dogemusk_fullmoon.txt",
 	                                                        Vector2D_Center, Vector2D_Zero);
 
 	_outBoss->bossStartTime = GameInstance_GetGameTime(_gameInstance);
@@ -100,7 +106,31 @@ void Boss_DogeMusk_DrawTick(GameInstance* _gameInstance, Boss_DogeMusk* _boss)
 		Screen_PrintWorldObject(_screen, _boss->worldObject);
 }
 
-void Boss_DogeMusk_Tick(GameInstance* _gameInstance, Boss_DogeMusk* _boss, double _deltaTime)
+void Boss_DogeMusk_CollisionTick(DodgeGameInstance* _dodgeGameInstance, Boss_DogeMusk* _boss)
+{
+	if (_dodgeGameInstance == NULL || _boss == NULL || _dodgeGameInstance->player == NULL)
+		return;
+
+	const Collider* _dogeMuskCollider = _boss->worldObject->collider;
+	const Vector2D _dogeMuskPosition = _boss->worldObject->position;
+	const Vector2D _dogeMuskPivot = _boss->worldObject->pivot;
+
+	const Collider* _playerCollider = _dodgeGameInstance->player->worldObject->collider;
+	const Vector2D _playerPosition = _dodgeGameInstance->player->worldObject->position;
+	const Vector2D _playerPivot = _dodgeGameInstance->player->worldObject->pivot;
+
+	const bool _collisionResult = Collider_CheckCollision(_dogeMuskCollider, _dogeMuskPosition, _dogeMuskPivot,
+	                                                      _playerCollider, _playerPosition, _playerPivot);
+
+	if (_collisionResult && _dodgeGameInstance->player->isInvincible == false)
+	{
+		const double _gameTime = GameInstance_GetGameTime(_dodgeGameInstance->gameInstance);
+
+		Player_Damaged(_dodgeGameInstance->player, 1, _gameTime);
+	}
+}
+
+void Boss_DogeMusk_Tick(DodgeGameInstance* _dodgeGameInstance, Boss_DogeMusk* _boss, double _deltaTime)
 {
 	if (_gameInstance == NULL || _boss == NULL)
 		return;
