@@ -4,7 +4,10 @@
 #include <stdlib.h>
 #include <Windows.h>
 
-Player* Player_Create(wchar_t* _spriteImageFilePath, wchar_t* _spriteMaskFilePath, Vector2D _pivot, Vector2D _position, float _moveSpeed, double _dashCoolTime, float _dashSpeed, double _dashDuration)
+#include "GameInstance.h"
+
+Player* Player_Create(wchar_t* _spriteImageFilePath, wchar_t* _spriteMaskFilePath, Vector2D _pivot, Vector2D _position,
+                      float _moveSpeed, double _dashCoolTime, float _dashSpeed, double _dashDuration, double _invincibleDuration)
 {
 	Player* _player = (Player*)malloc(sizeof(Player));
 	_player->worldObject = WorldObject_CreateWithSpriteMask(NULL, NULL, NULL, _pivot, _position);
@@ -12,6 +15,20 @@ Player* Player_Create(wchar_t* _spriteImageFilePath, wchar_t* _spriteMaskFilePat
 	_player->dashSpeed = _dashSpeed;
 	_player->dashDuration = _dashDuration;
 	_player->dashCoolTime = _dashCoolTime;
+	_player->invincibleDuration = _invincibleDuration;
+
+	// health
+	_player->health = PLAYER_MAX_HEALTH;
+	_player->healthSprite[0] = Sprite_LoadFromImageAndMaskFiles(L"Sprites/player_heart_half.txt", L"Sprites/player_heart_half.txt");
+	_player->healthSprite[1] = Sprite_LoadFromImageAndMaskFiles(L"Sprites/player_heart.txt", L"Sprites/player_heart.txt");
+	_player->healthCollider[0] = Collider_LoadFromTextFile(L"Sprites/player_heart_half.txt");
+	_player->healthCollider[1] = Collider_LoadFromTextFile(L"Sprites/player_heart.txt");
+	_player->flickerAnim = SpriteFlickerAnimation_Create(.075);
+
+	_player->isInvincible = false;
+	_player->lastDamagedTime = 0;
+
+	_Player_UpdateSpriteAndCollider(_player);
 
 	return _player;
 }
@@ -24,12 +41,27 @@ void Player_Release(Player* _player)
 	if (_player->worldObject != NULL)
 		WorldObject_Release(_player->worldObject);
 
+	if (_player->healthSprite[0] != NULL)
+		Sprite_Release(_player->healthSprite[0]);
+
+	if (_player->healthSprite[1] != NULL)
+		Sprite_Release(_player->healthSprite[1]);
+
+	if (_player->healthCollider[0] != NULL)
+		Collider_Release(_player->healthCollider[0]);
+
+	if (_player->healthCollider[1] != NULL)
+		Collider_Release(_player->healthCollider[1]);
+
+	if (_player->flickerAnim != NULL)
+		SpriteFlickerAnimation_Release(_player->flickerAnim);
+
 	free(_player);
 }
 
 void Player_Tick(Player* _player, float _deltaTime, float _gameTime, int _width, int _height)
 {
-	Vector2D _velocity = { 0, 0 };
+	Vector2D _velocity = {0, 0};
 
 	if (_player->isDash)
 	{
@@ -75,6 +107,20 @@ void Player_Tick(Player* _player, float _deltaTime, float _gameTime, int _width,
 		Player_Move(_player, _player->dashDirection, _player->dashSpeed, _deltaTime, _width, _height);
 	else
 		Player_Move(_player, _velocity, _player->moveSpeed, _deltaTime, _width, _height);
+
+	// flicker
+	if (_player->flickerAnim->enable)
+		SpriteFlickerAnimation_Tick(_player->flickerAnim, _gameTime);
+
+	if (_player->isInvincible == true && _gameTime - _player->lastDamagedTime >= _player->invincibleDuration)
+	{
+		// 플레이어가 피격된 뒤 일정 시간동안 무적 상태가 되는데,
+		// 무적시간이 지나면 무적과 깜빡임 효과를 종료합니다.
+		_player->isInvincible = false;
+		_player->lastDamagedTime = 0;
+
+		SpriteFlickerAnimation_SetEnable(_player->flickerAnim, false, _gameTime);
+	}
 }
 
 void Player_Move(Player* _player, Vector2D _vector, float _moveSpeed, float _deltaTime, int _width, int _height)
@@ -82,7 +128,7 @@ void Player_Move(Player* _player, Vector2D _vector, float _moveSpeed, float _del
 	if (Vector2D_IsEquals(_vector, Vector2D_Zero) == true)
 		return;
 
-	Vector2D _velocity = Vector2D_Multiply(_vector, _moveSpeed *_deltaTime);
+	Vector2D _velocity = Vector2D_Multiply(_vector, _moveSpeed * _deltaTime);
 	_velocity.x = _velocity.x * 1.67;
 
 	_player->worldObject->position = Vector2D_Add(_player->worldObject->position, _velocity);
@@ -100,4 +146,41 @@ void Player_StartDash(Player* _player, Vector2D _vector, float _gameTime)
 	_player->isDash = true;
 	_player->dashStartTime = _gameTime;
 	_player->dashDirection = _vector;
+}
+
+void Player_Damaged(Player* _player, int _damage, double _gameTime)
+{
+	if (_player == NULL)
+		return;
+
+	if (_player->isInvincible == true)
+		return;
+
+	_player->health -= _damage;
+
+	if (_player->health <= 0)
+	{
+		// 플레이어가 사망했을 때
+
+		_player->health = 0;
+	}
+	else
+	{
+		// 플레이어가 데미지를 입었지만 죽지 않았다면
+		// 일정 시간동안 무적 상태가 되며 깜빡입니다.
+		// 그것의 구현을 위해, 데미지를 입은 시간을 현재 시간으로 갱신합니다.
+		_player->isInvincible = true;
+		_player->lastDamagedTime = _gameTime;
+
+		SpriteFlickerAnimation_SetEnable(_player->flickerAnim, true, _gameTime);
+
+		_Player_UpdateSpriteAndCollider(_player);
+	}
+}
+
+void _Player_UpdateSpriteAndCollider(Player* _player)
+{
+	// 체력에 맞는 sprite와 collider로 변경합니다.
+	_player->worldObject->sprite = _player->healthSprite[_player->health - 1];
+	_player->worldObject->collider = _player->healthCollider[_player->health - 1];
 }

@@ -19,8 +19,8 @@ DodgeGameInstance* DodgeGameInstance_Create(int _screenWidth, int _screenHeight,
 	_instance->gameInstance = GameInstance_Create(_screenWidth, _screenHeight, _fontFaceName, _fontSize, _foregroundColor, _backgroundColor, _useColor, _desiredFps);
 
 	// player
-	const Vector2D _screenCenter = { _screenWidth / 2, _screenHeight / 2 };
-	_instance->player = Player_Create(L"Sprites/player_heart.txt", L"Sprites/player_heart.txt", Vector2D_Center, _screenCenter, 120, .5f, 300, .2f);
+	const Vector2D _screenCenter = {_screenWidth / 2, _screenHeight / 2};
+	_instance->player = Player_Create(L"Sprites/player_heart.txt", L"Sprites/player_heart.txt", Vector2D_Center, _screenCenter, 120, .5f, 300, .2f, 1.5);
 
 	// boss
 	_instance->bossType = EBT_NONE;
