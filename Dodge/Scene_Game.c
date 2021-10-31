@@ -17,7 +17,7 @@ Scene_Game* Scene_Game_Create(DodgeGameInstance* _dodgeGame)
 
 	// player
 	const Vector2D _screenCenter = {_screenWidth / 2, _screenHeight / 2};
-	_outScene->player = Player_Create(L"Sprites/player_heart.txt", L"Sprites/player_heart.txt", Vector2D_Center, _screenCenter, 120, .5f, 300, .2f);
+	_outScene->player = Player_Create(L"Sprites/player_heart.txt", L"Sprites/player_heart.txt", Vector2D_Center, _screenCenter, 120, .5f, 300, .2f, 2.);
 
 	// boss
 	_outScene->bossType = EBT_NONE;
@@ -94,21 +94,34 @@ void Scene_Game_Tick(Scene_Game* _scene, DodgeGameInstance* _dodgeGame, float _d
 		}
 	}
 
+	/* Tick */
+	if (_scene->player != NULL)
+		Player_Tick(_gameInstance, _scene->player, _deltaTime);
+
 	switch (_scene->bossType)
 	{
 	case EBT_DOGE_MUSK:
-		Boss_DogeMusk_Tick(_gameInstance, _scene->dogeMusk, _deltaTime);
+		Boss_DogeMusk_Tick(_dodgeGame, _scene->dogeMusk, _deltaTime);
 		break;
 	}
 
-	if (_scene->dogeMusk != NULL)
-		Boss_DogeMusk_DrawTick(_gameInstance, _scene->dogeMusk);
-
-	// player
-	if (_scene->player != NULL)
+	/* Collision Tick */
+	switch (_scene->bossType)
 	{
-		Player_Tick(_scene->player, _deltaTime, GameInstance_GetGameTime(_gameInstance), _screen->width, _screen->height);
-		Screen_PrintWorldObject(_screen, _scene->player->worldObject);
+	case EBT_DOGE_MUSK:
+		Boss_DogeMusk_CollisionTick(_dodgeGame, _scene->dogeMusk);
+		break;
+	}
+
+	/* Draw Tick */
+	if (_scene->player != NULL)
+		Player_DrawTick(_gameInstance, _scene->player);
+
+	switch (_scene->bossType)
+	{
+	case EBT_DOGE_MUSK:
+		Boss_DogeMusk_DrawTick(_gameInstance, _scene->dogeMusk);
+		break;
 	}
 
 	//총알

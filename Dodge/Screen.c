@@ -435,14 +435,11 @@ void Screen_PrintWorldObject(Screen* _screen, WorldObject* _worldObject)
 	if (_worldObject == NULL || _worldObject->sprite == NULL)
 		return;
 
-	const double _pivotX = FClamp(_worldObject->pivot.x, 0, 1);
-	const double _pivotY = FClamp(_worldObject->pivot.y, 0, 1);
+	const Vector2D _screenStartPosition = Vector2D_GetPivotAppliedPosition(_worldObject->position, _worldObject->pivot,
+	                                                                       _worldObject->sprite->imageWidth, _worldObject->sprite->imageHeight);
 
-	const double _startXWorldPosition = _worldObject->position.x - _worldObject->sprite->imageWidth * _pivotX;
-	const double _startYWorldPosition = _worldObject->position.y - _worldObject->sprite->imageHeight * _pivotY;
-
-	const int _startXScreenPosition = floor(_startXWorldPosition);
-	const int _startYScreenPosition = floor(_startYWorldPosition);
+	const int _startXScreenPosition = floor(_screenStartPosition.x);
+	const int _startYScreenPosition = floor(_screenStartPosition.y);
 
 	Screen_PrintSprite(_screen, _startXScreenPosition, _startYScreenPosition, _worldObject->sprite);
 }

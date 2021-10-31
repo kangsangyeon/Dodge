@@ -99,6 +99,9 @@
     <ClCompile Include="LinearBullet.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SpriteFlickerAnimation.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Scene_Game.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -168,6 +171,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Boss_DogeMusk.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteFlickerAnimation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Scene_Game.h">

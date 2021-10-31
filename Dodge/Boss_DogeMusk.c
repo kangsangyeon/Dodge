@@ -4,6 +4,8 @@
 #include <stdlib.h>
 
 #include "DodgeGameInstance.h"
+#include "Player.h"
+#include "Scene_Game.h"
 
 
 Boss_DogeMusk* Boss_DogeMusk_Create(GameInstance* _gameInstance)
@@ -11,17 +13,23 @@ Boss_DogeMusk* Boss_DogeMusk_Create(GameInstance* _gameInstance)
 	Boss_DogeMusk* _outBoss = (Boss_DogeMusk*)malloc(sizeof(Boss_DogeMusk));
 
 	// boss object
-	const Vector2D _position = { _gameInstance->screen->width / 2, _gameInstance->screen->height * 0.75f};
-	_outBoss->worldObject = WorldObject_CreateWithSpriteMask(L"Sprites/boss_dogemusk/boss_dogemusk.txt", L"Sprites/boss_dogemusk/boss_dogemusk.txt", Vector2D_Center, _position);
+	_outBoss->visibleWorldObject = false;
+
+	const Vector2D _position = {_gameInstance->screen->width / 2, _gameInstance->screen->height * 0.75f};
+	const Vector2D _pivot = Vector2D_Center;
+	_outBoss->worldObject = WorldObject_CreateWithSpriteMask(L"Sprites/boss_dogemusk/boss_dogemusk.txt", L"Sprites/boss_dogemusk/boss_dogemusk.txt",
+	                                                         L"Sprites/boss_dogemusk/boss_dogemusk.txt", _pivot, _position);
 
 	// warningSignObject
 	_outBoss->visibleWarningSign = false;
-	_outBoss->warningSignObject = WorldObject_CreateWithSpriteMask(L"Sprites/test_warning.txt", L"Sprites/test_warning.txt",
+	_outBoss->warningSignObject = WorldObject_CreateWithSpriteMask(L"Sprites/test_warning.txt", L"Sprites/test_warning.txt", L"Sprites/test_warning.txt",
 	                                                               Vector2D_Center, Vector2D_Zero);
 
 	// moon
 	_outBoss->visibleMoon = false;
-	_outBoss->moonObject = WorldObject_CreateWithSpriteMask(L"Sprites/boss_dogemusk/boss_dogemusk_fullmoon.txt", L"Sprites/boss_dogemusk/boss_dogemusk_fullmoon.txt",
+	_outBoss->moonObject = WorldObject_CreateWithSpriteMask(L"Sprites/boss_dogemusk/boss_dogemusk_fullmoon.txt",
+	                                                        L"Sprites/boss_dogemusk/boss_dogemusk_fullmoon.txt",
+	                                                        L"Sprites/boss_dogemusk/boss_dogemusk_fullmoon.txt",
 	                                                        Vector2D_Center, Vector2D_Zero);
 
 	_outBoss->bossStartTime = GameInstance_GetGameTime(_gameInstance);
@@ -100,18 +108,47 @@ void Boss_DogeMusk_DrawTick(GameInstance* _gameInstance, Boss_DogeMusk* _boss)
 		Screen_PrintWorldObject(_screen, _boss->worldObject);
 }
 
-void Boss_DogeMusk_Tick(GameInstance* _gameInstance, Boss_DogeMusk* _boss, double _deltaTime)
+void Boss_DogeMusk_CollisionTick(DodgeGameInstance* _dodgeGameInstance, Boss_DogeMusk* _boss)
 {
-	if (_gameInstance == NULL || _boss == NULL)
+	if (_dodgeGameInstance == NULL || _boss == NULL || _dodgeGameInstance->gameScene == NULL)
 		return;
 
-	const bool _startNewPattern = _Boss_DogeMusk_ShouldStartNewPattern(_gameInstance, _boss);
+	const Player* _player = _dodgeGameInstance->gameScene->player;
+
+	if (_player == NULL)
+		return;
+
+	const Collider* _dogeMuskCollider = _boss->worldObject->collider;
+	const Vector2D _dogeMuskPosition = _boss->worldObject->position;
+	const Vector2D _dogeMuskPivot = _boss->worldObject->pivot;
+
+	const Collider* _playerCollider = _player->worldObject->collider;
+	const Vector2D _playerPosition = _player->worldObject->position;
+	const Vector2D _playerPivot = _player->worldObject->pivot;
+
+	const bool _collisionResult = Collider_CheckCollision(_dogeMuskCollider, _dogeMuskPosition, _dogeMuskPivot,
+	                                                      _playerCollider, _playerPosition, _playerPivot);
+
+	if (_collisionResult && _player->isInvincible == false)
+	{
+		const double _gameTime = GameInstance_GetGameTime(_dodgeGameInstance->gameInstance);
+
+		Player_Damaged(_player, 1, _gameTime);
+	}
+}
+
+void Boss_DogeMusk_Tick(DodgeGameInstance* _dodgeGameInstance, Boss_DogeMusk* _boss, double _deltaTime)
+{
+	if (_dodgeGameInstance == NULL || _boss == NULL)
+		return;
+
+	const bool _startNewPattern = _Boss_DogeMusk_ShouldStartNewPattern(_dodgeGameInstance->gameInstance, _boss);
 
 	if (_startNewPattern == true)
 	{
 		// 패턴을 재생할 때가 되었을 때,
 		// 패턴 관련 변수의 값들을 설정하고 패턴을 시작합니다.
-		_Boss_DogeMusk_PrePattern(_gameInstance, _boss);
+		_Boss_DogeMusk_PrePattern(_dodgeGameInstance->gameInstance, _boss);
 	}
 
 	bool _patternEnd = false;
@@ -121,14 +158,14 @@ void Boss_DogeMusk_Tick(GameInstance* _gameInstance, Boss_DogeMusk* _boss, doubl
 		// 현재 패턴을 재생합니다.
 		// 만약 재생중인 패턴이 없다면 어떠한 동작도 하지 않습니다.
 	case EBDMS_PATTERN_PLAYING:
-		_patternEnd = _Boss_DogeMusk_Pattern1Tick(_gameInstance, _boss, _deltaTime, _startNewPattern);
+		_patternEnd = _Boss_DogeMusk_Pattern1Tick(_dodgeGameInstance->gameInstance, _boss, _deltaTime, _startNewPattern);
 		break;
 	}
 
 	if (_patternEnd == true)
 	{
 		// 패턴이 끝난 직후라면, PostPattern을 호출합니다.
-		_Boss_DogeMusk_PostPattern(_gameInstance, _boss);
+		_Boss_DogeMusk_PostPattern(_dodgeGameInstance->gameInstance, _boss);
 	}
 }
 
