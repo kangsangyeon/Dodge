@@ -1,7 +1,7 @@
 ﻿#include <locale.h>
 #include <signal.h>
 #include <stdio.h>
-
+#include <Windows.h>
 
 #include "Const.h"
 #include "DodgeGameInstance.h"
@@ -57,6 +57,7 @@ int main()
 {
 	signal(SIGINT, onInterrupt);
 	setlocale(LC_ALL, "KOREAN");
+	SetConsoleTitle(TEXT("THIS GAME IS...? Doge : Dodge"));
 	srand(time(NULL));
 
 	DodgeGameInstance* _dodgeGame = DodgeGameInstance_Create(
