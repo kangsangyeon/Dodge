@@ -1,10 +1,11 @@
 ﻿#pragma once
+#include "WorldObject.h"
 
 typedef struct TDodgeGameInstance DodgeGameInstance;
 
 typedef struct TScene_Title
 {
-	char temp;
+	WorldObject* titleObject;
 } Scene_Title;
 
 Scene_Title* Scene_Title_Create(DodgeGameInstance* _dodgeGame);
