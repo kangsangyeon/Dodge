@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <stdbool.h>
 #include <wchar.h>
+#include "AudioClip.h"
 
 typedef struct TGameInstance GameInstance;
 typedef struct TDodgeGameInstance DodgeGameInstance;
@@ -54,6 +55,8 @@ typedef struct TScene_Game
 	Boss_DogeMusk* dogeMusk;
 
 	DirectionalBullet* bulletArr[50];
+
+	AudioClip* ingameBgmClip;
 } Scene_Game;
 
 extern const int g_GameStateDurations[10];

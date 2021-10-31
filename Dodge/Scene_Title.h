@@ -1,11 +1,14 @@
 ﻿#pragma once
+
 #include "WorldObject.h"
+#include "AudioClip.h"
 
 typedef struct TDodgeGameInstance DodgeGameInstance;
 
 typedef struct TScene_Title
 {
 	WorldObject* titleObject;
+	AudioClip* ingameBgmClip;
 } Scene_Title;
 
 Scene_Title* Scene_Title_Create(DodgeGameInstance* _dodgeGame);

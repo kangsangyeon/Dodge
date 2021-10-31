@@ -14,11 +14,11 @@ DodgeGameInstance* DodgeGameInstance_Create(int _screenWidth, int _screenHeight,
 	DodgeGameInstance* _instance = (DodgeGameInstance*)calloc(1, sizeof(DodgeGameInstance));
 	_instance->gameInstance = GameInstance_Create(_screenWidth, _screenHeight, _fontFaceName, _fontSize, _foregroundColor, _backgroundColor, _useColor, _desiredFps);
 
-	_instance->sceneType = EST_TITLE;
 	_instance->titleScene = Scene_Title_Create(_instance);
 	_instance->gameScene = Scene_Game_Create(_instance);
 	_instance->gameOverScene = Scene_GameOver_Create(_instance);
 
+	DodgeGameInstance_ChangeScene(_instance, EST_TITLE);
 	return _instance;
 }
 

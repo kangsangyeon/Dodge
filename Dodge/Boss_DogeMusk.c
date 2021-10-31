@@ -43,6 +43,10 @@ Boss_DogeMusk* Boss_DogeMusk_Create(GameInstance* _gameInstance)
 	_outBoss->patternStartTime = 0;
 	_outBoss->patternEndTime = 0;
 
+
+	_outBoss->dogeMuskClip = AudioClip_LoadFromFile(_gameInstance->audio, L"sounds/sfx/dogemusk.wav", false);
+
+
 	return _outBoss;
 }
 
@@ -56,6 +60,9 @@ void Boss_DogeMusk_Release(Boss_DogeMusk* _boss)
 
 	if (_boss->warningSignObject != NULL)
 		WorldObject_Release(_boss->warningSignObject);
+
+	if (_boss->warningSignObject != NULL)
+		AudioClip_Release(_boss->dogeMuskClip);
 
 	free(_boss);
 }
@@ -133,7 +140,7 @@ void Boss_DogeMusk_CollisionTick(DodgeGameInstance* _dodgeGameInstance, Boss_Dog
 	{
 		const double _gameTime = GameInstance_GetGameTime(_dodgeGameInstance->gameInstance);
 
-		Player_Damaged(_dodgeGameInstance, _player, 1, _gameTime);
+		Player_Damaged(_dodgeGameInstance->gameInstance, _player, 1, _gameTime);
 	}
 }
 
@@ -238,7 +245,6 @@ bool _Boss_DogeMusk_Pattern1Tick(GameInstance* _gameInstance, Boss_DogeMusk* _bo
 	if (_behaviorPlayedCount >= PATTERN1_BEHAVIOR_LOOP_COUNT)
 	{
 		// 패턴을 모두 재생했을 때 패턴을 종료합니다.
-
 		_boss->visibleWorldObject = false;
 		_boss->visibleWarningSign = false;
 		_boss->visibleMoon = false;
@@ -288,7 +294,6 @@ bool _Boss_DogeMusk_Pattern1Tick(GameInstance* _gameInstance, Boss_DogeMusk* _bo
 	if (_behaviorStart == true)
 	{
 		// behavior를 시작할 때 1회에 한해 초기화합니다.
-
 		// 달의 위치와 머스크의 위치를 임의로 결정합니다.
 		// 단, 바로 이전의 behavior에서 결정되었던 목적지로 다시 결정되지는 않습니다.
 		int _targetDestinationIndex = 0;
@@ -316,6 +321,8 @@ bool _Boss_DogeMusk_Pattern1Tick(GameInstance* _gameInstance, Boss_DogeMusk* _bo
 		_boss->moonObject->position = _moonPosition;
 		_boss->moonObject->pivot = _moonPivot;
 		_boss->visibleMoon = true;
+
+		Audio_Play(_gameInstance->audio, _boss->dogeMuskClip, true);
 	}
 
 	if (_behaviorElapsedTime < PATTERN1_NODE1_DURATION)

@@ -7,7 +7,7 @@
 #include "DodgeGameInstance.h"
 #include "GameInstance.h"
 
-Player* Player_Create(wchar_t* _spriteImageFilePath, wchar_t* _spriteMaskFilePath, Vector2D _pivot, Vector2D _position,
+Player* Player_Create(GameInstance* _gameInstance, wchar_t* _spriteImageFilePath, wchar_t* _spriteMaskFilePath, Vector2D _pivot, Vector2D _position,
                       float _moveSpeed, double _dashCoolTime, float _dashSpeed, double _dashDuration, double _invincibleDuration)
 {
 	Player* _player = (Player*)malloc(sizeof(Player));
@@ -30,6 +30,9 @@ Player* Player_Create(wchar_t* _spriteImageFilePath, wchar_t* _spriteMaskFilePat
 	_player->lastDamagedTime = 0;
 
 	_Player_UpdateSpriteAndCollider(_player);
+
+	_player->playerBeHitClip = AudioClip_LoadFromFile(_gameInstance->audio, L"sounds/sfx/player_behit.wav", false);
+	_player->playerDashClip = AudioClip_LoadFromFile(_gameInstance->audio, L"sounds/sfx/player_dash.wav", false);
 
 	return _player;
 }
@@ -56,6 +59,12 @@ void Player_Release(Player* _player)
 
 	if (_player->flickerAnim != NULL)
 		SpriteFlickerAnimation_Release(_player->flickerAnim);
+
+	if (_player->playerBeHitClip != NULL)
+		AudioClip_Release(_player->playerBeHitClip);
+
+	if (_player->playerDashClip != NULL)
+		AudioClip_Release(_player->playerDashClip);
 
 	free(_player);
 }
@@ -115,7 +124,10 @@ void _Player_MoveTick(GameInstance* _gameInstance, Player* _player, float _delta
 		bool _isDashReady = _elapsedTimeAfterDashEnd >= _player->dashCoolTime;
 
 		if (GetAsyncKeyState(VK_SPACE) && _isDashReady == true)
+		{
 			Player_StartDash(_player, _velocity, _gameTime);
+			Audio_Play(_gameInstance->audio, _player->playerDashClip, false);
+		}
 	}
 
 	if (_player->isDash == true)
@@ -127,14 +139,12 @@ void _Player_MoveTick(GameInstance* _gameInstance, Player* _player, float _delta
 void _Player_StateTick(GameInstance* _gameInstance, Player* _player)
 {
 	const double _gameTime = GameInstance_GetGameTime(_gameInstance);
-
 	if (_player->isInvincible == true && _gameTime - _player->lastDamagedTime >= _player->invincibleDuration)
 	{
 		// 플레이어가 피격된 뒤 일정 시간동안 무적 상태가 되는데,
 		// 무적시간이 지나면 무적과 깜빡임 효과를 종료합니다.
 		_player->isInvincible = false;
 		_player->lastDamagedTime = 0;
-
 		SpriteFlickerAnimation_SetEnable(_player->flickerAnim, false, _gameTime);
 	}
 }
@@ -207,6 +217,8 @@ void Player_Damaged(DodgeGameInstance* _dodgeGame, Player* _player, int _damage,
 		return;
 
 	_player->health -= _damage;
+	Audio_Play(_dodgeGame->gameInstance->audio, _player->playerBeHitClip, false);
+
 
 	if (_player->health <= 0)
 	{

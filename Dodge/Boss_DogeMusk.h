@@ -2,6 +2,7 @@
 #include "Collider.h"
 #include "Vector2D.h"
 #include "WorldObject.h"
+#include "AudioClip.h"
 
 typedef enum TEBoss_DogeMusk_State
 {
@@ -35,6 +36,8 @@ typedef struct TBoss_DogeMusk
 	EBoss_DogeMusk_PatternType previousPatternType;
 	double patternStartTime;
 	double patternEndTime;
+
+	AudioClip* dogeMuskClip;
 } Boss_DogeMusk;
 
 Boss_DogeMusk* Boss_DogeMusk_Create(struct GameInstance* _gameInstance);

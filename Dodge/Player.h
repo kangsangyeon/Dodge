@@ -2,6 +2,7 @@
 #include "Collider.h"
 #include "SpriteFlickerAnimation.h"
 #include "WorldObject.h"
+#include "AudioClip.h"
 
 #define PLAYER_MAX_HEALTH 2
 
@@ -32,10 +33,15 @@ typedef struct TPlayer
 	// for health implement
 	bool isInvincible;
 	double lastDamagedTime;
+
+	// Audio
+	AudioClip* playerBeHitClip;
+	AudioClip* playerDashClip;
+
 } Player;
 
-Player* Player_Create(wchar_t* _spriteImageFilePath, wchar_t* _spriteMaskFilePath, Vector2D _pivot, Vector2D _position,
-                      float _moveSpeed, double _dashCoolTime, float _dashSpeed, double _dashDuration, double _invincibleDuration);
+Player* Player_Create(GameInstance* _gameInstance, wchar_t* _spriteImageFilePath, wchar_t* _spriteMaskFilePath, Vector2D _pivot, Vector2D _position,
+	float _moveSpeed, double _dashCoolTime, float _dashSpeed, double _dashDuration, double _invincibleDuration);
 
 void Player_Release(Player* _player);
 

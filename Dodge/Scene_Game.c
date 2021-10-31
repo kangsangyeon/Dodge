@@ -6,6 +6,7 @@
 #include "Player.h"
 #include "DodgeGameInstance.h"
 
+
 const int g_GameStateDurations[10] = {
 	// 대기 시간은 3초입니다.
 	-1, 0, 3,
@@ -81,7 +82,7 @@ Scene_Game* Scene_Game_Create(DodgeGameInstance* _dodgeGame)
 
 	// player
 	const Vector2D _screenCenter = {_screenWidth / 2, _screenHeight / 2};
-	_outScene->player = Player_Create(L"Sprites/player_heart.txt", L"Sprites/player_heart.txt", Vector2D_Center, _screenCenter, 120, .5f, 300, .2f, 2.);
+	_outScene->player = Player_Create(_gameInstance, L"Sprites/player_heart.txt", L"Sprites/player_heart.txt", Vector2D_Center, _screenCenter, 120, .5f, 300, .2f, 2.);
 
 	// boss
 	_outScene->dogeMusk = NULL;
@@ -89,6 +90,9 @@ Scene_Game* Scene_Game_Create(DodgeGameInstance* _dodgeGame)
 	// bullets
 	const int _bulletArrByteSize = sizeof(_outScene->bulletArr);
 	memset(_outScene->bulletArr, 0, _bulletArrByteSize);
+	
+	_outScene->ingameBgmClip = AudioClip_LoadFromFile(_dodgeGame->gameInstance->audio, L"Sounds/Bgm/ingame_bgm.wav", false);
+
 
 	return _outScene;
 }
@@ -117,6 +121,9 @@ void Scene_Game_Release(Scene_Game* _scene)
 		}
 	}
 
+	if (_scene->ingameBgmClip != NULL)
+		AudioClip_Release(_scene->ingameBgmClip);
+
 	free(_scene);
 }
 
@@ -133,12 +140,18 @@ void Scene_Game_OnEnter(Scene_Game* _scene, DodgeGameInstance* _dodgeGame)
 
 	// player
 	Player_Initialize(_scene->player);
+
+	if (_scene->ingameBgmClip != NULL)
+		Audio_Play(_dodgeGame->gameInstance->audio, _scene->ingameBgmClip, true);
 }
 
 void Scene_Game_OnExit(Scene_Game* _scene, DodgeGameInstance* _dodgeGame)
 {
 	if (_scene == NULL || _dodgeGame == NULL)
 		return;
+
+	if (_scene->ingameBgmClip != NULL)
+		Audio_Stop(_scene->ingameBgmClip);
 }
 
 void Scene_Game_Tick(Scene_Game* _scene, DodgeGameInstance* _dodgeGame, float _deltaTime)
