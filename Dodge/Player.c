@@ -7,7 +7,7 @@
 Player* Player_Create(wchar_t* _spriteImageFilePath, wchar_t* _spriteMaskFilePath, Vector2D _pivot, Vector2D _position, float _moveSpeed, double _dashCoolTime, float _dashSpeed, double _dashDuration)
 {
 	Player* _player = (Player*)malloc(sizeof(Player));
-	_player->worldObject = WorldObject_CreateWithSpriteMask(_spriteImageFilePath, _spriteMaskFilePath, _pivot, _position);
+	_player->worldObject = WorldObject_CreateWithSpriteMask(NULL, NULL, NULL, _pivot, _position);
 	_player->moveSpeed = _moveSpeed;
 	_player->dashSpeed = _dashSpeed;
 	_player->dashDuration = _dashDuration;

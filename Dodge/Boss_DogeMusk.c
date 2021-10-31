@@ -11,17 +11,24 @@ Boss_DogeMusk* Boss_DogeMusk_Create(DodgeGameInstance* _dodgeGameInstance)
 	Boss_DogeMusk* _outBoss = (Boss_DogeMusk*)malloc(sizeof(Boss_DogeMusk));
 
 	// boss object
+	_outBoss->visibleWorldObject = false;
+
 	const Vector2D _position = {_dodgeGameInstance->screenWidth / 2, _dodgeGameInstance->screenHeight * 0.75f};
-	_outBoss->worldObject = WorldObject_CreateWithSpriteMask(L"Sprites/boss_dogemusk/boss_dogemusk.txt", L"Sprites/boss_dogemusk/boss_dogemusk.txt", Vector2D_Center, _position);
+	const Vector2D _pivot = Vector2D_Center;
+	_outBoss->worldObject = WorldObject_CreateWithSpriteMask(L"Sprites/boss_dogemusk/boss_dogemusk.txt", L"Sprites/boss_dogemusk/boss_dogemusk.txt",
+	                                                         L"Sprites/boss_dogemusk/boss_dogemusk.txt", _pivot, _position);
+
 
 	// warningSignObject
 	_outBoss->visibleWarningSign = false;
-	_outBoss->warningSignObject = WorldObject_CreateWithSpriteMask(L"Sprites/test_warning.txt", L"Sprites/test_warning.txt",
+	_outBoss->warningSignObject = WorldObject_CreateWithSpriteMask(L"Sprites/test_warning.txt", L"Sprites/test_warning.txt", L"Sprites/test_warning.txt",
 	                                                               Vector2D_Center, Vector2D_Zero);
 
 	// moon
 	_outBoss->visibleMoon = false;
-	_outBoss->moonObject = WorldObject_CreateWithSpriteMask(L"Sprites/boss_dogemusk/boss_dogemusk_fullmoon.txt", L"Sprites/boss_dogemusk/boss_dogemusk_fullmoon.txt",
+	_outBoss->moonObject = WorldObject_CreateWithSpriteMask(L"Sprites/boss_dogemusk/boss_dogemusk_fullmoon.txt",
+	                                                        L"Sprites/boss_dogemusk/boss_dogemusk_fullmoon.txt",
+	                                                        L"Sprites/boss_dogemusk/boss_dogemusk_fullmoon.txt",
 	                                                        Vector2D_Center, Vector2D_Zero);
 
 	_outBoss->bossStartTime = GameInstance_GetGameTime(_dodgeGameInstance->gameInstance);
