@@ -140,7 +140,7 @@ void Boss_DogeMusk_CollisionTick(DodgeGameInstance* _dodgeGameInstance, Boss_Dog
 	{
 		const double _gameTime = GameInstance_GetGameTime(_dodgeGameInstance->gameInstance);
 
-		Player_Damaged(_dodgeGameInstance->gameInstance, _player, 1, _gameTime);
+		Player_Damaged(_dodgeGameInstance, _player, 1, _gameTime);
 	}
 }
 
