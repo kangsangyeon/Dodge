@@ -11,7 +11,7 @@ const int g_GameStateDurations[10] = {
 	// 대기 시간은 3초입니다.
 	-1, 0, 3,
 	// BOSS 를 제외한 모든 상태는 10초간 유지됩니다.
-	0, 10, 10, 10, 10, 10,
+	10, 10, 10, 10, 10, 10,
 	// BOSS는 20초간 출현합니다.
 	20
 };
@@ -94,14 +94,14 @@ Scene_Game* Scene_Game_Create(DodgeGameInstance* _dodgeGame)
 	memset(_outScene->bulletArr, 0, _bulletArrByteSize);
 
 	_outScene->ingameBgmClip = AudioClip_LoadFromFile(_dodgeGame->gameInstance->audio, L"Sounds/Bgm/ingame_bgm.wav", false);
-
+	
 	// global
-	g_CharacterSounds[0] = AudioClip_LoadFromFile(_dodgeGame->gameInstance->audio, L"Sounds/Sfx/dogemusk.wav", false); // 페이몬
-	g_CharacterSounds[1] = AudioClip_LoadFromFile(_dodgeGame->gameInstance->audio, L"Sounds/Sfx/dogemusk.wav", false); // 니코
-	g_CharacterSounds[2] = AudioClip_LoadFromFile(_dodgeGame->gameInstance->audio, L"Sounds/Sfx/dogemusk.wav", false); // 치하야
-	g_CharacterSounds[3] = AudioClip_LoadFromFile(_dodgeGame->gameInstance->audio, L"Sounds/Sfx/dogemusk.wav", false); // 개구리
-	g_CharacterSounds[4] = AudioClip_LoadFromFile(_dodgeGame->gameInstance->audio, L"Sounds/Sfx/dogemusk.wav", false); // 피카츄
-	g_CharacterSounds[5] = AudioClip_LoadFromFile(_dodgeGame->gameInstance->audio, L"Sounds/Sfx/dogemusk.wav", false); // 사이타마
+	g_CharacterSounds[0] = AudioClip_LoadFromFile(_dodgeGame->gameInstance->audio, L"Sounds/Sfx/paimon.wav", false); // 페이몬
+	g_CharacterSounds[1] = AudioClip_LoadFromFile(_dodgeGame->gameInstance->audio, L"Sounds/Sfx/nico.wav", false); // 니코
+	g_CharacterSounds[2] = AudioClip_LoadFromFile(_dodgeGame->gameInstance->audio, L"Sounds/Sfx/chihaya.wav", false); // 치하야
+	g_CharacterSounds[3] = AudioClip_LoadFromFile(_dodgeGame->gameInstance->audio, L"Sounds/Sfx/frog.wav", false); // 개구리
+	g_CharacterSounds[4] = AudioClip_LoadFromFile(_dodgeGame->gameInstance->audio, L"Sounds/Sfx/Pikachu.wav", false); // 피카츄
+	g_CharacterSounds[5] = AudioClip_LoadFromFile(_dodgeGame->gameInstance->audio, L"Sounds/Sfx/saitama.wav", false); // 사이타마
 
 	return _outScene;
 }
