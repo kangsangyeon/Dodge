@@ -2,6 +2,7 @@
 
 #include <stdlib.h>
 
+#include "Const.h"
 #include "DodgeGameInstance.h"
 
 Scene_GameOver* Scene_GameOver_Create(DodgeGameInstance* _dodgeGame)
@@ -33,7 +34,7 @@ void Scene_GameOver_Tick(Scene_GameOver* _scene, DodgeGameInstance* _dodgeGame, 
 	if (_scene->gameOverObject != NULL)
 		Screen_PrintWorldObject(_dodgeGame->gameInstance->screen, _scene->gameOverObject);
 
-	if (GetAsyncKeyState(VK_SPACE))
+	if (GetAsyncKeyState(VK_SPACE) == KEY_STATE_UP)
 		DodgeGameInstance_ChangeScene(_dodgeGame, EST_TITLE);
 }
 

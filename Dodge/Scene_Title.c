@@ -2,6 +2,7 @@
 
 #include <stdlib.h>
 
+#include "Const.h"
 #include "DodgeGameInstance.h"
 
 
@@ -34,7 +35,7 @@ void Scene_Title_Tick(Scene_Title* _scene, DodgeGameInstance* _dodgeGame, float 
 	if (_scene->titleObject != NULL)
 		Screen_PrintWorldObject(_dodgeGame->gameInstance->screen, _scene->titleObject);
 
-	if (GetAsyncKeyState(VK_SPACE))
+	if (GetAsyncKeyState(VK_SPACE) == KEY_STATE_UP)
 	{
 		// 스페이스바를 눌러 Game Scene으로 전환합니다.
 		DodgeGameInstance_ChangeScene(_dodgeGame, EST_GAME);

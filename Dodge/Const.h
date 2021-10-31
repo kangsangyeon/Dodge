@@ -22,6 +22,15 @@
 #define HANDLE_COLOR_LIGHT_YELLOW	0xE
 #define HANDLE_COLOR_BRIGHT_WHITE	0xF
 
+/*
+ * GetAsyncKeyState() 함수의 리턴값으로 얻을 수 있는
+ * 특정 virtual key의 상태와 대응되는 값입니다.
+ */
+extern const short KEY_STATE_IDLE;
+extern const short KEY_STATE_UP;
+extern const short KEY_STATE_DOWN;
+extern const short KEY_STATE_HOLD;
+
 /// <summary>
 /// 엔진에서 사용되는 Epsilon 값입니다.
 ///	이 수치를 변경하여 허용 오차를 조절할 수 있습니다.
