@@ -39,6 +39,8 @@ Player* Player_Create(wchar_t* _spriteImageFilePath, wchar_t* _spriteMaskFilePat
 
 void Player_Release(Player* _player);
 
+void Player_Initialize(Player* _player);
+
 void _Player_MoveTick(GameInstance* _gameInstance, Player* _player, float _deltaTime);
 
 void _Player_StateTick(GameInstance* _gameInstance, Player* _player);

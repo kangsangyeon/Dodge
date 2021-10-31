@@ -60,6 +60,15 @@ void Player_Release(Player* _player)
 	free(_player);
 }
 
+void Player_Initialize(Player* _player)
+{
+	if (_player == NULL)
+		return;
+
+	_player->health = 2;
+	_Player_UpdateSpriteAndCollider(_player);
+}
+
 void _Player_MoveTick(GameInstance* _gameInstance, Player* _player, float _deltaTime)
 {
 	const double _gameTime = GameInstance_GetGameTime(_gameInstance);

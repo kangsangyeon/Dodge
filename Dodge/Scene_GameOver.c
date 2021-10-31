@@ -34,7 +34,7 @@ void Scene_GameOver_Tick(Scene_GameOver* _scene, DodgeGameInstance* _dodgeGame, 
 	if (_scene->gameOverObject != NULL)
 		Screen_PrintWorldObject(_dodgeGame->gameInstance->screen, _scene->gameOverObject);
 
-	if (GetAsyncKeyState(VK_SPACE) == KEY_STATE_UP)
+	if (GetAsyncKeyState(VK_SPACE) == KEY_STATE_DOWN)
 		DodgeGameInstance_ChangeScene(_dodgeGame, EST_TITLE);
 }
 
