@@ -1,10 +1,12 @@
 ﻿#pragma once
 #include "DodgeGameInstance.h"
 #include "WorldObject.h"
+#include "AudioClip.h"
 
 typedef struct TScene_GameClear
 {
 	WorldObject* gameClearObject;
+	AudioClip* gameClearBgmClip;
 } Scene_GameClear;
 
 Scene_GameClear* Scene_GameClear_Create(DodgeGameInstance* _dodgeGame);

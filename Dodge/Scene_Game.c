@@ -11,7 +11,7 @@ const int g_GameStateDurations[10] = {
 	// 대기 시간은 3초입니다.
 	-1, 0, 3,
 	// BOSS 를 제외한 모든 상태는 10초간 유지됩니다.
-	10, 10, 10, 10, 10, 10,
+	0, 10, 10, 10, 10, 10,
 	// BOSS는 20초간 출현합니다.
 	20
 };
@@ -146,6 +146,8 @@ void Scene_Game_OnEnter(Scene_Game* _scene, DodgeGameInstance* _dodgeGame)
 	_scene->enterSceneTime = _gameTime;
 	_scene->gameStateStartTime = _gameTime;
 	_scene->gameState = EGS_WAITING;
+
+	_dodgeGame->diedByCharacter = false;
 
 	// player
 	Player_Initialize(_scene->player);

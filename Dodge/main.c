@@ -57,7 +57,7 @@ int main()
 {
 	signal(SIGINT, onInterrupt);
 	setlocale(LC_ALL, "KOREAN");
-	SetConsoleTitle(TEXT("THIS GAME IS...? Doge : Dodge"));
+	SetConsoleTitle(TEXT("Dodge"));
 	srand(time(NULL));
 
 	DodgeGameInstance* _dodgeGame = DodgeGameInstance_Create(

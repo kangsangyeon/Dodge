@@ -51,8 +51,12 @@ void DirectionalBullet_CollisionTick(DodgeGameInstance* _dodgeGame, DirectionalB
 
 		Player_Damaged(_dodgeGame, _player, 1, _gameTime);
 
-		if (_bullet->audioClip != NULL)
+		if (_bullet->audioClip != NULL) {
+			// 캐릭터 총알인 경우, 음성을 재생합니다.
 			Audio_Play(_dodgeGame->gameInstance->audio, _bullet->audioClip, true);
+
+			_dodgeGame->diedByCharacter = true;
+		}
 	}
 }
 

@@ -28,6 +28,8 @@ typedef struct TDodgeGameInstance
 	Scene_Game* gameScene;
 	Scene_GameOver* gameOverScene;
 	Scene_GameClear* gameClearScene;
+
+	bool diedByCharacter;
 } DodgeGameInstance;
 
 DodgeGameInstance* DodgeGameInstance_Create(int _screenWidth, int _screenHeight, wchar_t* _fontFaceName, COORD _fontSize,

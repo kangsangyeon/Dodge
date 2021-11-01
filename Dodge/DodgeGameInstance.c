@@ -20,6 +20,8 @@ DodgeGameInstance* DodgeGameInstance_Create(int _screenWidth, int _screenHeight,
 	_instance->gameOverScene = Scene_GameOver_Create(_instance);
 	_instance->gameClearScene = Scene_GameClear_Create(_instance);
 
+	_instance->diedByCharacter = false;
+
 	DodgeGameInstance_ChangeScene(_instance, EST_TITLE);
 	return _instance;
 }

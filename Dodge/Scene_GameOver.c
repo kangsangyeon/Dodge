@@ -49,7 +49,7 @@ void Scene_GameOver_OnEnter(Scene_GameOver* _scene, DodgeGameInstance* _dodgeGam
 	if (_scene == NULL || _dodgeGame == NULL)
 		return;
 
-	if (_scene->gameOverBgmClip != NULL)
+	if (_scene->gameOverBgmClip != NULL && _dodgeGame->diedByCharacter == false)
 		Audio_Play(_dodgeGame->gameInstance->audio, _scene->gameOverBgmClip, true);
 }
 
@@ -58,6 +58,6 @@ void Scene_GameOver_OnExit(Scene_GameOver* _scene, DodgeGameInstance* _dodgeGame
 	if (_scene == NULL || _dodgeGame == NULL)
 		return;
 
-	if (_scene->gameOverBgmClip != NULL)
+	if (_scene->gameOverBgmClip != NULL && _dodgeGame->diedByCharacter == false)
 		Audio_Stop(_scene->gameOverBgmClip);
 }
