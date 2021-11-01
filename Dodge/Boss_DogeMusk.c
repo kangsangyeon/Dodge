@@ -15,7 +15,7 @@ Boss_DogeMusk* Boss_DogeMusk_Create(GameInstance* _gameInstance)
 	// boss object
 	_outBoss->visibleWorldObject = false;
 
-	const Vector2D _position = {_gameInstance->screen->width / 2, _gameInstance->screen->height * 0.75f};
+	const Vector2D _position = {1000, 1000};
 	const Vector2D _pivot = Vector2D_Center;
 	_outBoss->worldObject = WorldObject_CreateWithSpriteMask(L"Sprites/boss_dogemusk/boss_dogemusk.txt", L"Sprites/boss_dogemusk/boss_dogemusk.txt",
 	                                                         L"Sprites/boss_dogemusk/boss_dogemusk.txt", _pivot, _position);

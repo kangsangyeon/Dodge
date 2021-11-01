@@ -11,7 +11,7 @@ const int g_GameStateDurations[10] = {
 	// 대기 시간은 3초입니다.
 	-1, 0, 3,
 	// BOSS 를 제외한 모든 상태는 10초간 유지됩니다.
-	0, 10, 10, 10, 10, 10,
+	10, 10, 10, 10, 10, 10,
 	// BOSS는 20초간 출현합니다.
 	20
 };
@@ -94,7 +94,7 @@ Scene_Game* Scene_Game_Create(DodgeGameInstance* _dodgeGame)
 	memset(_outScene->bulletArr, 0, _bulletArrByteSize);
 
 	_outScene->ingameBgmClip = AudioClip_LoadFromFile(_dodgeGame->gameInstance->audio, L"Sounds/Bgm/ingame_bgm.wav", false);
-	
+
 	// global
 	g_CharacterSounds[0] = AudioClip_LoadFromFile(_dodgeGame->gameInstance->audio, L"Sounds/Sfx/paimon.wav", false); // 페이몬
 	g_CharacterSounds[1] = AudioClip_LoadFromFile(_dodgeGame->gameInstance->audio, L"Sounds/Sfx/nico.wav", false); // 니코
@@ -350,19 +350,19 @@ void _Scene_Game_BossStateTick(Scene_Game* _scene, DodgeGameInstance* _dodgeGame
 		}
 	}
 
-	// Collision Tick
-	switch (_scene->bossType)
-	{
-	case EBT_DOGE_MUSK:
-		Boss_DogeMusk_CollisionTick(_dodgeGame, _scene->dogeMusk);
-		break;
-	}
-
 	// Tick
 	switch (_scene->bossType)
 	{
 	case EBT_DOGE_MUSK:
 		Boss_DogeMusk_Tick(_dodgeGame, _scene->dogeMusk, _deltaTime);
+		break;
+	}
+
+	// Collision Tick
+	switch (_scene->bossType)
+	{
+	case EBT_DOGE_MUSK:
+		Boss_DogeMusk_CollisionTick(_dodgeGame, _scene->dogeMusk);
 		break;
 	}
 
