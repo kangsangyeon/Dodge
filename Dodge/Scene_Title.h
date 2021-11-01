@@ -9,6 +9,8 @@ typedef struct TScene_Title
 {
 	WorldObject* titleObject;
 	AudioClip* ingameBgmClip;
+
+	bool spacePressed;
 } Scene_Title;
 
 Scene_Title* Scene_Title_Create(DodgeGameInstance* _dodgeGame);

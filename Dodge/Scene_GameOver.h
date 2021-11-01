@@ -8,6 +8,8 @@ typedef struct TScene_GameOver
 {
 	WorldObject* gameOverObject;
 	AudioClip* gameOverBgmClip;
+
+	bool spacePressed;
 } Scene_GameOver;
 
 Scene_GameOver* Scene_GameOver_Create(DodgeGameInstance* _dodgeGame);

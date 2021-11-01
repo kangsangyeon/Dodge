@@ -7,6 +7,8 @@ typedef struct TScene_GameClear
 {
 	WorldObject* gameClearObject;
 	AudioClip* gameClearBgmClip;
+
+	bool spacePressed;
 } Scene_GameClear;
 
 Scene_GameClear* Scene_GameClear_Create(DodgeGameInstance* _dodgeGame);

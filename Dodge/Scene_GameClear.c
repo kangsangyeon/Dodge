@@ -11,6 +11,8 @@ Scene_GameClear* Scene_GameClear_Create(DodgeGameInstance* _dodgeGame)
 	const Vector2D _screenCenter = {_dodgeGame->gameInstance->screen->width / 2, _dodgeGame->gameInstance->screen->height / 2};
 	_outScene->gameClearObject = WorldObject_CreateWithSprite(L"Sprites/Scene/Scene_gameclear.txt", NULL, Vector2D_Center, _screenCenter);
 
+	_outScene->spacePressed = false;
+
 	return _outScene;
 }
 
@@ -36,7 +38,10 @@ void Scene_GameClear_Tick(Scene_GameClear* _scene, DodgeGameInstance* _dodgeGame
 	if (_scene->gameClearObject != NULL)
 		Screen_PrintWorldObject(_dodgeGame->gameInstance->screen, _scene->gameClearObject);
 
-	if (GetAsyncKeyState(VK_SPACE) == KEY_STATE_DOWN)
+	bool _previousSpacePressed = _scene->spacePressed;
+	_scene->spacePressed = GetAsyncKeyState(VK_SPACE);
+
+	if (_scene->spacePressed == false && _previousSpacePressed == true)
 		DodgeGameInstance_ChangeScene(_dodgeGame, EST_TITLE);
 }
 
@@ -47,6 +52,8 @@ void Scene_GameClear_OnEnter(Scene_GameClear* _scene, DodgeGameInstance* _dodgeG
 
 	if (_scene->gameClearBgmClip != NULL)
 		Audio_Play(_dodgeGame->gameInstance->audio, _scene->gameClearBgmClip, true);
+
+	_scene->spacePressed = false;
 }
 
 void Scene_GameClear_OnExit(Scene_GameClear* _scene, DodgeGameInstance* _dodgeGame)
