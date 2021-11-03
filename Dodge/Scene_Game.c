@@ -19,33 +19,33 @@ const int g_GameStateDurations[10] = {
 const int g_GameStateStartBulletCount[10] = {
 	-1, -1, -1,
 	// EASY
-	10, 1,
+	10, 2,
 	// NORMAL
-	10, 1,
+	13, 3,
 	// HARD
-	10, 1,
+	15, 5,
 	0
 };
 
 const int g_GameStateSpawnBulletDelay[10] = {
 	-1, -1, -1,
 	// EASY
-	1, 2,
+	2, 1,
 	// NORMAL
-	1, 2,
+	3, 2,
 	// HARD
-	1, 2,
+	4, 3,
 	0
 };
 
 const float g_GameStateBulletSpeed[10] = {
 	-1, -1, -1,
 	// EASY
-	50, 50,
+	60, 60,
 	// NORMAL
-	70, 60,
+	80, 80,
 	// HARD
-	100, 70,
+	100, 100,
 	0
 };
 
