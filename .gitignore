@@ -389,3 +389,6 @@ FodyWeavers.xsd
 
 # fmod library 파일을 포함합니다.
 !Dodge/fmod_api_core/**
+
+# build 폴더를 제외합니다.
+_build
